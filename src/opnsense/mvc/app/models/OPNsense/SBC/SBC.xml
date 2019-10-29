@@ -1,0 +1,227 @@
+<model>
+    <mount>//OPNsense/SBC</mount>
+    <version>0.0.1</version>
+    <description>the OPNsense "Session Border Controller" plugin</description>
+    <items>
+        <!-- container -->
+        <general>
+            <!-- fields -->
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enabled>
+        </general>
+    	<transports>
+			<transport type="ArrayField">
+				<enabled type="BooleanField">
+					<Default>1</Default>
+					<Required>Y</Required>
+				</enabled>
+				<name type="TextField">
+					<Required>Y</Required>
+					<Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
+					<ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
+				</name>
+				<description type="TextField">
+					<Required>N</Required>
+					<Mask>/^.{1,255}$/u</Mask>
+					<ValidationMessage>Description is a string between 1 and 255 characters.</ValidationMessage>
+				</description>
+				<bindAddress type="NetworkField">
+					<Required>Y</Required>
+					<Default>0.0.0.0</Default>
+					<AddressFamily>ipv4</AddressFamily>
+					<ValidationMessage>Please specify an IPv4 address defined within OPNsense (Interface or Virtual IP)</ValidationMessage>
+				</bindAddress>
+				<bindPort type="PortField">
+					<Required>N</Required>
+				</bindPort>
+				<protocol type="OptionField">
+					<Required>Y</Required>
+					<Default>udp</Default>
+					<OptionValues>
+						<udp>UDP - User Datagram Protocol</udp>
+						<tcp>TCP - Transmission Control Protocol</tcp>
+						<tls>TLS - Transport Layer Security</tls>
+						<ws>WS - WebSocket</ws>
+						<wss>WSS - Secured WebSocket</wss>
+					</OptionValues>
+				</protocol>
+				<localNetwork type="NetworkField">
+					<Required>N</Required>
+				</localNetwork>
+				<externalMediaAddress type="NetworkField">
+					<Required>N</Required>
+				</externalMediaAddress>
+				<externalSignalingAddress type="NetworkField">
+					<Required>N</Required>
+				</externalSignalingAddress>
+				<externalSignalingPort type="PortField">
+					<Required>N</Required>
+				</externalSignalingPort>
+				<additionalOptions type="TextField">
+                    <Required>N</Required>
+                </additionalOptions>
+			</transport>
+		</transports>
+    	<aors>
+			<aor type="ArrayField">
+				<enabled type="BooleanField">
+					<Default>1</Default>
+					<Required>Y</Required>
+				</enabled>
+				<name type="TextField">
+					<Required>Y</Required>
+					<Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
+					<ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
+				</name>
+				<description type="TextField">
+					<Required>N</Required>
+					<Mask>/^.{1,255}$/u</Mask>
+					<ValidationMessage>Description is a string between 1 and 255 characters.)</ValidationMessage>
+				</description>
+				<contacts type="CSVListField">
+					<Required>N</Required>
+					<Multiple>Y</Multiple>
+					<mask>/^((sip:([0-9a-zA-Z._\-\*:]+(:[0-9]+)?)([,]){0,1}))*/u</mask>
+					<ChangeCase>lower</ChangeCase>
+					<ValidationMessage>Please provide valid SIP URIs, i.e. sip:10.0.0.1:5060 or sip:sbc@example.com.</ValidationMessage>
+				</contacts>
+				<maxContacts type="IntegerField">
+					<Required>N</Required>
+					<Default>0</Default>
+					<MinimumValue>0</MinimumValue>
+					<MaximumValue>255</MaximumValue>
+					<ValidationMessage>Please specify a value between 0 and 255.</ValidationMessage>
+				</maxContacts>
+				<outboundProxy type="TextField">
+					<Required>N</Required>
+					<mask>/^sip:((.*@.*)|(.*:[0-9]+;transport=(tcp|udp))|(.*:[0-9]+)|(.[0-9\.]+))$/u</mask>
+					<ValidationMessage>Please specify a full SIP URI</ValidationMessage>
+				</outboundProxy>
+				<minExpiration type="IntegerField">
+					<Required>N</Required>
+					<MinimumValue>0</MinimumValue>
+					<MaximumValue>255</MaximumValue>
+					<ValidationMessage>Please specify a value between 0 and 255.</ValidationMessage>
+				</minExpiration>
+				<maxExpiration type="IntegerField">
+					<Required>N</Required>
+					<MinimumValue>0</MinimumValue>
+					<MaximumValue>255</MaximumValue>
+					<ValidationMessage>Please specify a value between 0 and 255.</ValidationMessage>
+				</maxExpiration>
+				<qualifyFrequency type="IntegerField">
+					<Required>N</Required>
+					<MinimumValue>0</MinimumValue>
+					<MaximumValue>255</MaximumValue>
+					<ValidationMessage>Please specify a value between 0 and 255.</ValidationMessage>
+				</qualifyFrequency>
+				<qualifyTimeout type="IntegerField">
+					<Required>N</Required>
+					<MinimumValue>0</MinimumValue>
+					<MaximumValue>255</MaximumValue>
+					<ValidationMessage>Please specify a value between 0 and 255.</ValidationMessage>
+				</qualifyTimeout>
+				<additionalOptions type="TextField">
+                    <Required>N</Required>
+                </additionalOptions>
+			</aor>
+		</aors>
+    	<endpoints>
+    		<endpoint type="ArrayField">
+				<enabled type="BooleanField">
+					<Default>1</Default>
+					<Required>Y</Required>
+				</enabled>
+				<name type="TextField">
+					<Required>Y</Required>
+					<Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
+					<ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
+				</name>
+				<description type="TextField">
+					<Required>N</Required>
+					<Mask>/^.{1,255}$/u</Mask>
+					<ValidationMessage>Description is a string between 1 and 255 characters.)</ValidationMessage>
+				</description>
+				<transport type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.SBC.SBC</source>
+                            <items>transports.transport</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Transport not found</ValidationMessage>
+                    <Multiple>N</Multiple>
+                    <Required>Y</Required>
+				</transport>
+				<aors type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.SBC.SBC</source>
+                            <items>aors.aor</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>AoR not found</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                    <Required>Y</Required>
+				</aors>
+				<rfc3262 type="BooleanField">
+					<Default>1</Default>
+					<Required>Y</Required>
+				</rfc3262>
+				<disallow type="TextField">
+					<Required>N</Required>
+					<Default>all</Default>
+					<Mask>/^(all)$|^((adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)+,)*(adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)$/u</Mask>
+					<ChangeCase>lower</ChangeCase>
+					<ValidationMessage>Ethier "all" or an ordered combination of adpcm, alaw, g722, g726, gsm, ilbc, lpc10, speex or ulaw separated by a commas</ValidationMessage>
+				</disallow>
+				<allow type="TextField">
+					<Required>N</Required>
+					<Default>ulaw</Default>
+					<Mask>/^(all)$|^((adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)+,)*(adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)$/u</Mask>
+					<ChangeCase>lower</ChangeCase>
+					<ValidationMessage>Ethier "all" or an ordered combination of adpcm, alaw, g722, g726, gsm, ilbc, lpc10, speex or ulaw separated by a commas</ValidationMessage>
+				</allow>
+				<outboundProxy type="TextField">
+					<Required>N</Required>
+					<mask>/^sip:((.*@.*)|(.*:[0-9]+;transport=(tcp|udp))|(.*:[0-9]+)|(.[0-9\.]+))$/u</mask>
+					<ValidationMessage>Please specify a full SIP URI</ValidationMessage>
+				</outboundProxy>
+				<directMedia type="BooleanField">
+					<Default>0</Default>
+					<Required>N</Required>
+				</directMedia>
+			</endpoint>
+		</endpoints>
+		<authentications>
+			<authentication type="ArrayField">
+			</authentication>
+		</authentications>
+		<registrations>
+			<registration type="ArrayField">
+			</registration>
+		</registrations>
+		<codecs>
+			<codec type="ArrayField">
+				<enabled type="BooleanField">
+					<Default>1</Default>
+					<Required>Y</Required>
+				</enabled>
+				<name type="TextField">
+					<Required>Y</Required>
+					<Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
+					<ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
+				</name>
+				<description type="TextField">
+					<Required>N</Required>
+					<Mask>/^.{1,255}$/u</Mask>
+					<ValidationMessage>Description is a string between 1 and 255 characters.</ValidationMessage>
+				</description>
+			</codec>
+		</codecs>
+    </items>
+</model>

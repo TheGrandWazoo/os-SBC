@@ -1,0 +1,77 @@
+<form>
+	<field>
+		<id>transport.enabled</id>
+		<label>Enabled</label>
+		<type>checkbox</type>
+		<help>Enable this transport</help>
+	</field>
+	<field>
+		<id>transport.name</id>
+		<label>Name</label>
+		<type>text</type>
+		<help>Name of the transport</help>
+	</field>
+	<field>
+		<id>transport.description</id>
+		<label>Description</label>
+		<type>text</type>
+		<help>Description of this transport (Not Parsed)</help>
+	</field>
+	<field>
+		<id>transport.bindAddress</id>
+		<label>Network Address</label>
+		<type>text</type>
+		<help>Provide an IPv4 address (Interface or Virtual IP) that is defined in OPNsense(Default: 0.0.0.0 - All)</help>
+	</field>
+	<field>
+		<id>transport.bindPort</id>
+		<label>Network Port</label>
+		<type>text</type>
+		<help>Provide a TCP/UDP port number (Default: 5060)</help>
+	</field>
+	<field>
+		<id>transport.protocol</id>
+		<label>Protocol</label>
+		<type>dropdown</type>
+		<help>Set the protocol of the transport (Default: UDP)</help>
+	</field>
+	<field>
+		<id>transport.localNetwork</id>
+		<label>Local Network</label>
+		<type>text</type>
+		<help>Network to consider local used for NAT purposes (Default: "")</help>
+		<hint>Enter a valid IPv4 address with CIDR mask. e.g. 127.0.0.1/8.</hint>
+		<advanced>true</advanced>
+	</field>
+	<field>
+		<id>transport.externalMediaAddress</id>
+		<label>External Media Address</label>
+		<type>text</type>
+		<help>External IP address to use in RTP handling (default: "")</help>
+		<hint>Enter a valid IPv4 address with CIDR mask. e.g. 127.0.0.1/8.</hint>
+		<advanced>true</advanced>
+	</field>
+	<field>
+		<id>transport.externalSignalingAddress</id>
+		<label>External Signaling Address</label>
+		<type>text</type>
+		<help>External IP address to use for SIP signaling (default: "")</help>
+		<hint>Enter a valid IPv4 address with CIDR mask. e.g. 127.0.0.1/8.</hint>
+		<advanced>true</advanced>
+	</field>
+	<field>
+		<id>transport.externalSignalingPort</id>
+		<label>External Signaling Port</label>
+		<type>text</type>
+		<help>External port to use for SIP signaling (default: "")</help>
+		<hint>Enter a valid IPv4 address with CIDR mask. e.g. 127.0.0.1/8.</hint>
+		<advanced>true</advanced>
+	</field>
+    <field>
+        <id>transport.additionalOptions</id>
+        <label>Additional Options</label>
+        <type>textbox</type>
+        <help><![CDATA[These lines will be added to the end of this AoR section. One option per line in the format of ConfigOption=Value]]></help>
+        <advanced>true</advanced>
+	</field>
+</form>

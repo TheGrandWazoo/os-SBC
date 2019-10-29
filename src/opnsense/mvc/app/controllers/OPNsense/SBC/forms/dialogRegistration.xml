@@ -1,0 +1,19 @@
+<form>
+	<field>
+		<id>registration.enabled</id>
+		<label>Enabled</label>
+		<type>checkbox</type>
+		<help>Enable this registration</help></field>
+	<field>
+		<id>registration.name</id>
+		<label>Name</label>
+		<type>text</type>
+		<help>Name of the registration</help>
+	</field>
+	<field>
+		<id>registration.description</id>
+		<label>Description</label>
+		<type>text</type>
+		<help>Description of this registration (Not Parsed)</help>
+	</field>
+</form>

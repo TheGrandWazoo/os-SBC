@@ -1,0 +1,77 @@
+<form>
+	<field>
+		<id>aor.enabled</id>
+		<label>Enabled</label>
+		<type>checkbox</type>
+		<help>Enable this AoR</help>
+	</field>
+	<field>
+		<id>aor.name</id>
+		<label>Name</label>
+		<type>text</type>
+		<help>Name of the AoR</help>
+	</field>
+	<field>
+		<id>aor.description</id>
+		<label>Description</label>
+		<type>text</type>
+		<help>Description of this AoR (Not Parsed)</help>
+	</field>
+	<field>
+		<id>aor.contacts</id>
+		<label>SIP Contacts</label>
+		<type>select_multiple</type>
+		<style>tokenize</style>
+		<allownew>true</allownew>
+		<help>Permanant contacts assigned to this AoR. i.e. sip:10.0.0.1:5060 or sip:sbc@example.com. Use TAB key to complete typing a SIP URI.</help>
+		<hint>Enter sip:URI[:port] here. Finish with TAB.</hint>
+	</field>
+	<field>
+		<id>aor.maxContacts</id>
+		<label>Max Contacts</label>
+		<type>text</type>
+		<help>Maximum contacts that can bind to this AoR (default: "0")</help>
+	</field>
+	<field>
+		<id>aor.outboundProxy</id>
+		<label>Outbound Proxy</label>
+		<type>text</type>
+		<help>Proxy through which to send OPTIONS requests, a full SIP URI must be provided</help>
+		<advanced>true</advanced>
+	</field>
+	<field>
+		<id>aor.minExpiration</id>
+		<label>Max Expiration</label>
+		<type>text</type>
+		<help>Minimum time to keep an AoR (default: "60")</help>
+		<advanced>true</advanced>
+	</field>
+	<field>
+		<id>aor.maxExpiration</id>
+		<label>Max Expiration</label>
+		<type>text</type>
+		<help>Maximum time to keep an AoR (default: "7200")</help>
+		<advanced>true</advanced>
+	</field>
+	<field>
+		<id>aor.qualifyFrequency</id>
+		<label>Qualify Frequency</label>
+		<type>text</type>
+		<help>Interval at which to qualify an AoR (default: "0")</help>
+		<advanced>true</advanced>
+	</field>
+	<field>
+		<id>aor.qualifyTimeout</id>
+		<label>Qualify Timeout</label>
+		<type>text</type>
+		<help>Qualify timeout in fractional seconds (default: "3.0").</help>
+		<advanced>true</advanced>
+	</field>
+    <field>
+        <id>aor.additionalOptions</id>
+        <label>Additional Options</label>
+        <type>textbox</type>
+        <help><![CDATA[These lines will be added to the end of this AoR section. One option per line in the format of ConfigOption=Value]]></help>
+        <advanced>true</advanced>
+	</field>
+</form>

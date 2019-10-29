@@ -1,0 +1,20 @@
+<form>
+	<field>
+		<id>codec.enabled</id>
+		<label>Enabled</label>
+		<type>checkbox</type>
+		<help>Enable this Codec</help>
+	</field>
+	<field>
+		<id>codec.name</id>
+		<label>Name</label>
+		<type>text</type>
+		<help>Name of the Codec</help>
+	</field>
+	<field>
+		<id>codec.description</id>
+		<label>Description</label>
+		<type>text</type>
+		<help>Description of this Codec (Not Parsed)</help>
+	</field>
+</form>

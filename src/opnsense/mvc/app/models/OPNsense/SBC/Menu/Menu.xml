@@ -1,0 +1,17 @@
+<menu>
+    <Services>
+        <SBC VisibleName="SBC" cssClass="fa fa-phone fa-fw">
+        	<Settings order="10" url="/ui/sbc">
+        		<Settings VisibleName="SBC Settings" url="/ui/sbc#subtab_sbc-settings"/>
+				<Transports VisibleName="Transports" url="/ui/sbc#subtab_sbc-transports"/>
+				<Aors VisibleName="AoRs" url="/ui/sbc#subtab_sbc-aors"/>
+				<Endpoints VisibleName="Endpoints" url="/ui/sbc#subtab_sbc-endpoints"/>
+				<Authentications VisibleName="Authentications" url="/ui/sbc#subtab_sbc-authentications"/>
+				<Registrations VisibleName="Registrations" url="/ui/sbc#subtab_sbc-registrations"/>
+				<Codecs VisibleName="Codecs" url="/ui/sbc#subtab_sbc-codecs"/>
+			</Settings>
+			<ActiveCalls VisibleName="Active Calls" order="20" url="/ui/sbc/active-calls.php"/>
+			<Log VisibleName="Log" order="30" url="/ui/sbc/log" />
+        </SBC>
+    </Services>
+</menu>
