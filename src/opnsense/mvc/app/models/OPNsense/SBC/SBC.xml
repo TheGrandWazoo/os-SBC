@@ -10,6 +10,10 @@
                 <default>0</default>
                 <Required>Y</Required>
             </enabled>
+            <showIntro type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </showIntro>
         </general>
     	<transports>
 			<transport type="ArrayField">

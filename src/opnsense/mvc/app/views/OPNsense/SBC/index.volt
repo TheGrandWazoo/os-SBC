@@ -1,7 +1,7 @@
 {#/
 
 Copyright (C) 2018-2019 Kevin Scott Adams
-OPNsense® is Copyright © 2014 – 2015 by Deciso B.V.
+OPNsenseï¿½ is Copyright ï¿½ 2014 ï¿½ 2015 by Deciso B.V.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -14,7 +14,7 @@ are permitted provided that the following conditions are met:
     this list of conditions and the following disclaimer in the documentation
     and/or other materials provided with the distribution.
 
-THIS SOFTWARE IS PROVIDED “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES,
+THIS SOFTWARE IS PROVIDED ï¿½AS ISï¿½ AND ANY EXPRESS OR IMPLIED WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
 AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
@@ -326,84 +326,96 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <ul class="nav nav-tabs" role="tablist" id="maintabs">
     {# manually add tabs #}
-    <li class="active"><a data-toggle="tab" href="#introduction"><b>{{ lang._('Introduction') }}</b></a></li>
+    {% if showIntro|default('0')=='1' %}
+    <li class="active">
+        <a data-toggle="tab" href="#introduction">
+            <b>{{ lang._('Introduction') }}</b>
+        </a>
+    </li>
+    {% endif %}
 
-    <li role="presentation" class="dropdown">
+    <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}transports-introduction{% else %}transports-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Transports') }}</b></a>
+        <a data-toggle="tab" onclick="$('#transports-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Transports') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            {% if showIntro|default('0')=='1' %}
             <li><a data-toggle="tab" id="transports-introduction" href="#subtab_sbc-transports-introduction">{{ lang._('Introduction') }}</a></li>
-            {% endif %}
             <li><a data-toggle="tab" id="transports-tab" href="#transports">{{ lang._('Transports') }}</a></li>
         </ul>
+        {% else %}
+        ><a data-toggle="tab" id="transports-tab" href="#transports">{{ lang._('Transports') }}</a>
+        {% endif %}
     </li>
 
-    <li role="presentation" class="dropdown">
+    <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}aors-introduction{% else %}aors-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('AORS') }}</b></a>
+        <a data-toggle="tab" onclick="$('#aors-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('AORS') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            {% if showIntro|default('0')=='1' %}
             <li><a data-toggle="tab" id="aors-introduction" href="#subtab_sbc-aors-introduction">{{ lang._('Introduction') }}</a></li>
-            {% endif %}
             <li><a data-toggle="tab" id="aors-tab" href="#aors">{{ lang._('AORs') }}</a></li>
         </ul>
+        {% else %}
+        ><a data-toggle="tab" id="aors-tab" href="#aors">{{ lang._('AORs') }}</a>
+        {% endif %}
     </li>
 
-    <li role="presentation" class="dropdown">
+    <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}endpoints-introduction{% else %}endpoints-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Endpoints') }}</b></a>
+        <a data-toggle="tab" onclick="$('#endpoints-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Endpoints') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            {% if showIntro|default('0')=='1' %}
             <li><a data-toggle="tab" id="endpoints-introduction" href="#subtab_sbc-endpoints-introduction">{{ lang._('Introduction') }}</a></li>
-            {% endif %}
             <li><a data-toggle="tab" id="endpoints-tab" href="#endpoints">{{ lang._('Endpoints') }}</a></li>
         </ul>
+        {% else %}
+        ><a data-toggle="tab" id="endpoints-tab" href="#endpoints">{{ lang._('Endpoints') }}</a>
+        {% endif %}
     </li>
 
-    <li role="presentation" class="dropdown">
+    <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}authentications-introduction{% else %}authentications-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Authentications') }}</b></a>
+        <a data-toggle="tab" onclick="$('#authentications-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Authentications') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            {% if showIntro|default('0')=='1' %}
             <li><a data-toggle="tab" id="authentications-introduction" href="#subtab_sbc-authentications-introduction">{{ lang._('Introduction') }}</a></li>
-            {% endif %}
             <li><a data-toggle="tab" id="authentications-tab" href="#authentications">{{ lang._('Authentications') }}</a></li>
         </ul>
+        {% else %}
+        ><a data-toggle="tab" id="authentications-tab" href="#authentications">{{ lang._('Authentications') }}</a>
+        {% endif %}
     </li>
 
-    <li role="presentation" class="dropdown">
+    <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}registrations-introduction{% else %}registrations-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Registrations') }}</b></a>
+        <a data-toggle="tab" onclick="$('#registrations-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Registrations') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            {% if showIntro|default('0')=='1' %}
             <li><a data-toggle="tab" id="registrations-introduction" href="#subtab_sbc-registrations-introduction">{{ lang._('Introduction') }}</a></li>
-            {% endif %}
             <li><a data-toggle="tab" id="registrations-tab" href="#registrations">{{ lang._('Registrations') }}</a></li>
         </ul>
+        {% else %}
+        ><a data-toggle="tab" id="registrations-tab" href="#registrations">{{ lang._('Registrations') }}</a>
+        {% endif %}
     </li>
     
-    <li role="presentation" class="dropdown">
+    <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}codecs-introduction{% else %}codecs-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Codecs') }}</b></a>
+        <a data-toggle="tab" onclick="$('#codecs-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Codecs') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            {% if showIntro|default('0')=='1' %}
             <li><a data-toggle="tab" id="codecs-introduction" href="#subtab_sbc-codecs-introduction">{{ lang._('Introduction') }}</a></li>
-            {% endif %}
             <li><a data-toggle="tab" id="codecs-tab" href="#codecs">{{ lang._('Codecs') }}</a></li>
         </ul>
+        {% else %}
+        ><a data-toggle="tab" id="codecs-tab" href="#codecs">{{ lang._('Codecs') }}</a>
+        {% endif %}
     </li>
 
     {# add automatically generated tabs #}
@@ -566,33 +578,36 @@ POSSIBILITY OF SUCH DAMAGE.
         <!-- tab page "transports" -->
         <table id="grid-transports" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogTransport">
             <thead>
-            <tr>
-                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
-                <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                <th data-column-id="protocol" data-type="string" data-visible="true">{{ lang._('Protocol') }}</th>
-                <th data-column-id="bindAddress" data-type="string" data-identifier="true" data-visible="true">{{ lang._('IP Address') }}</th>
-                <th data-column-id="bindPort" data-type="string" data-identifier="true" data-visible="true">{{ lang._('Port') }}</th>
-                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-            </tr>
+                <tr>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                    <th data-column-id="protocol" data-type="string" data-visible="true">{{ lang._('Protocol') }}</th>
+                    <th data-column-id="bindAddress" data-type="string" data-identifier="true" data-visible="true">{{ lang._('IP Address') }}</th>
+                    <th data-column-id="bindPort" data-type="string" data-identifier="true" data-visible="true">{{ lang._('Port') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
-            <tr>
-                <td></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                </td>
-            </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    </td>
+                </tr>
             </tfoot>
         </table>
         <!-- apply button -->
         <div class="col-md-12">
             <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-transports" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+            <button class="btn btn-primary" id="reconfigureAct-transports" type="button">
+                <b>{{ lang._('Apply') }}</b>
+                <i id="reconfigureAct_progress" class=""></i>
+            </button>
             <!-- button class="btn btn-primary" id="configtestAct-transports" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button -->
             <br/>
             <br/>
@@ -603,33 +618,36 @@ POSSIBILITY OF SUCH DAMAGE.
         <!-- tab page "aors" -->
         <table id="grid-aors" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAoR">
             <thead>
-            <tr>
-                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                <th data-column-id="contacts" data-type="string" data-identifier="true">{{ lang._('Static Contacts') }}</th>
-                <th data-column-id="maxContacts" data-type="string" data-identifier="true">{{ lang._('Max Contacts') }}</th>
-                <th data-column-id="outboundProxy" data-type="string" data-visible="false">{{ lang._('Outbound Proxy') }}</th>
-                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-             </tr>
+                <tr>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                    <th data-column-id="contacts" data-type="string" data-identifier="true">{{ lang._('Static Contacts') }}</th>
+                    <th data-column-id="maxContacts" data-type="string" data-identifier="true">{{ lang._('Max Contacts') }}</th>
+                    <th data-column-id="outboundProxy" data-type="string" data-visible="false">{{ lang._('Outbound Proxy') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                 </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
-            <tr>
-                <td></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                </td>
-            </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    </td>
+                </tr>
             </tfoot>
         </table>
         <!-- apply button -->
         <div class="col-md-12">
             <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-aors" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+            <button class="btn btn-primary" id="reconfigureAct-aors" type="button">
+                <b>{{ lang._('Apply') }}</b>
+                <i id="reconfigureAct_progress" class=""></i>
+            </button>
             <!-- button class="btn btn-primary" id="configtestAct-aors" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button -->
             <br/>
             <br/>
@@ -640,30 +658,33 @@ POSSIBILITY OF SUCH DAMAGE.
         <!-- tab page "endpoints" -->
         <table id="grid-endpoints" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogEndpoint">
             <thead>
-            <tr>
-                <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
-                <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
-            </tr>
+                <tr>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
             </thead>
             <tbody>
             </tbody>
             <tfoot>
-            <tr>
-                <td></td>
-                <td>
-                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
-                </td>
-            </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    </td>
+                </tr>
             </tfoot>
         </table>
         <!-- apply button -->
         <div class="col-md-12">
             <hr/>
-            <button class="btn btn-primary" id="reconfigureAct-endpoints" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button>
+            <button class="btn btn-primary" id="reconfigureAct-endpoints" type="button">
+                <b>{{ lang._('Apply') }}</b>
+                <i id="reconfigureAct_progress" class=""></i>
+            </button>
             <!-- button class="btn btn-primary" id="configtestAct-endpoints" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button -->
             <br/>
             <br/>
