@@ -31,7 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
     $( document ).ready(function() {
 
-        var data_get_map = {'frm_sbc':"/api/sbc/settings/get"};
+        var data_get_map = {'frm_GeneralSettings':"/api/sbc/settings/get"};
 
         // load initial data
         mapDataToFormUI(data_get_map).done(function(){
@@ -220,15 +220,17 @@ POSSIBILITY OF SUCH DAMAGE.
                 $('[id*="reconfigureAct_progress"]').each(function(){
                     $(this).addClass("fa fa-spinner fa-pulse");
                 });
-                ajaxCall(url="/api/sbc/service/reconfigure", sendData={}, callback=function(data,status) {
-                    if (status != "success" || data['status'] != 'ok') {
-                        BootstrapDialog.show({
-                            type: BootstrapDialog.TYPE_WARNING,
-                            title: "{{ lang._('Error reconfiguring HAProxy') }}",
-                            message: data['status'],
-                            draggable: true
-                        });
-                    }
+                saveFormToEndpoint("/api/sbc/settings/set", 'frm_GeneralSettings', function() {
+                    ajaxCall(url="/api/sbc/service/reconfigure", sendData={}, callback=function(data,status) {
+                        if (status != "success" || data['status'] != 'ok') {
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_WARNING,
+                                title: "{{ lang._('Error reconfiguring HAProxy') }}",
+                                message: data['status'],
+                                draggable: true
+                            });
+                        }
+                    });
                     // when done, disable progress animation
                     $('[id*="reconfigureAct_progress"]').each(function(){
                         $(this).removeClass("fa fa-spinner fa-pulse");
@@ -333,6 +335,20 @@ POSSIBILITY OF SUCH DAMAGE.
         </a>
     </li>
     {% endif %}
+
+    <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" onclick="$('#settings-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('SBC Settings') }}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a data-toggle="tab" id="settings-introduction" href="#subtab_sbc-settings-introduction">{{ lang._('Introduction') }}</a></li>
+            <li><a data-toggle="tab" id="settings-tab" href="#settings">{{ lang._('Settings') }}</a></li>
+        </ul>
+        {% else %}
+        ><a data-toggle="tab" id="settings-tab" href="#settings">{{ lang._('Settings') }}</a>
+        {% endif %}
+    </li>
 
     <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
@@ -478,6 +494,18 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 
+    <div id="subtab_sbc-settings-introduction" class="tab-pane fade">
+        <div class="col-md-12">
+            <h1>{{ lang._('Settings') }}</h1>
+            <p>{{ lang._('The SBC needs to know what protocol (TCP or UDP) and bind address an endpoint will communicate.') }}</p>
+            <ul>
+              <li>{{ lang._('%sFQDN or IP:%s The IP address or fully-qualified domain name that should be used when communicating with your server.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('%sPort:%s The TCP or UDP port that should be used. If unset, the same port the client connected to will be used.') | format('<b>', '</b>') }}</li>
+            </ul>
+            <br/>
+        </div>
+    </div>
+
     <div id="subtab_sbc-transports-introduction" class="tab-pane fade">
         <div class="col-md-12">
             <h1>{{ lang._('Transports') }}</h1>
@@ -574,6 +602,16 @@ POSSIBILITY OF SUCH DAMAGE.
         {% endif %}
     {% endfor %}
 
+
+    <div id="settings" class="tab-pane fade in">
+        {{ partial("layout_partials/base_form",['fields':formGeneralSettings,'id':'frm_GeneralSettings'])}}
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct" type="button"><b>{{ lang._('Apply') }}</b> <i id="reconfigureAct_progress" class=""></i></button>
+            <br/>
+            <br/>
+        </div>
+    </div>
     <div id="transports" class="tab-pane fade">
         <!-- tab page "transports" -->
         <table id="grid-transports" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogTransport">
@@ -801,4 +839,4 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogAuthentication,'id':'DialogAuthentication','label':lang._('Edit Authentication')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogRegistration,'id':'DialogRegistration','label':lang._('Edit Registration')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogCodec,'id':'DialogCodec','label':lang._('Edit Codec')])}}
-{{ partial("layout_partials/base_form",['fields':formGeneralSettings,'id':'frm_GeneralSettings'])}}
+

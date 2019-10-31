@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>sbc.general.enabled</id>
+        <label>Enable SBC</label>
+        <type>checkbox</type>
+        <help>Enable or disable the SBC service.</help>
+    </field>
+    <field>
+        <id>sbc.general.gracefulStop</id>
+        <label>Graceful stop</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable SBC's graceful stop mode. In this mode the SBC will continue to process existing connections until they close. Note that this may severely slow down SBC's shutdown, depending on the configured timeout values. If graceful stop mode is not enabled, theSBC will use the hard stop mode where it immediately quits and all established connections are closed. Hard stop mode is recommended.]]></help>
+    </field>
+    <field>
+        <id>sbc.general.seamlessReload</id>
+        <label>Seamless reload</label>
+        <type>checkbox</type>
+        <help><![CDATA[SBC will handle service restarts in a way that no connections are dropped. This is the best restart mode, because it has no impact on user experience. That being said, there might be edge cases where seamless reloads lead to unexpected behaviour.]]></help>
+    </field>
+    <field>
+        <id>sbc.general.showIntro</id>
+        <label>Show introduction pages</label>
+        <type>checkbox</type>
+        <help><![CDATA[Uncheck to hide all additional introduction pages. Requires a manual page reload for the change to take effect.]]></help>
+    </field>
+</form>

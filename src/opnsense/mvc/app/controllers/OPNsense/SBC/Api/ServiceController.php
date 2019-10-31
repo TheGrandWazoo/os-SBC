@@ -40,7 +40,7 @@ class ServiceController extends ApiMutableServiceControllerBase
 {
     protected static $internalServiceClass = '\OPNsense\SBC\SBC';
     protected static $internalServiceTemplate = 'OPNsense/SBC';
-    protected static $internalServiceEnabled = 'enabled';
+    protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'sbc';
     
     public function reconfigureAction()

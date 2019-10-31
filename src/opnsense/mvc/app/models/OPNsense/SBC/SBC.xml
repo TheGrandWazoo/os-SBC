@@ -11,7 +11,7 @@
                 <Required>Y</Required>
             </enabled>
             <showIntro type="BooleanField">
-                <default>0</default>
+                <default>1</default>
                 <Required>N</Required>
             </showIntro>
         </general>
