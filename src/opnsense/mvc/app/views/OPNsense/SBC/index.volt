@@ -222,10 +222,10 @@ POSSIBILITY OF SUCH DAMAGE.
                 });
                 saveFormToEndpoint("/api/sbc/settings/set", 'frm_GeneralSettings', function() {
                     ajaxCall(url="/api/sbc/service/reconfigure", sendData={}, callback=function(data,status) {
-                        if (status != "success" || data['status'] != 'ok') {
+                        if (status != "success" || data['status'] != 'OK') {
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_WARNING,
-                                title: "{{ lang._('Error reconfiguring HAProxy') }}",
+                                title: "{{ lang._('Error reconfiguring SBC') }}",
                                 message: data['status'],
                                 draggable: true
                             });
@@ -257,22 +257,22 @@ POSSIBILITY OF SUCH DAMAGE.
                 if (data['result'].indexOf('ALERT') > -1) {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_DANGER,
-                        title: "{{ lang._('HAProxy config contains critical errors') }}",
+                        title: "{{ lang._('SBC config contains critical errors') }}",
                         message: data['result'],
                         draggable: true
                     });
                 } else if (data['result'].indexOf('WARNING') > -1) {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('HAProxy config contains minor errors') }}",
+                        title: "{{ lang._('SBC config contains minor errors') }}",
                         message: data['result'],
                         draggable: true
                     });
                 } else {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('HAProxy config test result') }}",
-                        message: "{{ lang._('Your HAProxy config contains no errors.') }}",
+                        title: "{{ lang._('SBC config test result') }}",
+                        message: "{{ lang._('Your SBC config contains no errors.') }}",
                         draggable: true
                     });
                 }
@@ -523,8 +523,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <h1>{{ lang._('Address of Record') }}</h1>
             <p>{{ lang._("SBC requires AORs so endpoints can be contacted") }}</p>
             <ul>
-              <li>{{ lang._('%sBackend Pools:%s The HAProxy backend. Group the %spreviously added servers%s to build a server farm. All servers in a group usually deliver the same content. The Backend Pool cares for health monitoring and load distribution. A Backend Pool must also be configured if you only have a single server. The same Backend Pool may be used for multiple Public Services.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
-              <li>{{ lang._('%sPublic Services:%s The HAProxy frontend. The Public Service listens for client connections, optionally applies rules and forwards client request data to the selected Backend Pool for load balancing or proxying. Every Public Service needs to be connected to a %spreviously created Backend Pool%s.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._('%sBackend Pools:%s The SBC backend. Group the %spreviously added servers%s to build a server farm. All servers in a group usually deliver the same content. The Backend Pool cares for health monitoring and load distribution. A Backend Pool must also be configured if you only have a single server. The same Backend Pool may be used for multiple Public Services.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._('%sPublic Services:%s The SBC frontend. The Public Service listens for client connections, optionally applies rules and forwards client request data to the selected Backend Pool for load balancing or proxying. Every Public Service needs to be connected to a %spreviously created Backend Pool%s.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
             <br/>
         </div>
@@ -535,8 +535,8 @@ POSSIBILITY OF SUCH DAMAGE.
             <h1>{{ lang._('Endpoints') }}</h1>
             <p>{{ lang._("An Endpoints is a profile of a SIP phone or SIP service and provides numerous SIP functionality options device. You can not contact an endpoint without one or more AoR entry(ies)") }}</p>
             <ul>
-              <li>{{ lang._('%sHealth Monitors:%s The HAProxy "health checks". Health Monitors are used by %sBackend Pools%s to determine if a server is still able to respond to client requests. If a server fails a health check it will automatically be removed from a Backend Pool and healthy servers are automatically re-added.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
-              <li>{{ lang._('%sConditions:%s HAProxy is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('%sHealth Monitors:%s The SBC "health checks". Health Monitors are used by %sBackend Pools%s to determine if a server is still able to respond to client requests. If a server fails a health check it will automatically be removed from a Backend Pool and healthy servers are automatically re-added.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
+              <li>{{ lang._('%sConditions:%s SBC is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
             <br/>
@@ -546,13 +546,13 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="subtab_sbc-authentications-introduction" class="tab-pane fade">
         <div class="col-md-12">
             <h1>{{ lang._('Authentications') }}</h1>
-            <p>{{ lang._("Optionally HAProxy manages an internal list of users and groups, which can be used for HTTP Basic Authentication as well as access to HAProxy's internal statistic pages.") }}</p>
+            <p>{{ lang._("Optionally SBC manages an internal list of users and groups, which can be used for HTTP Basic Authentication as well as access to SBC's internal statistic pages.") }}</p>
             <ul>
               <li>{{ lang._('%sUser:%s A username/password combination. Both secure (encrypted) and insecure (unencrypted) passwords can be used.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sGroup:%s A optional list containing one or more users. Groups usually make it easier to manage permissions for a large number of users') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Note that users and groups must be selected from the Backend Pool or Public Service configuration in order to be used for authentication. In addition to this users and groups may also be used in Rules/Conditions.') }}</p>
-            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#3.4" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on SBC's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#3.4" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -560,13 +560,13 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="subtab_sbc-registrations-introduction" class="tab-pane fade">
         <div class="col-md-12">
             <h1>{{ lang._('Registrations') }}</h1>
-            <p>{{ lang._("Optionally HAProxy manages an internal list of users and groups, which can be used for HTTP Basic Authentication as well as access to HAProxy's internal statistic pages.") }}</p>
+            <p>{{ lang._("Optionally SBC manages an internal list of users and groups, which can be used for HTTP Basic Authentication as well as access to SBC's internal statistic pages.") }}</p>
             <ul>
               <li>{{ lang._('%sUser:%s A username/password combination. Both secure (encrypted) and insecure (unencrypted) passwords can be used.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sGroup:%s A optional list containing one or more users. Groups usually make it easier to manage permissions for a large number of users') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Note that users and groups must be selected from the Backend Pool or Public Service configuration in order to be used for authentication. In addition to this users and groups may also be used in Rules/Conditions.') }}</p>
-            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#3.4" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on SBC's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#3.4" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>
@@ -574,13 +574,13 @@ POSSIBILITY OF SUCH DAMAGE.
     <div id="subtab_sbc-codecs-introduction" class="tab-pane fade">
         <div class="col-md-12">
             <h1>{{ lang._('Codecs') }}</h1>
-            <p>{{ lang._("Optionally HAProxy manages an internal list of users and groups, which can be used for HTTP Basic Authentication as well as access to HAProxy's internal statistic pages.") }}</p>
+            <p>{{ lang._("Optionally SBC manages an internal list of users and groups, which can be used for HTTP Basic Authentication as well as access to SBC's internal statistic pages.") }}</p>
             <ul>
               <li>{{ lang._('%sUser:%s A username/password combination. Both secure (encrypted) and insecure (unencrypted) passwords can be used.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sGroup:%s A optional list containing one or more users. Groups usually make it easier to manage permissions for a large number of users') | format('<b>', '</b>') }}</li>
             </ul>
             <p>{{ lang._('Note that users and groups must be selected from the Backend Pool or Public Service configuration in order to be used for authentication. In addition to this users and groups may also be used in Rules/Conditions.') }}</p>
-            <p>{{ lang._("For more information on HAProxy's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#3.4" target="_blank">', '</a>') }}</p>
+            <p>{{ lang._("For more information on SBC's %suser/group management%s see the %sofficial documentation%s.") | format('<b>', '</b>', '<a href="http://cbonte.github.io/haproxy-dconv/1.8/configuration.html#3.4" target="_blank">', '</a>') }}</p>
             <br/>
         </div>
     </div>

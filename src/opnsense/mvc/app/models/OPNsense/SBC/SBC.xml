@@ -1,7 +1,9 @@
 <model>
     <mount>//OPNsense/SBC</mount>
     <version>0.0.1</version>
-    <description>the OPNsense "Session Border Controller" plugin</description>
+    <description>
+        OPNsense SBC (Session Border Controller)
+    </description>
     <items>
         <!-- container -->
         <general>
@@ -15,60 +17,60 @@
                 <Required>N</Required>
             </showIntro>
         </general>
-    	<transports>
-			<transport type="ArrayField">
-				<enabled type="BooleanField">
-					<Default>1</Default>
-					<Required>Y</Required>
-				</enabled>
-				<name type="TextField">
-					<Required>Y</Required>
-					<Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
-					<ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
-				</name>
-				<description type="TextField">
-					<Required>N</Required>
-					<Mask>/^.{1,255}$/u</Mask>
-					<ValidationMessage>Description is a string between 1 and 255 characters.</ValidationMessage>
-				</description>
-				<bindAddress type="NetworkField">
-					<Required>Y</Required>
-					<Default>0.0.0.0</Default>
-					<AddressFamily>ipv4</AddressFamily>
-					<ValidationMessage>Please specify an IPv4 address defined within OPNsense (Interface or Virtual IP)</ValidationMessage>
-				</bindAddress>
-				<bindPort type="PortField">
-					<Required>N</Required>
-				</bindPort>
-				<protocol type="OptionField">
-					<Required>Y</Required>
-					<Default>udp</Default>
-					<OptionValues>
-						<udp>UDP - User Datagram Protocol</udp>
-						<tcp>TCP - Transmission Control Protocol</tcp>
-						<tls>TLS - Transport Layer Security</tls>
-						<ws>WS - WebSocket</ws>
-						<wss>WSS - Secured WebSocket</wss>
-					</OptionValues>
-				</protocol>
-				<localNetwork type="NetworkField">
-					<Required>N</Required>
-				</localNetwork>
-				<externalMediaAddress type="NetworkField">
-					<Required>N</Required>
-				</externalMediaAddress>
-				<externalSignalingAddress type="NetworkField">
-					<Required>N</Required>
-				</externalSignalingAddress>
-				<externalSignalingPort type="PortField">
-					<Required>N</Required>
-				</externalSignalingPort>
-				<additionalOptions type="TextField">
+        <transports>
+            <transport type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
+                    <ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Description is a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <bindAddress type="NetworkField">
+                    <Required>Y</Required>
+                    <Default>0.0.0.0</Default>
+                    <AddressFamily>ipv4</AddressFamily>
+                    <ValidationMessage>Please specify an IPv4 address defined within OPNsense (Interface or Virtual IP)</ValidationMessage>
+                </bindAddress>
+                <bindPort type="PortField">
+                    <Required>N</Required>
+                </bindPort>
+                <protocol type="OptionField">
+                    <Required>Y</Required>
+                    <Default>udp</Default>
+                    <OptionValues>
+                        <udp>UDP - User Datagram Protocol</udp>
+                        <tcp>TCP - Transmission Control Protocol</tcp>
+                        <tls>TLS - Transport Layer Security</tls>
+                        <ws>WS - WebSocket</ws>
+                        <wss>WSS - Secured WebSocket</wss>
+                    </OptionValues>
+                </protocol>
+                <localNetwork type="NetworkField">
+                    <Required>N</Required>
+                </localNetwork>
+                <externalMediaAddress type="NetworkField">
+                    <Required>N</Required>
+                </externalMediaAddress>
+                <externalSignalingAddress type="NetworkField">
+                    <Required>N</Required>
+                </externalSignalingAddress>
+                <externalSignalingPort type="PortField">
+                    <Required>N</Required>
+                </externalSignalingPort>
+                <additionalOptions type="TextField">
                     <Required>N</Required>
                 </additionalOptions>
-			</transport>
-		</transports>
-    	<aors>
+            </transport>
+        </transports>
+        <aors>
 			<aor type="ArrayField">
 				<enabled type="BooleanField">
 					<Default>1</Default>

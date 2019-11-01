@@ -30,6 +30,7 @@ namespace OPNsense\SBC\Api;
 
 use \OPNsense\Base\ApiMutableServiceControllerBase;
 use \OPNsense\Core\Backend;
+use \OPNsense\Core\Config;
 use \OPNsense\SBC\SBC;
 
 /**
@@ -45,13 +46,32 @@ class ServiceController extends ApiMutableServiceControllerBase
     
     public function reconfigureAction()
     {
+        $status = "failed";
         if ($this->request->isPost()) {
+            $this->sessionClose();
+            $mdlSBC = new SBC;
+            $runStatus = $this->statusAction();
+
+            if ($runStatus['status'] == "running" && (string)$mdlSBC->general->enabled == 0) {
+                $this->stopAction();
+            }
+
             $backend = new Backend();
             $bckresult = trim($backend->configdRun("template reload OPNsense/SBC"));
             if ($bckresult == "OK") {
-                return array("status" => "ok");
+                if ((string)$mdlSBC->general->enabled == 1) {
+                    if ($runStatus['status'] == 'running') {
+                        $status = $this->restartAction()['response'];
+                    } else {
+                        $status = $this->startAction()['response'];
+                    }
+                } else {
+                    $status = "OK";
+                }
+            } else {
+                $status = "error generating sbc template (".$bckresult.")";
             }
         }
-        return array("status" => "failed");
+        return array("status" => $status);
     }
 }
