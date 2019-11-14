@@ -359,7 +359,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <li><a data-toggle="tab" id="settings-tab" href="#settings">{{ lang._('Settings') }}</a></li>
         </ul>
         {% else %}
-        ><a data-toggle="tab" id="settings-tab" href="#settings" class="active">{{ lang._('Settings') }}</a>
+         class="active"><a data-toggle="tab" id="settings-tab" href="#settings">{{ lang._('Settings') }}</a>
         {% endif %}
     </li>
 
@@ -451,7 +451,7 @@ POSSIBILITY OF SUCH DAMAGE.
 </ul>
 
 <div class="content-box tab-content">
-    <div id="introduction" class="tab-pane fade in">
+    <div id="introduction" class="tab-pane fade in{% if showIntro|default('0')=='1' %} active{% endif %}">
         <div class="col-md-12">
             <h1>{{ lang._('Quick Start Guide') }}</h1>
             <p>{{ lang._('Welcome to the SBC plugin! This plugin is designed to offer features and flexibility of an SBC using the Asterisk framework package.')}}</p>
@@ -559,7 +559,7 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 
-    <div id="settings" class="tab-pane fade in">
+    <div id="settings" class="tab-pane fade in{% if showIntro|default('0')=='0' %} active{% endif %}">
         {{ partial("layout_partials/base_form",['fields':formGeneralSettings,'id':'frm_GeneralSettings'])}}
         <div class="col-md-12">
             <hr/>
