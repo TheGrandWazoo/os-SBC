@@ -33,94 +33,115 @@ POSSIBILITY OF SUCH DAMAGE.
 
         var data_get_map = {'frm_GeneralSettings':"/api/sbc/settings/get"};
 
-        // load initial data
-        mapDataToFormUI(data_get_map).done(function(){
-            formatTokenizersUI();
-            $('.selectpicker').selectpicker('refresh');
-            // request service status on load and update status box
-            ajaxCall(url="/api/sbc/service/status", sendData={}, callback=function(data,status) {
-                updateServiceStatusUI(data['status']);
+        /*
+         * Update service status
+         */
+        function updateStatus() {
+            updateServiceControlUI('sbc');
+        }
+
+        /*
+         * Load the general settings data
+         */
+        function loadGeneralSettings() {
+            mapDataToFormUI(data_get_map).done(function() {
+                formatTokenizersUI();
+                $('.selectpicker').selectpicker('refresh');                // request service status on load and update status box
+                ajaxCall(url="/api/sbc/service/status", sendData={}, callback=function(data,status) {
+                    updateServiceStatusUI(data['status']);
+                });
             });
-        });
+        }
+
+        /*
+         * save (general) settings and reconfigure
+         * @param callback_funct: callback function, receives result status true/false
+         */
+        function actionReconfigure(callback_function) {
+            var result_status = false;
+            saveFormToEndpoint("/api/sbc/settings/set", 'frm_GeneralSettings', function() {
+                ajaxCall(url="/api/sbc/service/reconfigure", sendData={}, callback=function(data,status) {
+                    if (status == "success" || data['status'].toLowerCase().trim() == "ok") {
+                        result_status = true;
+                    }
+                    callback_function(result_status);
+                });
+            });
+        }
 
         /***********************************************************************
          * link grid actions
          **********************************************************************/
-
-        $("#grid-transports").UIBootgrid(
-            {   search:'/api/sbc/settings/searchTransports',
-                get:'/api/sbc/settings/getTransport/',
-                set:'/api/sbc/settings/setTransport/',
-                add:'/api/sbc/settings/addTransport/',
-                del:'/api/sbc/settings/delTransport/',
-                toggle:'/api/sbc/settings/toggleTransport/',
-                options: {
-                    rowCount:[10,25,50,100,500,1000]
-                }
+        loadGeneralSettings();
+        updateStatus();
+        $("#grid-transports").UIBootgrid({
+            search:'/api/sbc/settings/searchTransports',
+            get:'/api/sbc/settings/getTransport/',
+            set:'/api/sbc/settings/setTransport/',
+            add:'/api/sbc/settings/addTransport/',
+            del:'/api/sbc/settings/delTransport/',
+            toggle:'/api/sbc/settings/toggleTransport/',
+            options: {
+                rowCount:[10,25,50,100,500,1000]
             }
-        );
+        });
 
-        $("#grid-aors").UIBootgrid(
-            {   search:'/api/sbc/settings/searchAoRs',
-                get:'/api/sbc/settings/getAoR/',
-                set:'/api/sbc/settings/setAoR/',
-                add:'/api/sbc/settings/addAoR/',
-                del:'/api/sbc/settings/delAoR/',
-                toggle:'/api/sbc/settings/toggleAoR/',
-                options: {
-                    rowCount:[10,25,50,100,500,1000]
-                }
+        $("#grid-aors").UIBootgrid({
+            search:'/api/sbc/settings/searchAoRs',
+            get:'/api/sbc/settings/getAoR/',
+            set:'/api/sbc/settings/setAoR/',
+            add:'/api/sbc/settings/addAoR/',
+            del:'/api/sbc/settings/delAoR/',
+            toggle:'/api/sbc/settings/toggleAoR/',
+            options: {
+                rowCount:[10,25,50,100,500,1000]
             }
-        );
+        });
 
-        $("#grid-endpoints").UIBootgrid(
-            {   search:'/api/sbc/settings/searchEndpoints',
-                get:'/api/sbc/settings/getEndpoint/',
-                set:'/api/sbc/settings/setEndpoint/',
-                add:'/api/sbc/settings/addEndpoint/',
-                del:'/api/sbc/settings/delEndpoint/',
-                toggle:'/api/sbc/settings/toggleEndpoint/',
-                options: {
-                    rowCount:[10,25,50,100,500,1000]
-                }
+        $("#grid-endpoints").UIBootgrid({
+            search:'/api/sbc/settings/searchEndpoints',
+            get:'/api/sbc/settings/getEndpoint/',
+            set:'/api/sbc/settings/setEndpoint/',
+            add:'/api/sbc/settings/addEndpoint/',
+            del:'/api/sbc/settings/delEndpoint/',
+            toggle:'/api/sbc/settings/toggleEndpoint/',
+            options: {
+                rowCount:[10,25,50,100,500,1000]
             }
-        );
+        });
 
-        $("#grid-authentications").UIBootgrid(
-            {   search:'/api/sbc/settings/searchAuthentications',
-                get:'/api/sbc/settings/getAuthentication/',
-                set:'/api/sbc/settings/setAuthentication/',
-                add:'/api/sbc/settings/addAuthentication/',
-                del:'/api/sbc/settings/delAuthentication/',
-                options: {
-                    rowCount:[10,25,50,100,500,1000]
-                }
+        $("#grid-authentications").UIBootgrid({
+            search:'/api/sbc/settings/searchAuthentications',
+            get:'/api/sbc/settings/getAuthentication/',
+            set:'/api/sbc/settings/setAuthentication/',
+            add:'/api/sbc/settings/addAuthentication/',
+            del:'/api/sbc/settings/delAuthentication/',
+            options: {
+                rowCount:[10,25,50,100,500,1000]
             }
-        );
+        });
 
-        $("#grid-registrations").UIBootgrid(
-            {   search:'/api/sbc/settings/searchRegistrations',
-                get:'/api/sbc/settings/getRegistration/',
-                set:'/api/sbc/settings/setRegistration/',
-                add:'/api/sbc/settings/addRegistration/',
-                del:'/api/sbc/settings/delRegistration/',
-                options: {
-                    rowCount:[10,25,50,100,500,1000]
-                }
+        $("#grid-registrations").UIBootgrid({
+            search:'/api/sbc/settings/searchRegistrations',
+            get:'/api/sbc/settings/getRegistration/',
+            set:'/api/sbc/settings/setRegistration/',
+            add:'/api/sbc/settings/addRegistration/',
+            del:'/api/sbc/settings/delRegistration/',
+            options: {
+                rowCount:[10,25,50,100,500,1000]
             }
-        );
+        });
 
-        $("#grid-codecs").UIBootgrid(
-            {   search:'/api/sbc/settings/searchCodecs',
-                get:'/api/sbc/settings/getCodec/',
-                set:'/api/sbc/settings/setCodec/',
-                add:'/api/sbc/settings/addCodec/',
-                del:'/api/sbc/settings/delCodec/',
-                options: {
-                    rowCount:[10,25,50,100,500,1000]
-                }
+        $("#grid-codecs").UIBootgrid({
+            search:'/api/sbc/settings/searchCodecs',
+            get:'/api/sbc/settings/getCodec/',
+            set:'/api/sbc/settings/setCodec/',
+            add:'/api/sbc/settings/addCodec/',
+            del:'/api/sbc/settings/delCodec/',
+            options: {
+                rowCount:[10,25,50,100,500,1000]
             }
-        );
+        });
 /*
 		$("#endpoint\\.disallow").change(function() {
 			var $element = $(this).find("option:selected");
@@ -212,30 +233,22 @@ POSSIBILITY OF SUCH DAMAGE.
         /***********************************************************************
          * Commands
          **********************************************************************/
-
         // Reconfigure sbc - activate changes
-        $('[id*="reconfigureAct"]').each(function(){
-            $(this).click(function(){
-                // set progress animation
-                $('[id*="reconfigureAct_progress"]').each(function(){
-                    $(this).addClass("fa fa-spinner fa-pulse");
-                });
-                saveFormToEndpoint("/api/sbc/settings/set", 'frm_GeneralSettings', function() {
-                    ajaxCall(url="/api/sbc/service/reconfigure", sendData={}, callback=function(data,status) {
-                        if (status != "success" || data['status'] != 'OK') {
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_WARNING,
-                                title: "{{ lang._('Error reconfiguring SBC') }}",
-                                message: data['status'],
-                                draggable: true
-                            });
-                        }
+        $('[id*="reconfigureAct"]').click(function(){
+            // set progress animation
+            $('[id*="reconfigureAct_progress"]').addClass("fa fa-spinner fa-pulse");
+            actionReconfigure(function(status) {
+                // when done, disable progress animation
+                $('[id*="reconfigureAct_progress"]').removeClass("fa fa-spinner fa-pulse");
+                updateStatus();
+                if (!status) {
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_WARNING,
+                        title: "{{ lang._('Error reconfiguring SBC') }}",
+                        message: data['status'],
+                        draggable: true
                     });
-                    // when done, disable progress animation
-                    $('[id*="reconfigureAct_progress"]').each(function(){
-                        $(this).removeClass("fa fa-spinner fa-pulse");
-                    });
-                });
+                }
             });
         });
 
@@ -346,7 +359,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <li><a data-toggle="tab" id="settings-tab" href="#settings">{{ lang._('Settings') }}</a></li>
         </ul>
         {% else %}
-        ><a data-toggle="tab" id="settings-tab" href="#settings">{{ lang._('Settings') }}</a>
+        ><a data-toggle="tab" id="settings-tab" href="#settings" class="active">{{ lang._('Settings') }}</a>
         {% endif %}
     </li>
 
@@ -435,49 +448,10 @@ POSSIBILITY OF SUCH DAMAGE.
     </li>
 
     {# add automatically generated tabs #}
-    {% for tab in mainForm['tabs']|default([]) %}
-        {% if tab['subtabs']|default(false) %}
-        {# Tab with dropdown #}
-        <li role="presentation" class="dropdown">
-            <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
-                <b><span class="caret"></span></b>
-            </a>
-            <a data-toggle="tab" onclick="$('#subtab_item_{{tab['subtabs'][0][0]}}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{tab[1]}}</b></a>
-            <ul class="dropdown-menu" role="menu">
-                {% for subtab in tab['subtabs']|default({})%}
-                <li><a data-toggle="tab" id="subtab_item_{{subtab[0]}}" href="#subtab_{{subtab[0]}}">{{subtab[1]}}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-        {% else %}
-        {# Standard Tab #}
-        <li>
-                <a data-toggle="tab" href="#tab_{{tab[0]}}">
-                    <b>{{tab[1]}}</b>
-                </a>
-        </li>
-        {% endif %}
-    {% endfor %}
-
-    <li role="presentation" class="dropdown">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
-            <b><span class="caret"></span></b>
-        </a>
-        <a data-toggle="tab" onclick="$('#{% if showIntro|default('0')=='1' %}advanced-introduction{% else %}errorfiles-tab{% endif %}').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Advanced') }}</b></a>
-        <ul class="dropdown-menu" role="menu">
-            {% if showIntro|default('0')=='1' %}
-            <li><a data-toggle="tab" id="advanced-introduction" href="#subtab_sbc-advanced-introduction">{{ lang._('Introduction') }}</a></li>
-            {% endif %}
-            <li><a data-toggle="tab" id="errorfiles-tab" href="#errorfiles">{{ lang._('Error Messages') }}</a></li>
-            <li><a data-toggle="tab" href="#luas">{{ lang._('Lua Scripts') }}</a></li>
-            <li><a data-toggle="tab" href="#mapfiles">{{ lang._('Map Files') }}</a></li>
-            <li><a data-toggle="tab" href="#cpus">{{ lang._('CPU Affinity Rules') }}</a></li>
-        </ul>
-    </li>
 </ul>
 
 <div class="content-box tab-content">
-    <div id="introduction" class="tab-pane fade in active">
+    <div id="introduction" class="tab-pane fade in">
         <div class="col-md-12">
             <h1>{{ lang._('Quick Start Guide') }}</h1>
             <p>{{ lang._('Welcome to the SBC plugin! This plugin is designed to offer features and flexibility of an SBC using the Asterisk framework package.')}}</p>
@@ -584,24 +558,6 @@ POSSIBILITY OF SUCH DAMAGE.
             <br/>
         </div>
     </div>
-
-    {# add automatically generated tabs #}
-    {% for tab in mainForm['tabs']|default([]) %}
-        {% if tab['subtabs']|default(false) %}
-            {# Tab with dropdown #}
-            {% for subtab in tab['subtabs']|default({})%}
-                <div id="subtab_{{subtab[0]}}" class="tab-pane fade{% if mainForm['activetab']|default("") == subtab[0] %} in active {% endif %}">
-                    {{ partial("layout_partials/base_form",['fields':subtab[2],'id':'frm_'~subtab[0],'data_title':subtab[1],'apply_btn_id':'save_'~subtab[0]])}}
-                </div>
-            {% endfor %}
-        {% endif %}
-        {% if tab['subtabs']|default(false)==false %}
-            <div id="tab_{{tab[0]}}" class="tab-pane fade{% if mainForm['activetab']|default("") == tab[0] %} in active {% endif %}">
-                {{ partial("layout_partials/base_form",['fields':tab[2],'id':'frm_'~tab[0],'apply_btn_id':'save_'~tab[0]])}}
-            </div>
-        {% endif %}
-    {% endfor %}
-
 
     <div id="settings" class="tab-pane fade in">
         {{ partial("layout_partials/base_form",['fields':formGeneralSettings,'id':'frm_GeneralSettings'])}}
