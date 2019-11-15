@@ -49,10 +49,7 @@ POSSIBILITY OF SUCH DAMAGE.
         function loadGeneralSettings() {
             mapDataToFormUI(data_get_map).done(function() {
                 formatTokenizersUI();
-                $('.selectpicker').selectpicker('refresh');                // request service status on load and update status box
-//                ajaxCall(url="/api/sbc/service/status", sendData={}, callback=function(data,status) {
-//                    updateStatus();
-//                });
+                $('.selectpicker').selectpicker('refresh');
             });
         }
 
