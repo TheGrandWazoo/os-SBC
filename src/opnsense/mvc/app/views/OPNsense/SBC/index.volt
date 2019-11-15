@@ -31,6 +31,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
     $( document ).ready(function() {
 
+        /*
+         * get the general settings
+         */
         var data_get_map = {'frm_GeneralSettings':"/api/sbc/settings/get"};
 
         /*
@@ -47,9 +50,9 @@ POSSIBILITY OF SUCH DAMAGE.
             mapDataToFormUI(data_get_map).done(function() {
                 formatTokenizersUI();
                 $('.selectpicker').selectpicker('refresh');                // request service status on load and update status box
-                ajaxCall(url="/api/sbc/service/status", sendData={}, callback=function(data,status) {
-                    updateStatus();
-                });
+//                ajaxCall(url="/api/sbc/service/status", sendData={}, callback=function(data,status) {
+//                    updateStatus();
+//                });
             });
         }
 
@@ -73,72 +76,82 @@ POSSIBILITY OF SUCH DAMAGE.
          * link grid actions
          **********************************************************************/
         loadGeneralSettings();
-        $("#grid-transports").UIBootgrid({
-            search:'/api/sbc/settings/searchTransports',
-            get:'/api/sbc/settings/getTransport/',
-            set:'/api/sbc/settings/setTransport/',
-            add:'/api/sbc/settings/addTransport/',
-            del:'/api/sbc/settings/delTransport/',
-            toggle:'/api/sbc/settings/toggleTransport/',
-            options: {
-                rowCount:[10,25,50,100,500,1000]
-            }
-        });
-
-        $("#grid-aors").UIBootgrid({
-            search:'/api/sbc/settings/searchAoRs',
-            get:'/api/sbc/settings/getAoR/',
-            set:'/api/sbc/settings/setAoR/',
-            add:'/api/sbc/settings/addAoR/',
-            del:'/api/sbc/settings/delAoR/',
-            toggle:'/api/sbc/settings/toggleAoR/',
-            options: {
-                rowCount:[10,25,50,100,500,1000]
-            }
-        });
-
-        $("#grid-endpoints").UIBootgrid({
-            search:'/api/sbc/settings/searchEndpoints',
-            get:'/api/sbc/settings/getEndpoint/',
-            set:'/api/sbc/settings/setEndpoint/',
-            add:'/api/sbc/settings/addEndpoint/',
-            del:'/api/sbc/settings/delEndpoint/',
-            toggle:'/api/sbc/settings/toggleEndpoint/',
-            options: {
-                rowCount:[10,25,50,100,500,1000]
-            }
-        });
-
-        $("#grid-authentications").UIBootgrid({
-            search:'/api/sbc/settings/searchAuthentications',
-            get:'/api/sbc/settings/getAuthentication/',
-            set:'/api/sbc/settings/setAuthentication/',
-            add:'/api/sbc/settings/addAuthentication/',
-            del:'/api/sbc/settings/delAuthentication/',
-            options: {
-                rowCount:[10,25,50,100,500,1000]
-            }
-        });
-
-        $("#grid-registrations").UIBootgrid({
-            search:'/api/sbc/settings/searchRegistrations',
-            get:'/api/sbc/settings/getRegistration/',
-            set:'/api/sbc/settings/setRegistration/',
-            add:'/api/sbc/settings/addRegistration/',
-            del:'/api/sbc/settings/delRegistration/',
-            options: {
-                rowCount:[10,25,50,100,500,1000]
-            }
-        });
-
-        $("#grid-codecs").UIBootgrid({
-            search:'/api/sbc/settings/searchCodecs',
-            get:'/api/sbc/settings/getCodec/',
-            set:'/api/sbc/settings/setCodec/',
-            add:'/api/sbc/settings/addCodec/',
-            del:'/api/sbc/settings/delCodec/',
-            options: {
-                rowCount:[10,25,50,100,500,1000]
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            if (e.target.id == 'transports-tab') {
+                $('#grid-transports').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
+                $("#grid-transports").UIBootgrid({
+                    search:'/api/sbc/settings/searchTransports',
+                    get:'/api/sbc/settings/getTransport/',
+                    set:'/api/sbc/settings/setTransport/',
+                    add:'/api/sbc/settings/addTransport/',
+                    del:'/api/sbc/settings/delTransport/',
+                    toggle:'/api/sbc/settings/toggleTransport/',
+                    options: {
+                        rowCount:[10,25,50,100,500,1000]
+                    }
+                });
+            } else if (e.target.id == 'aors-tab') {
+                $('#grid-aors').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
+                $("#grid-aors").UIBootgrid({
+                    search:'/api/sbc/settings/searchAoRs',
+                    get:'/api/sbc/settings/getAoR/',
+                    set:'/api/sbc/settings/setAoR/',
+                    add:'/api/sbc/settings/addAoR/',
+                    del:'/api/sbc/settings/delAoR/',
+                    toggle:'/api/sbc/settings/toggleAoR/',
+                    options: {
+                        rowCount:[10,25,50,100,500,1000]
+                    }
+                });
+            } else if (e.target.id == 'endpoints-tab') {
+                $('#grid-endpoints').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
+                $("#grid-endpoints").UIBootgrid({
+                    search:'/api/sbc/settings/searchEndpoints',
+                    get:'/api/sbc/settings/getEndpoint/',
+                    set:'/api/sbc/settings/setEndpoint/',
+                    add:'/api/sbc/settings/addEndpoint/',
+                    del:'/api/sbc/settings/delEndpoint/',
+                    toggle:'/api/sbc/settings/toggleEndpoint/',
+                    options: {
+                        rowCount:[10,25,50,100,500,1000]
+                    }
+                });
+            } else if (e.target.id == 'authentications-tab') {
+                $('#grid-authentications').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
+                $("#grid-authentications").UIBootgrid({
+                    search:'/api/sbc/settings/searchAuthentications',
+                    get:'/api/sbc/settings/getAuthentication/',
+                    set:'/api/sbc/settings/setAuthentication/',
+                    add:'/api/sbc/settings/addAuthentication/',
+                    del:'/api/sbc/settings/delAuthentication/',
+                    options: {
+                        rowCount:[10,25,50,100,500,1000]
+                    }
+                });
+            } else if (e.target.id == 'registrations-tab') {
+                $('#grid-registrations').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
+                $("#grid-registrations").UIBootgrid({
+                    search:'/api/sbc/settings/searchRegistrations',
+                    get:'/api/sbc/settings/getRegistration/',
+                    set:'/api/sbc/settings/setRegistration/',
+                    add:'/api/sbc/settings/addRegistration/',
+                    del:'/api/sbc/settings/delRegistration/',
+                    options: {
+                        rowCount:[10,25,50,100,500,1000]
+                    }
+                });
+            } else if (e.target.id == 'codecs-tab') {
+                $('#grid-codecs').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
+                $("#grid-codecs").UIBootgrid({
+                    search:'/api/sbc/settings/searchCodecs',
+                    get:'/api/sbc/settings/getCodec/',
+                    set:'/api/sbc/settings/setCodec/',
+                    add:'/api/sbc/settings/addCodec/',
+                    del:'/api/sbc/settings/delCodec/',
+                    options: {
+                        rowCount:[10,25,50,100,500,1000]
+                    }
+                });
             }
         });
 
@@ -239,10 +252,15 @@ POSSIBILITY OF SUCH DAMAGE.
             });
         });
 
+        updateStatus();
+
         // update history on tab state and implement navigation
         if (window.location.hash != "") {
-            $('a[href="' + window.location.hash + '"]').click()
+            $('a[href="' + window.location.hash + '"]').click();
+        } else {
+            $('a[href="#settings"]').click();
         }
+
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
             history.pushState(null, null, e.target.hash);
         });
