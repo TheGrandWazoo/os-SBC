@@ -1,6 +1,6 @@
 {#/
 
-Copyright (C) 2018-2019 Kevin Scott Adams
+Copyright (C) 2018-2019 KSA Technologies, LLC
 OPNsense� is Copyright � 2014 � 2015 by Deciso B.V.
 All rights reserved.
 
@@ -48,7 +48,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 formatTokenizersUI();
                 $('.selectpicker').selectpicker('refresh');                // request service status on load and update status box
                 ajaxCall(url="/api/sbc/service/status", sendData={}, callback=function(data,status) {
-                    updateServiceStatusUI(data['status']);
+                    updateStatus();
                 });
             });
         }
@@ -73,7 +73,6 @@ POSSIBILITY OF SUCH DAMAGE.
          * link grid actions
          **********************************************************************/
         loadGeneralSettings();
-        updateStatus();
         $("#grid-transports").UIBootgrid({
             search:'/api/sbc/settings/searchTransports',
             get:'/api/sbc/settings/getTransport/',
@@ -142,94 +141,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 rowCount:[10,25,50,100,500,1000]
             }
         });
-/*
-		$("#endpoint\\.disallow").change(function() {
-			var $element = $(this).find("option:selected");
-			if ($("#endpoint\\.disallow").find(":selected").length > 1) {
-				var $second = $("#endpoint\\.disallow").find(":selected").eq(-2);
-				$second.after($element);
-			} else {
-				$("#endpoint\\.disallow").prepend($element);
-			}
-		});
 
-
-        // hook into on-show event for dialog to extend layout.
-        $('#DialogTransport').on('shown.bs.modal', function (e) {
-            $("#transport\\.expression").change(function(){
-                var service_id = 'table_' + $(this).val();
-                $(".expression_table").hide();
-                // $(".table_"+$(this).val()).show();
-                $("."+service_id).show();
-            });
-            $("#transport\\.expression").change();
-        })
-
-        // hook into on-show event for dialog to extend layout.
-        $('#DialogAoR').on('shown.bs.modal', function (e) {
-            $("#aor\\.type").change(function(){
-                var service_id = 'table_' + $(this).val();
-                $(".type_table").hide();
-                // $(".table_"+$(this).val()).show();
-                $("."+service_id).show();
-            });
-            $("#aor\\.type").change();
-        })
-
-        // hook into on-show event for dialog to extend layout.
-        $('#DialogEndpoint').on('shown.bs.modal', function (e) {
-            $("#endpoint\\.enabled").change(function(){
-                var service_id = 'table_transport_' + $(this).is(':checked');
-                $(".transport_table").hide();
-                $("."+service_id).show();
-            });
-            $("#endpoint\\.").change();
-
-            $("#endpoint\\.persistence").change(function(){
-                var persistence_id = 'table_persistence_' + $(this).val();
-                $(".persistence_table").hide();
-                $("."+persistence_id).show();
-            });
-            $("#endpoint\\.persistence").change();
-        })
-
-        // hook into on-show event for dialog to extend layout.
-        $('#DialogAuthentication').on('shown.bs.modal', function (e) {
-            $("#authentication\\.mode").change(function(){
-                var service_id = 'table_' + $(this).val();
-                $(".mode_table").hide();
-                $("."+service_id).show();
-            });
-            $("#authentication\\.mode").change();
-
-            // show/hide SSL offloading
-            $("#authentication\\.ssl_enabled").change(function(){
-                var service_id = 'table_ssl_' + $(this).is(':checked');
-                $(".table_ssl").hide();
-                $("."+service_id).show();
-            });
-            $("#authentication\\.ssl_enabled").change();
-
-            // show/hide advanced SSL settings
-            $("#authentication\\.ssl_advancedEnabled").change(function(){
-                var service_id = 'table_ssl_advanced_' + $(this).is(':checked');
-                $(".table_ssl_advanced").hide();
-                $("."+service_id).show();
-            });
-            $("#authentication\\.ssl_advancedEnabled").change();
-        })
-
-        // hook into on-show event for dialog to extend layout.
-        $('#DialogRegistration').on('shown.bs.modal', function (e) {
-            $("#registration\\.type").change(function(){
-                var service_id = 'table_' + $(this).val();
-                $(".type_table").hide();
-                // $(".table_"+$(this).val()).show();
-                $("."+service_id).show();
-            });
-            $("#registration\\.type").change();
-        })
-*/
         /***********************************************************************
          * Commands
          **********************************************************************/
