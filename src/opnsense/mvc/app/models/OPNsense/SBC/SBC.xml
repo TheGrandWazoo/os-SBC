@@ -12,6 +12,23 @@
                 <default>0</default>
                 <Required>Y</Required>
             </enabled>
+            <control type="OptionField">
+                <Required>N</Required>
+                <Default>now</Default>
+                <OptionValues>
+                    <now>Now</now>
+                    <graceful>Graceful</graceful>
+                    <convenient>Convenient</convenient>
+                </OptionValues>
+            </control>
+            <graceful type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </graceful>
+            <convenient type="BooleanField">
+                <default>0</default>
+                <Required>N</Required>
+            </convenient>
             <showIntro type="BooleanField">
                 <default>1</default>
                 <Required>N</Required>
