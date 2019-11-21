@@ -49,7 +49,6 @@ class SBC extends BaseModel
         $transport->description = $description;
         $transport->protocol = $protocol;
         $transport->bindaddr = $bindaddr;
-
         return $uuid;
     }
     
@@ -78,7 +77,7 @@ class SBC extends BaseModel
         $aor->maxcontacts = $maxcontacts;
         return $uuid;
     }
-    
+
     /**
      * create a new server
      * @param string $name
@@ -99,6 +98,17 @@ class SBC extends BaseModel
         $endpoint->description = $description;
         $endpoint->transport = $transport;
         $endpoint->aors = $aors;
+        return $uuid;
+    }
+
+    public function newIdentity($name, $description = "", $endpoint = "None", $matchList = "")
+    {
+        $identity = $this->identities->identity->Add();
+        $uuid = $identity->getAttributes()['uuid'];
+        $identity->name = $name;
+        $identity->description = $description;
+        $identity->endpoint = $endpoint;
+        $identity->matchList = $matchList;
         return $uuid;
     }
 

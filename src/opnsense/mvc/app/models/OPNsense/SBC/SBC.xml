@@ -151,23 +151,23 @@
                 </additionalOptions>
 			</aor>
 		</aors>
-    	<endpoints>
-    		<endpoint type="ArrayField">
-				<enabled type="BooleanField">
-					<Default>1</Default>
-					<Required>Y</Required>
-				</enabled>
-				<name type="TextField">
-					<Required>Y</Required>
-					<Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
-					<ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
-				</name>
-				<description type="TextField">
-					<Required>N</Required>
-					<Mask>/^.{1,255}$/u</Mask>
-					<ValidationMessage>Description is a string between 1 and 255 characters.)</ValidationMessage>
-				</description>
-				<transport type="ModelRelationField">
+        <endpoints>
+            <endpoint type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
+                    <ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Description is a string between 1 and 255 characters.)</ValidationMessage>
+                </description>
+                <transport type="ModelRelationField">
                     <Model>
                         <template>
                             <source>OPNsense.SBC.SBC</source>
@@ -178,8 +178,8 @@
                     <ValidationMessage>Transport not found</ValidationMessage>
                     <Multiple>N</Multiple>
                     <Required>Y</Required>
-				</transport>
-				<aors type="ModelRelationField">
+                </transport>
+                <aors type="ModelRelationField">
                     <Model>
                         <template>
                             <source>OPNsense.SBC.SBC</source>
@@ -190,36 +190,73 @@
                     <ValidationMessage>AoR not found</ValidationMessage>
                     <Multiple>Y</Multiple>
                     <Required>Y</Required>
-				</aors>
-				<rfc3262 type="BooleanField">
-					<Default>1</Default>
-					<Required>Y</Required>
-				</rfc3262>
-				<disallow type="TextField">
-					<Required>N</Required>
-					<Default>all</Default>
-					<Mask>/^(all)$|^((adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)+,)*(adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)$/u</Mask>
-					<ChangeCase>lower</ChangeCase>
-					<ValidationMessage>Ethier "all" or an ordered combination of adpcm, alaw, g722, g726, gsm, ilbc, lpc10, speex or ulaw separated by a commas</ValidationMessage>
-				</disallow>
-				<allow type="TextField">
-					<Required>N</Required>
-					<Default>ulaw</Default>
-					<Mask>/^(all)$|^((adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)+,)*(adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)$/u</Mask>
-					<ChangeCase>lower</ChangeCase>
-					<ValidationMessage>Ethier "all" or an ordered combination of adpcm, alaw, g722, g726, gsm, ilbc, lpc10, speex or ulaw separated by a commas</ValidationMessage>
-				</allow>
-				<outboundProxy type="TextField">
-					<Required>N</Required>
-					<mask>/^sip:((.*@.*)|(.*:[0-9]+;transport=(tcp|udp))|(.*:[0-9]+)|(.[0-9\.]+))$/u</mask>
-					<ValidationMessage>Please specify a full SIP URI</ValidationMessage>
-				</outboundProxy>
-				<directMedia type="BooleanField">
-					<Default>0</Default>
-					<Required>N</Required>
-				</directMedia>
-			</endpoint>
-		</endpoints>
+                </aors>
+                <rfc3262 type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </rfc3262>
+                <disallow type="TextField">
+                    <Required>N</Required>
+                    <Default>all</Default>
+                    <Mask>/^(all)$|^((adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)+,)*(adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)$/u</Mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Ethier "all" or an ordered combination of adpcm, alaw, g722, g726, gsm, ilbc, lpc10, speex or ulaw separated by a commas</ValidationMessage>
+                </disallow>
+                <allow type="TextField">
+                    <Required>N</Required>
+                    <Default>ulaw</Default>
+                    <Mask>/^(all)$|^((adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)+,)*(adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)$/u</Mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Ethier "all" or an ordered combination of adpcm, alaw, g722, g726, gsm, ilbc, lpc10, speex or ulaw separated by a commas</ValidationMessage>
+                </allow>
+                <outboundProxy type="TextField">
+                    <Required>N</Required>
+                    <mask>/^(sips?):([^@\n]+)(?:@(.+))?$/u</mask>
+                    <ValidationMessage>Please specify a full SIP URI</ValidationMessage>
+                </outboundProxy>
+                <directMedia type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </directMedia>
+            </endpoint>
+        </endpoints>
+        <identities>
+            <identity type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
+                    <ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Description is a string between 1 and 255 characters.)</ValidationMessage>
+                </description>
+                <endpoint type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.SBC.SBC</source>
+                            <items>endpoints.endpoint</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Endpoint not found</ValidationMessage>
+                    <Multiple>N</Multiple>
+                    <Required>Y</Required>
+                </endpoint>
+                <matchList type="CSVListField">
+                    <Required>Y</Required>
+                    <Multiple>Y</Multiple>
+                    <mask>/^((sip:([0-9a-zA-Z._\-\*:]+(:[0-9]+)?)([,]){0,1}))*/u</mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide valid IP address or hostname. (e.g., 10.0.0.1, sip.example.com)</ValidationMessage>
+                </matchList>
+            </identity>
+        </identities>
 		<authentications>
 			<authentication type="ArrayField">
 			</authentication>

@@ -6,6 +6,7 @@
                 <Transports VisibleName="Transports" url="/ui/sbc#subtab_sbc-transports"/>
                 <Aors VisibleName="AoRs" url="/ui/sbc#subtab_sbc-aors"/>
                 <Endpoints VisibleName="Endpoints" url="/ui/sbc#subtab_sbc-endpoints"/>
+                <Identities VisibleName="Identities" url="/ui/sbc#subtab_sbc-identities"/>
                 <Authentications VisibleName="Authentications" url="/ui/sbc#subtab_sbc-authentications"/>
                 <Registrations VisibleName="Registrations" url="/ui/sbc#subtab_sbc-registrations"/>
                 <Codecs VisibleName="Codecs" url="/ui/sbc#subtab_sbc-codecs"/>

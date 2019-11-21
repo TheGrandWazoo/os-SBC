@@ -113,6 +113,19 @@ POSSIBILITY OF SUCH DAMAGE.
                         rowCount:[10,25,50,100,500,1000]
                     }
                 });
+            } else if (e.target.id == 'identities-tab') {
+                $('#grid-identities').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
+                $("#grid-identities").UIBootgrid({
+                    search:'/api/sbc/settings/searchIdentities',
+                    get:'/api/sbc/settings/getIdentity/',
+                    set:'/api/sbc/settings/setIdentity/',
+                    add:'/api/sbc/settings/addIdentity/',
+                    del:'/api/sbc/settings/delIdentity/',
+                    toggle:'/api/sbc/settings/toggleIdentity/',
+                    options: {
+                        rowCount:[10,25,50,100,500,1000]
+                    }
+                });
             } else if (e.target.id == 'authentications-tab') {
                 $('#grid-authentications').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
                 $("#grid-authentications").UIBootgrid({
@@ -276,6 +289,7 @@ POSSIBILITY OF SUCH DAMAGE.
     </li>
     {% endif %}
 
+    <!-- tab page "Settings" -->
     <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
@@ -289,7 +303,9 @@ POSSIBILITY OF SUCH DAMAGE.
          class="active"><a data-toggle="tab" id="settings-tab" href="#settings">{{ lang._('Settings') }}</a>
         {% endif %}
     </li>
+    <!-- tab page "Settings" -->
 
+    <!-- tab page "Transports" -->
     <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
@@ -303,7 +319,9 @@ POSSIBILITY OF SUCH DAMAGE.
         ><a data-toggle="tab" id="transports-tab" href="#transports">{{ lang._('Transports') }}</a>
         {% endif %}
     </li>
+    <!-- tab page "Transports" -->
 
+    <!-- tab page "AoRs" -->
     <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
@@ -317,7 +335,9 @@ POSSIBILITY OF SUCH DAMAGE.
         ><a data-toggle="tab" id="aors-tab" href="#aors">{{ lang._('AORs') }}</a>
         {% endif %}
     </li>
+    <!-- tab page "AoRs" -->
 
+    <!-- tab page "Endpoints" -->
     <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
@@ -331,7 +351,25 @@ POSSIBILITY OF SUCH DAMAGE.
         ><a data-toggle="tab" id="endpoints-tab" href="#endpoints">{{ lang._('Endpoints') }}</a>
         {% endif %}
     </li>
+    <!-- tab page "Endpoints" -->
 
+    <!-- tab page "Identities" -->
+    <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
+        <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
+            <b><span class="caret"></span></b>
+        </a>
+        <a data-toggle="tab" onclick="$('#identities-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Endpoints') }}</b></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a data-toggle="tab" id="identities-introduction" href="#subtab_sbc-identities-introduction">{{ lang._('Introduction') }}</a></li>
+            <li><a data-toggle="tab" id="identities-tab" href="#identities">{{ lang._('Identities') }}</a></li>
+        </ul>
+        {% else %}
+        ><a data-toggle="tab" id="identities-tab" href="#identities">{{ lang._('Identities') }}</a>
+        {% endif %}
+    </li>
+    <!-- tab page "Identities" -->
+
+    <!-- tab page "Authentications" -->
     <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
@@ -345,7 +383,9 @@ POSSIBILITY OF SUCH DAMAGE.
         ><a data-toggle="tab" id="authentications-tab" href="#authentications">{{ lang._('Authentications') }}</a>
         {% endif %}
     </li>
+    <!-- tab page "Authentications" -->
 
+    <!-- tab page "Registrations" -->
     <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
@@ -359,7 +399,9 @@ POSSIBILITY OF SUCH DAMAGE.
         ><a data-toggle="tab" id="registrations-tab" href="#registrations">{{ lang._('Registrations') }}</a>
         {% endif %}
     </li>
-    
+    <!-- tab page "Registrations" -->
+
+    <!-- tab page "Codecs" -->
     <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
@@ -373,6 +415,7 @@ POSSIBILITY OF SUCH DAMAGE.
         ><a data-toggle="tab" id="codecs-tab" href="#codecs">{{ lang._('Codecs') }}</a>
         {% endif %}
     </li>
+    <!-- tab page "Codecs" -->
 
     {# add automatically generated tabs #}
 </ul>
@@ -439,6 +482,19 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('%sHealth Monitors:%s The SBC "health checks". Health Monitors are used by %sBackend Pools%s to determine if a server is still able to respond to client requests. If a server fails a health check it will automatically be removed from a Backend Pool and healthy servers are automatically re-added.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
               <li>{{ lang._('%sConditions:%s SBC is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
+            </ul>
+            <br/>
+        </div>
+    </div>
+
+    <div id="subtab_sbc-identities-introduction" class="tab-pane fade">
+        <div class="col-md-12">
+            <h1>{{ lang._('Identities') }}</h1>
+            <p>{{ lang._("An Endpoints is a profile of a SIP phone or SIP service and provides numerous SIP functionality options device. You can not contact an endpoint without one or more AoR entry(ies)") }}</p>
+            <ul>
+                <li>{{ lang._('%sHealth Monitors:%s The SBC "health checks". Health Monitors are used by %sBackend Pools%s to determine if a server is still able to respond to client requests. If a server fails a health check it will automatically be removed from a Backend Pool and healthy servers are automatically re-added.') | format('<b>', '</b>', '<b>', '</b>') }}</li>
+                <li>{{ lang._('%sConditions:%s SBC is capable of extracting data from requests, responses and other connection data and match it against predefined patterns. Use these powerful patterns to compose a condition that may be used in multiple Rules.') | format('<b>', '</b>') }}</li>
+                <li>{{ lang._('%sRules:%s Perform a large set of actions if one or more %sConditions%s match. These Rules may be used in %sBackend Pools%s as well as %sPublic Services%s.') | format('<b>', '</b>', '<b>', '</b>', '<b>', '</b>', '<b>', '</b>') }}</li>
             </ul>
             <br/>
         </div>
@@ -612,6 +668,44 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 
+    <!-- tab page "identities" -->
+    <div id="identities" class="tab-pane fade">
+        <table id="grid-identities" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogIdentity">
+            <thead>
+                <tr>
+                    <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                    <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
+                    <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                    <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- apply button -->
+        <div class="col-md-12">
+            <hr/>
+            <button class="btn btn-primary" id="reconfigureAct-identities" type="button">
+                <b>{{ lang._('Apply') }}</b>
+                <i id="reconfigureAct_progress" class=""></i>
+            </button>
+            <!-- button class="btn btn-primary" id="configtestAct-identities" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button -->
+            <br/>
+            <br/>
+        </div>
+    </div>
+    <!-- tab page "identities" -->
+
     <div id="authentications" class="tab-pane fade">
         <!-- tab page "authentications" -->
         <table id="grid-authentications" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogAuthentication">
@@ -719,6 +813,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogTransport,'id':'DialogTransport','label':lang._('Edit Transport')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAoR,'id':'DialogAoR','label':lang._('Edit AoR')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEndpoint,'id':'DialogEndpoint','label':lang._('Edit Endpoint')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogIdentity,'id':'DialogIdentity','label':lang._('Edit Identity')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAuthentication,'id':'DialogAuthentication','label':lang._('Edit Authentication')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogRegistration,'id':'DialogRegistration','label':lang._('Edit Registration')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogCodec,'id':'DialogCodec','label':lang._('Edit Codec')])}}

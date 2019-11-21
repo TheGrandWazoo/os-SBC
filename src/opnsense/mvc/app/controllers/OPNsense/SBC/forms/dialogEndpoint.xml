@@ -42,7 +42,7 @@
 		<id>endpoint.disallow</id>
 		<label>Disallow</label>
 		<type>text</type>
-		<help>Media Codec's to disallow. Use TAB key to complete typing of the codec</help>
+		<help>Media Codec's to disallow.</help>
 	</field>
 	<field>
 		<id>endpoint.allow</id>
@@ -50,11 +50,18 @@
 		<type>text</type>
 		<help>Media Codec's to allow</help>
 	</field>
+		<field>
+		<id>endpoint.fromDomain</id>
+		<label>From Domain</label>
+		<type>text</type>
+		<help>Domain to use in From header for requests to this endpoint. (e.g., 169.254.69.71, sip.example.com)</help>
+		<advanced>true</advanced>
+	</field>
 	<field>
 		<id>endpoint.outboundProxy</id>
 		<label>Outbound Proxy</label>
 		<type>text</type>
-		<help>Proxy through which to send requests, a full SIP URI must be provided</help>
+		<help>Proxy through which to send requests, a full SIP URI must be provided. (e.g., sip:proxy.example.com, sips:169.254.69.71)</help>
 		<advanced>true</advanced>
 	</field>
 	<field>

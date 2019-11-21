@@ -51,6 +51,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->formDialogTransport = $this->getForm("dialogTransport");
         $this->view->formDialogAoR = $this->getForm("dialogAoR");
         $this->view->formDialogEndpoint = $this->getForm("dialogEndpoint");
+        $this->view->formDialogIdentity = $this->getForm("dialogIdentity");
         $this->view->formDialogAuthentication = $this->getForm("dialogAuthentication");
         $this->view->formDialogRegistration = $this->getForm("dialogRegistration");
         $this->view->formDialogCodec = $this->getForm("dialogCodec");

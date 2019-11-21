@@ -151,6 +151,39 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->searchBase('endpoints.endpoint', array('enabled', 'name', 'description'), 'name');
     }
 
+
+    // Identify Related API's
+    public function getIdentityAction($uuid = null)
+    {
+        return $this->getBase('identity', 'identities.identity', $uuid);
+    }
+
+    public function setIdentityAction($uuid)
+    {
+        return $this->setBase('identity', 'identities.identity', $uuid);
+    }
+
+    public function addIdentityAction()
+    {
+        return $this->addBase('identity', 'identities.identity');
+    }
+
+    public function delIdentityAction($uuid)
+    {
+        return $this->delBase('identities.identity', $uuid);
+    }
+
+    public function toggleIdentityAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase('identities.identity', $uuid);
+    }
+
+    public function searchIdentitiesAction()
+    {
+        return $this->searchBase('identities.identity', array('enabled', 'name', 'description'), 'name');
+    }
+
+    
     // Authentication Related API's
     public function getAuthenticationAction($uuid = null)
     {
