@@ -119,7 +119,7 @@
 				</maxContacts>
 				<outboundProxy type="TextField">
 					<Required>N</Required>
-					<mask>/^sip:((.*@.*)|(.*:[0-9]+;transport=(tcp|udp))|(.*:[0-9]+)|(.[0-9\.]+))$/u</mask>
+					<mask>/^(sips?):([^@\n]+)(?:@(.+))?$/u</mask>
 					<ValidationMessage>Please specify a full SIP URI</ValidationMessage>
 				</outboundProxy>
 				<minExpiration type="IntegerField">
@@ -195,19 +195,21 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </rfc3262>
-                <disallow type="TextField">
+                <disallow type="CSVListField">
                     <Required>N</Required>
                     <Default>all</Default>
-                    <Mask>/^(all)$|^((adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)+,)*(adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)$/u</Mask>
+                    <Mask>/^(all)$|^((a_mu|adpcm|alaw|g722|g726|g729a|gsm|ilbc|lpc10|opus|silk|siren7|siren14|speex|ulaw)+,)*(a_mu|adpcm|alaw|g722|g726|g729a|gsm|ilbc|lpc10|opus|silk|siren7|siren14|speex|ulaw)$/u</Mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Ethier "all" or an ordered combination of adpcm, alaw, g722, g726, gsm, ilbc, lpc10, speex or ulaw separated by a commas</ValidationMessage>
+                    <asList>Y</asList>
+                    <ValidationMessage>Ethier "all" or an ordered combination of a_mu, adpcm, alaw, g722, g726, g729a, gsm, ilbc, lpc10, opus, silk, siren7, siren14, speex and ulaw</ValidationMessage>
                 </disallow>
-                <allow type="TextField">
+                <allow type="CSVListField">
                     <Required>N</Required>
                     <Default>ulaw</Default>
-                    <Mask>/^(all)$|^((adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)+,)*(adpcm|alaw|g722|g726|gsm|ilbc|lpc10|speex|ulaw)$/u</Mask>
+                    <Mask>/^(all)$|^((a_mu|adpcm|alaw|g722|g726|g729a|gsm|ilbc|lpc10|opus|silk|siren7|siren14|speex|ulaw)+,)*(a_mu|adpcm|alaw|g722|g726|g729a|gsm|ilbc|lpc10|opus|silk|siren7|siren14|speex|ulaw)$/u</Mask>
                     <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Ethier "all" or an ordered combination of adpcm, alaw, g722, g726, gsm, ilbc, lpc10, speex or ulaw separated by a commas</ValidationMessage>
+                    <asList>Y</asList>
+                    <ValidationMessage>Ethier "all" or an ordered combination of a_mu, adpcm, alaw, g722, g726, g729a, gsm, ilbc, lpc10, opus, silk, siren7, siren14, speex and ulaw</ValidationMessage>
                 </allow>
                 <outboundProxy type="TextField">
                     <Required>N</Required>
@@ -248,12 +250,10 @@
                     <Multiple>N</Multiple>
                     <Required>Y</Required>
                 </endpoint>
-                <matchList type="CSVListField">
+                <matchList type="NetworkField">
+                    <FieldSeparator>,</FieldSeparator>
                     <Required>Y</Required>
-                    <Multiple>Y</Multiple>
-                    <mask>/^((sip:([0-9a-zA-Z._\-\*:]+(:[0-9]+)?)([,]){0,1}))*/u</mask>
-                    <ChangeCase>lower</ChangeCase>
-                    <ValidationMessage>Please provide valid IP address or hostname. (e.g., 10.0.0.1, sip.example.com)</ValidationMessage>
+                    <asList>Y</asList>
                 </matchList>
             </identity>
         </identities>

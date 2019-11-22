@@ -41,14 +41,18 @@
 	<field>
 		<id>endpoint.disallow</id>
 		<label>Disallow</label>
-		<type>text</type>
-		<help>Media Codec's to disallow.</help>
+		<type>select_multiple</type>
+		<style>tokenize</style>
+		<allownew>true</allownew>
+		<help>Media Codec's to disallow. Default: all. Select 'all' or a combination of a_mu,adpcm,alaw,g722,g726,g729a,gsm,ilbc,lpc10,opus,silk,siren7,siren14,speex,ulaw</help>
 	</field>
 	<field>
 		<id>endpoint.allow</id>
 		<label>Allow</label>
-		<type>text</type>
-		<help>Media Codec's to allow</help>
+		<type>select_multiple</type>
+		<style>tokenize</style>
+		<allownew>true</allownew>
+		<help>Media Codec's to allow.  Default: ulaw. Select 'all' or a combination of a_mu,adpcm,alaw,g722,g726,g729a,gsm,ilbc,lpc10,opus,silk,siren7,siren14,speex,ulaw</help>
 	</field>
 		<field>
 		<id>endpoint.fromDomain</id>
