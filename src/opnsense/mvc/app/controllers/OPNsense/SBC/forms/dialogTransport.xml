@@ -20,8 +20,10 @@
 	<field>
 		<id>transport.bindAddress</id>
 		<label>Network Address</label>
-		<type>text</type>
-		<help>Provide an IPv4 address (Interface or Virtual IP) that is defined in OPNsense(Default: 0.0.0.0 - All)</help>
+		<type>dropdown</type>
+		<style>tokenize</style>
+		<allownew>true</allownew>
+		<help><![CDATA[Select interface(s) to use. When enabling SBC, only use physical interfaces here (no vlans etc).]]></help>
 	</field>
 	<field>
 		<id>transport.bindPort</id>
@@ -44,18 +46,10 @@
 		<advanced>true</advanced>
 	</field>
 	<field>
-		<id>transport.externalMediaAddress</id>
-		<label>External Media Address</label>
-		<type>text</type>
-		<help>External IP address to use in RTP handling (default: "")</help>
-		<hint>Enter a valid IPv4 address with CIDR mask. e.g. 127.0.0.1/8.</hint>
-		<advanced>true</advanced>
-	</field>
-	<field>
 		<id>transport.externalSignalingAddress</id>
 		<label>External Signaling Address</label>
 		<type>text</type>
-		<help>External IP address to use for SIP signaling (default: "")</help>
+		<help>External IP address on the SBC to use for SIP signaling. Default is Not Set.</help>
 		<hint>Enter a valid IPv4 address with CIDR mask. e.g. 127.0.0.1/8.</hint>
 		<advanced>true</advanced>
 	</field>
@@ -63,7 +57,15 @@
 		<id>transport.externalSignalingPort</id>
 		<label>External Signaling Port</label>
 		<type>text</type>
-		<help>External port to use for SIP signaling (default: "")</help>
+		<help>External port to use for SIP signaling. Default is Not Set.</help>
+		<hint>Provide a TCP/UDP port number.</hint>
+		<advanced>true</advanced>
+	</field>
+	<field>
+		<id>transport.externalMediaAddress</id>
+		<label>External Media Address</label>
+		<type>text</type>
+		<help>External IP address on the SBC to use in RTP handling.  Default is Not Set.</help>
 		<hint>Enter a valid IPv4 address with CIDR mask. e.g. 127.0.0.1/8.</hint>
 		<advanced>true</advanced>
 	</field>

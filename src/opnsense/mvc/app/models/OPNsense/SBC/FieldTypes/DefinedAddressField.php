@@ -27,11 +27,14 @@
  *    POSSIBILITY OF SUCH DAMAGE.
  *
  */
-namespace OPNsense\Base\FieldTypes;
+namespace OPNsense\SBC\FieldTypes;
 
-use Phalcon\Validation\Validator\InclusionIn;
-use OPNsense\Core\Config;
-use OPNsense\Base\Validators\CsvListValidator;
+use OPNsense\Base\FieldTypes\BaseField;
+use OPNsense\Base\Validators\CallbackValidator;
+use Phalcon\Validation\Validator\Regex;
+use Phalcon\Validation\Validator\ExclusionIn;
+use Phalcon\Validation\Message;
+use OPNsense\Firewall\Util;
 
 /**
  * Class InterfaceField field type to select usable interfaces, currently this is kind of a backward compatibility
@@ -48,7 +51,7 @@ class DefinedAddressField extends BaseField
     /**
      * @var string default validation message string
      */
-    protected $internalValidationMessage = "please specify a valid interface";
+    protected $internalValidationMessage = "please specify a valid ip address";
 
     /**
      * @var array collected options
@@ -84,23 +87,19 @@ class DefinedAddressField extends BaseField
      *  collect parents for lagg interfaces
      *  @return array named array containing device and lagg interface
      */
-    private function getConfigAliasAddresses()
+    private function getConfigVirtualAddresses()
     {
-        $aliasAddresses = array();
+        $vipAddresses = array();
         $configObj = Config::getInstance()->object();
-        if (!empty($configObj->OPNsense->Firewall->Alias)) {
-            foreach ($configObj->OPNsense->Firewall->Alias->children() as $key => $alias) {
-                if (!empty($alias->type)) {
-                    foreach (explode(',', $alias->members) as $interface) {
-                        if (!isset($aliasAddresses[$interface])) {
-                            $aliasAddresses[$interface] = array();
-                        }
-                        $aliasAddresses[$interface][] = (string)$lagg->laggif;
-                    }
+        if (!empty($configObj->virtualip)) {
+            foreach ($configObj->virtualip->children() as $key => $vip) {
+                if (!isset($vipAddresses[(string)$vip->if])) {
+                    $vipAddresses[(string)$vip->if] = array();
                 }
+                $vipAddresses[(string)$vip->if][] = (string)$vip->subnet;
             }
         }
-        return $aliasAddresses;
+        return $vipAddresses;
     }
 
     /**
@@ -149,7 +148,7 @@ class DefinedAddressField extends BaseField
             if ($this->internalAddParentDevices) {
                 // collect parents for lagg/vlan interfaces
                 $physicalInterfaces = $this->getConfigLaggInterfaces();
-                $physicalInterfaces = array_merge($physicalInterfaces, $this->getConfigVLANInterfaces());
+                $physicalInterfaces = array_merge($physicalInterfaces, $this->getConfigVirtualAddresses());
 
                 // add unique devices
                 foreach ($physicalInterfaces as $interface => $devices) {

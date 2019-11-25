@@ -50,12 +50,7 @@
                     <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Description is a string between 1 and 255 characters.</ValidationMessage>
                 </description>
-                <bindAddress type="NetworkField">
-                    <Required>Y</Required>
-                    <Default>0.0.0.0</Default>
-                    <AddressFamily>ipv4</AddressFamily>
-                    <ValidationMessage>Please specify an IPv4 address defined within OPNsense (Interface or Virtual IP)</ValidationMessage>
-                </bindAddress>
+                <bindAddress type=".\AliasContentField"></bindAddress>
                 <bindPort type="PortField">
                     <Required>N</Required>
                 </bindPort>
@@ -72,12 +67,15 @@
                 </protocol>
                 <localNetwork type="NetworkField">
                     <Required>N</Required>
+                    <NetMaskRequired>N</NetMaskRequired>
                 </localNetwork>
                 <externalMediaAddress type="NetworkField">
                     <Required>N</Required>
+                    <NetMaskRequired>N</NetMaskRequired>
                 </externalMediaAddress>
                 <externalSignalingAddress type="NetworkField">
                     <Required>N</Required>
+                    <NetMaskRequired>N</NetMaskRequired>
                 </externalSignalingAddress>
                 <externalSignalingPort type="PortField">
                     <Required>N</Required>
