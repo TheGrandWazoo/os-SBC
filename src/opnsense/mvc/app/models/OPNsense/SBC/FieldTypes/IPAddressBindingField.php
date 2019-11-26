@@ -33,15 +33,18 @@ use OPNsense\Base\FieldTypes\BaseField;
 use OPNsense\Base\Validators\CallbackValidator;
 use Phalcon\Validation\Validator\Regex;
 use Phalcon\Validation\Validator\ExclusionIn;
+use Phalcon\Validation\Validator\InclusionIn;
 use Phalcon\Validation\Message;
 use OPNsense\Firewall\Util;
+use OPNsense\Core\Config;
+//use OPNsense\Base\Validators\CsvListValidator;
 
 /**
  * Class InterfaceField field type to select usable interfaces, currently this is kind of a backward compatibility
  * package to glue legacy interfaces into the model.
  * @package OPNsense\Base\FieldTypes
  */
-class DefinedAddressField extends BaseField
+class IPAddressBindingField extends BaseField
 {
     /**
      * @var bool marks if this is a data node or a container
@@ -87,19 +90,23 @@ class DefinedAddressField extends BaseField
      *  collect parents for lagg interfaces
      *  @return array named array containing device and lagg interface
      */
-    private function getConfigVirtualAddresses()
+    private function getConfigLaggInterfaces()
     {
-        $vipAddresses = array();
+        $physicalInterfaces = array();
         $configObj = Config::getInstance()->object();
-        if (!empty($configObj->virtualip)) {
-            foreach ($configObj->virtualip->children() as $key => $vip) {
-                if (!isset($vipAddresses[(string)$vip->if])) {
-                    $vipAddresses[(string)$vip->if] = array();
+        if (!empty($configObj->laggs)) {
+            foreach ($configObj->laggs->children() as $key => $lagg) {
+                if (!empty($lagg->members)) {
+                    foreach (explode(',', $lagg->members) as $interface) {
+                        if (!isset($physicalInterfaces[$interface])) {
+                            $physicalInterfaces[$interface] = array();
+                        }
+                        $physicalInterfaces[$interface][] = (string)$lagg->laggif;
+                    }
                 }
-                $vipAddresses[(string)$vip->if][] = (string)$vip->subnet;
             }
         }
-        return $vipAddresses;
+        return $physicalInterfaces;
     }
 
     /**
@@ -138,17 +145,29 @@ class DefinedAddressField extends BaseField
                     if (!$this->internalAllowDynamic && !empty($value->internal_dynamic)) {
                         continue;
                     }
-                    $allInterfaces[$key] = $value;
+                    if (!empty($value->ipaddr)) {
+                        $allInterfaces[(string)$value->ipaddr] = $value;
+                    }
                     if (!empty($value->if)) {
                         $allInterfacesDevices[(string)$value->if] = $key;
                     }
                 }
             }
 
+            /*
+             * Iterate through the VIP interfaces
+             */
+            $configObj = Config::getInstance()->object();
+            if (isset($configObj->virtualip) && $configObj->virtualip->count() > 0) {
+                foreach ($configObj->virtualip->children() as $key => $value) {
+                    $allInterfaces[(string)$value->subnet] = $value;
+                }
+            }
+
             if ($this->internalAddParentDevices) {
                 // collect parents for lagg/vlan interfaces
                 $physicalInterfaces = $this->getConfigLaggInterfaces();
-                $physicalInterfaces = array_merge($physicalInterfaces, $this->getConfigVirtualAddresses());
+                $physicalInterfaces = array_merge($physicalInterfaces, $this->getConfigVLANInterfaces());
 
                 // add unique devices
                 foreach ($physicalInterfaces as $interface => $devices) {
@@ -190,8 +209,13 @@ class DefinedAddressField extends BaseField
                     }
                 }
                 if ($isMatched) {
-                    self::$internalOptionList[$this->internalCacheKey][$key] =
-                        !empty($value->descr) ? (string)$value->descr : strtoupper($key);
+                    if (isset($value->mode)) {
+                        self::$internalOptionList[$this->internalCacheKey][$key] =
+                        !empty($value->descr) ? "{$value->subnet} ({$value->descr})" : strtoupper($key);
+                    } else {
+                        self::$internalOptionList[$this->internalCacheKey][$key] =
+                        !empty($value->descr) ? "{$value->ipaddr} ({$value->descr})" : strtoupper($key);
+                    }
                 }
             }
             natcasesort(self::$internalOptionList[$this->internalCacheKey]);
@@ -262,6 +286,9 @@ class DefinedAddressField extends BaseField
             $result[""] = array("value" => gettext("none"), "selected" => 0);
         }
 
+        // Add the 0.0.0.0 (All) network interfaces option.
+        $result["0.0.0.0"] = array("value" => gettext("0.0.0.0 (All)"), "selected" => 0);
+
         // explode interfaces
         $interfaces = explode(',', $this->internalValue);
         foreach (self::$internalOptionList[$this->internalCacheKey] as $optKey => $optValue) {
@@ -272,8 +299,25 @@ class DefinedAddressField extends BaseField
             }
             $result[$optKey] = array("value" => $optValue, "selected" => $selected);
         }
-
         return $result;
+    }
+
+    /**
+     * Validate network options
+     * @param array $network to validate
+     * @return bool|Callback
+     * @throws \OPNsense\Base\ModelException
+     */
+    private function validateNetwork($network)
+    {
+        $messages = array();
+        if (!Util::isAlias($network) && !Util::isIpAddress($network) && !Util::isSubnet($network)) {
+                $messages[] = sprintf(
+                    gettext('Entry "%s" is not a valid IP address.'),
+                    $network
+                );
+        }
+        return $messages;
     }
 
     /**
@@ -284,15 +328,10 @@ class DefinedAddressField extends BaseField
     {
         $validators = parent::getValidators();
         if ($this->internalValue != null) {
-            if ($this->internalMultiSelect) {
-                // field may contain more than one interface
-                $validators[] = new CsvListValidator(array('message' => $this->internalValidationMessage,
-                    'domain'=>array_keys(self::$internalOptionList[$this->internalCacheKey])));
-            } else {
-                // single interface selection
-                $validators[] = new InclusionIn(array('message' => $this->internalValidationMessage,
-                    'domain'=>array_keys(self::$internalOptionList[$this->internalCacheKey])));
+            $validators[] = new CallbackValidator(["callback" => function ($data) {
+                return $this->validateNetwork($data);
             }
+            ]);
         }
         return $validators;
     }

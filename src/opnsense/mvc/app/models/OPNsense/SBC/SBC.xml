@@ -50,7 +50,7 @@
                     <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Description is a string between 1 and 255 characters.</ValidationMessage>
                 </description>
-                <bindAddress type=".\AliasContentField"></bindAddress>
+                <bindAddress type=".\IPAddressBindingField"></bindAddress>
                 <bindPort type="PortField">
                     <Required>N</Required>
                 </bindPort>
@@ -69,11 +69,11 @@
                     <Required>N</Required>
                     <NetMaskRequired>N</NetMaskRequired>
                 </localNetwork>
-                <externalMediaAddress type="NetworkField">
+                <externalMediaAddress type=".\IPAddressBindingField">
                     <Required>N</Required>
                     <NetMaskRequired>N</NetMaskRequired>
                 </externalMediaAddress>
-                <externalSignalingAddress type="NetworkField">
+                <externalSignalingAddress type=".\IPAddressBindingField">
                     <Required>N</Required>
                     <NetMaskRequired>N</NetMaskRequired>
                 </externalSignalingAddress>
