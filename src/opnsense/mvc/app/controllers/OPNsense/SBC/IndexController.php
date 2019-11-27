@@ -54,7 +54,7 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->formDialogIdentity = $this->getForm("dialogIdentity");
         $this->view->formDialogAuthentication = $this->getForm("dialogAuthentication");
         $this->view->formDialogRegistration = $this->getForm("dialogRegistration");
-        $this->view->formDialogCodec = $this->getForm("dialogCodec");
+        $this->view->formDialogDialplan = $this->getForm("dialogDialplan");
         // set additional view parameters
         $mdlSBC = new \OPNsense\SBC\SBC();
         $this->view->showIntro = (string)$mdlSBC->general->showIntro;

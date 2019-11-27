@@ -150,14 +150,14 @@ POSSIBILITY OF SUCH DAMAGE.
                         rowCount:[10,25,50,100,500,1000]
                     }
                 });
-            } else if (e.target.id == 'codecs-tab') {
-                $('#grid-codecs').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
-                $("#grid-codecs").UIBootgrid({
-                    search:'/api/sbc/settings/searchCodecs',
-                    get:'/api/sbc/settings/getCodec/',
-                    set:'/api/sbc/settings/setCodec/',
-                    add:'/api/sbc/settings/addCodec/',
-                    del:'/api/sbc/settings/delCodec/',
+            } else if (e.target.id == 'dialplans-tab') {
+                $('#grid-dialplans').bootgrid('destroy'); // always destroy previous grid, so data is always fresh
+                $("#grid-dialplans").UIBootgrid({
+                    search:'/api/sbc/settings/searchDialplans',
+                    get:'/api/sbc/settings/getDialplan/',
+                    set:'/api/sbc/settings/setDialplan/',
+                    add:'/api/sbc/settings/addDialplan/',
+                    del:'/api/sbc/settings/delDialplan/',
                     options: {
                         rowCount:[10,25,50,100,500,1000]
                     }
@@ -401,21 +401,21 @@ POSSIBILITY OF SUCH DAMAGE.
     </li>
     <!-- tab page "Registrations" -->
 
-    <!-- tab page "Codecs" -->
+    <!-- tab page "Dialplans" -->
     <li{% if showIntro|default('0')=='1' %} role="presentation" class="dropdown">
         <a data-toggle="dropdown" href="#" class="dropdown-toggle pull-right visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" role="button">
             <b><span class="caret"></span></b>
         </a>
-        <a data-toggle="tab" onclick="$('#codecs-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Codecs') }}</b></a>
+        <a data-toggle="tab" onclick="$('#dialplans-introduction').click();" class="visible-lg-inline-block visible-md-inline-block visible-xs-inline-block visible-sm-inline-block" style="border-right:0px;"><b>{{ lang._('Dialplans') }}</b></a>
         <ul class="dropdown-menu" role="menu">
-            <li><a data-toggle="tab" id="codecs-introduction" href="#subtab_sbc-codecs-introduction">{{ lang._('Introduction') }}</a></li>
-            <li><a data-toggle="tab" id="codecs-tab" href="#codecs">{{ lang._('Codecs') }}</a></li>
+            <li><a data-toggle="tab" id="dialplans-introduction" href="#subtab_sbc-dialplans-introduction">{{ lang._('Introduction') }}</a></li>
+            <li><a data-toggle="tab" id="dialplans-tab" href="#dialplans">{{ lang._('Dialplans') }}</a></li>
         </ul>
         {% else %}
-        ><a data-toggle="tab" id="codecs-tab" href="#codecs">{{ lang._('Codecs') }}</a>
+        ><a data-toggle="tab" id="dialplans-tab" href="#dialplans">{{ lang._('Dialplans') }}</a>
         {% endif %}
     </li>
-    <!-- tab page "Codecs" -->
+    <!-- tab page "Dialplans" -->
 
     {# add automatically generated tabs #}
 </ul>
@@ -432,6 +432,8 @@ POSSIBILITY OF SUCH DAMAGE.
               <li>{{ lang._('Add %sEndpoints:%s An endpoint is a phyiscal SIP phone or SIP service/server.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('Add %sAuthentications:%s Optional: Sometimes needed to authenticate to a Provider or Service.') | format('<b>', '</b>') }}</li>
               <li>{{ lang._('Add %sRegistrations:%s Optional: Needed if the Provider requires registration for the trunks.') | format('<b>', '</b>') }}</li>
+              <li>{{ lang._('Add %sDialplan:%s Connect a DID or Number to a Contact(s).') | format('<b>', '</b>') }}</li>
+              }
             </ul>
             <p>{{ lang._('Please be aware that you need to %smanually%s add the required firewall rules for all configured services.') | format('<b>', '</b>') }}</p>
             <br/>
@@ -528,9 +530,9 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 
-    <div id="subtab_sbc-codecs-introduction" class="tab-pane fade">
+    <div id="subtab_sbc-dialplans-introduction" class="tab-pane fade">
         <div class="col-md-12">
-            <h1>{{ lang._('Codecs') }}</h1>
+            <h1>{{ lang._('Dialplans') }}</h1>
             <p>{{ lang._("Optionally SBC manages an internal list of users and groups, which can be used for HTTP Basic Authentication as well as access to SBC's internal statistic pages.") }}</p>
             <ul>
               <li>{{ lang._('%sUser:%s A username/password combination. Both secure (encrypted) and insecure (unencrypted) passwords can be used.') | format('<b>', '</b>') }}</li>
@@ -774,9 +776,9 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 
-    <div id="codecs" class="tab-pane fade">
-        <!-- tab page "codecs" -->
-        <table id="grid-codecs" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogCodec">
+    <div id="dialplans" class="tab-pane fade">
+        <!-- tab page "dialplans" -->
+        <table id="grid-dialplans" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogDialplan">
             <thead>
             <tr>
                 <th data-column-id="enabled" data-width="6em" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
@@ -801,8 +803,8 @@ POSSIBILITY OF SUCH DAMAGE.
         <!-- apply button -->
         <div class="col-md-12">
             <hr/>
-            <!-- button class="btn btn-primary" id="reconfigureAct-codecs" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button -->
-            <!-- button class="btn btn-primary" id="configtestAct-codecs" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button -->
+            <!-- button class="btn btn-primary" id="reconfigureAct-dialplans" type="button"><b>{{ lang._('Apply') }}</b><i id="reconfigureAct_progress" class=""></i></button -->
+            <!-- button class="btn btn-primary" id="configtestAct-dialplans" type="button"><b>{{ lang._('Test syntax') }}</b><i id="configtestAct_progress" class=""></i></button -->
             <br/>
             <br/>
         </div>
@@ -816,5 +818,5 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogIdentity,'id':'DialogIdentity','label':lang._('Edit Identity')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAuthentication,'id':'DialogAuthentication','label':lang._('Edit Authentication')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogRegistration,'id':'DialogRegistration','label':lang._('Edit Registration')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogCodec,'id':'DialogCodec','label':lang._('Edit Codec')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogDialplan,'id':'DialogDialplan','label':lang._('Edit Dialplan')])}}
 

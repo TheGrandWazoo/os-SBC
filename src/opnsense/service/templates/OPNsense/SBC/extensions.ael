@@ -1,0 +1,192 @@
+globals {
+        //CONSOLE-AEL="Console/dsp";              // Console interface for demo
+        //CONSOLE-AEL=Zap/1;
+        //CONSOLE-AEL=Phone/phone0;
+        //IAXINFO-AEL=guest;                              // IAXtel username/password
+        //IAXINFO-AEL="myuser:mypass";
+        //OUTBOUND-TRUNK="Zap/g2";                // Trunk interface
+        //
+        // Note the 'g2' in the OUTBOUND-TRUNK variable above. It specifies which group (defined
+        // in chan_dahdi.conf) to dial, i.e. group 2, and how to choose a channel to use in
+        // the specified group. The four possible options are:
+        //
+        // g: select the lowest-numbered non-busy DAHDI channel
+        //    (aka. ascending sequential hunt group).
+        // G: select the highest-numbered non-busy DAHDI channel
+        //    (aka. descending sequential hunt group).
+        // r: use a round-robin search, starting at the next highest channel than last
+        //    time (aka. ascending rotary hunt group).
+        // R: use a round-robin search, starting at the next lowest channel than last
+        //    time (aka. descending rotary hunt group).
+        //
+        //OUTBOUND-TRUNKMSD=1;                                    // MSD digits to strip (usually 1 or 0)
+        //OUTBOUND-TRUNK2=IAX2/user:pass@provider;
+};
+
+macro print_rtp_ports()
+{
+        Log(NOTICE, "Source RTP Port: ${CHANNEL(rtp,src)}");
+        Log(NOTICE, "Destination RTP Port: ${CHANNEL(rtp,dest)}");
+        return;
+}
+
+macro print_rtcp_stats()
+{
+        Log(NOTICE, "RTCP Stats: ${CHANNEL(rtcp,all)}");
+        return;
+}
+
+macro add_pfx()
+{
+        catch s {
+                Set(CONNECTEDLINE(name,i)=${ARG1});
+                Set(CONNECTEDLINE(name-pres,i)=allowed);
+                Set(CONNECTEDLINE(num,i)=${ARG2});
+                Set(CONNECTEDLINE(num-pres)=allowed);
+                Set(PJSIP_HEADER(add,P-Asserted-Identity)="${ARG1}" <sip:${ARG2}@192.168.0.4>);
+                return;
+        }
+}
+
+
+macro from_att_trunk()
+{
+        catch _X. {
+                Answer();
+                Set(__CONNECTED_LINE_SEND_SUB=add_pfx,s,1);
+                Set(__CONNECTED_LINE_SEND_SUB_ARGS=${CALLERID(NAME)},${CALLERID(NUM)});
+                Log(NOTICE, "Inbound CALL from '${CALLERID(NUM)} : ${CALLERID(NAME)}' in macro 'from_att_trunk' HAS STARTED");
+                &print_rtp_ports();
+                Dial(PJSIP/pbx/sip:${EXTEN}@192.168.0.200:5060,,U(print_rtp_ports));
+        }
+        catch 000008005217475 {
+                Answer();
+                Log(NOTICE, "Inbound CALL to Tech Support from '${CALLERID(NUM)} : ${CALLERID(NAME)}' in macro 'from_att_trunk' HAS STARTED");
+                &print_rtp_ports();
+                Dial(PJSIP/pbx/sip:8106031325@192.168.0.200:5060,,U(print_rtp_ports));
+        }
+        catch 000008005217476 {
+                Answer();
+                Log(NOTICE, "Inbound CALL to Insealator '${CALLERID(NUM)} : ${CALLERID(NAME)}' in macro 'from_att_trunk' HAS STARTED");
+                &print_rtp_ports();
+                Dial(PJSIP/pbx/sip:8106031332@192.168.0.200:5060,,U(print_rtp_ports));
+        }
+        catch 000008003456572 {
+                Answer();
+                Log(NOTICE, "Inbound CALL to Tech Support '${CALLERID(NUM)} : ${CALLERID(NAME)}' in macro 'from_att_trunk' HAS STARTED");
+                &print_rtp_ports();
+                Dial(PJSIP/pbx/sip:8106031322@192.168.0.200:5060,,U(print_rtp_ports));
+        }
+        catch 000008559742537 {
+                Answer();
+                Log(NOTICE, "Inbound CALL to Shaler '${CALLERID(NUM)} : ${CALLERID(NAME)}' in macro 'from_att_trunk' HAS STARTED");
+                &print_rtp_ports();
+                Dial(PJSIP/pbx/sip:8106031324@192.168.0.200:5060,,U(print_rtp_ports));
+        }
+        catch 000008882750015 {
+                Answer();
+                Log(NOTICE, "Inbound CALL to Hyperlube '${CALLERID(NUM)} : ${CALLERID(NAME)}' in macro 'from_att_trunk' HAS STARTED");
+                &print_rtp_ports();
+                Dial(PJSIP/pbx/sip:8106031327@192.168.0.200:5060,,U(print_rtp_ports));
+        }
+        catch external_replaces {
+                NoOp(${CALLERID(NUM)} ${CALLERID(NAME)});
+                Log(NOTICE, "REFER requested");
+                Log(NOTICE, ${SIPREFERTOHDR});
+        }
+        catch h {
+                &print_rtcp_stats();
+                Log(NOTICE, "Inbound CALL from '${CALLERID(NUM)} : ${CALLERID(NAME)}' in macro 'from_att_trunk' HAS ENDED");
+        }
+        catch add_pfx {
+                Set(PJSIP_HEADER(add,P-Asserted-Identity)="${CALLERID(NAME)}" <sip:${CALLERID(NUM)}@192.168.0.4>);
+                Set(PJSIP_HEADER(add,P-Asserted-Identity)=tel: ${CALLERID(NUM)});
+                Set(CONNECTEDLINE(name,i)=${CALLERID(NAME)});
+                Set(CONNECTEDLINE(name-pres,i)=allowed);
+                Set(CONNECTEDLINE(num,i)=${CALLERID(NUM)});
+                Set(CONNECTEDLINE(num-pres)=allowed);
+        }
+        return;
+}
+
+macro new_dial_out_att(numbertodial) {
+        SET(HASH(ATT_SIP_GATEWAY,1)=12.253.20.37);
+        SET(HASH(ATT_SIP_GATEWAY,2)=12.253.20.197);
+        SET(GATEWAY_INDEX=${RAND(1,2)});
+        LOG(NOTICE, "ATT SIP Gateway ${HASH(ATT_SIP_GATEWAY,${GATEWAY_INDEX})} was selected for this outbound call");
+        Dial(PJSIP/att_trunk/sip:${numbertodial}@${HASH(ATT_SIP_GATEWAY,${GATEWAY_INDEX})},,U(print_rtp_ports));
+        return;
+}
+
+macro dial_out_att(numbertodial) {
+        SET(ATT_GATEWAY=${RAND(1,2)});
+        switch (${ATT_GATEWAY}) {
+                case 1:
+                        Log(NOTICE, "ATT SIP Gateway 12.253.20.37 was selected for outbound call");
+                        Dial(PJSIP/att_trunk/sip:${numbertodial}@12.253.20.37,,U(print_rtp_ports));
+                        break;
+                case 2:
+                        Log(NOTICE, "ATT SIP Gateway 12.253.20.197 was selected for outbound call");
+                        Dial(PJSIP/att_trunk/sip:${numbertodial}@12.253.20.197,,U(print_rtp_ports));
+                        break;
+                default:
+                        Log(NOTICE, "Invalid gateway selected...defaulting to 12.253.20.37 for outbound call");
+                        Dial(PJSIP/att_trunk/sip:${numbertodial}@12.253.20.37,,U(print_rtp_ports));
+                        break;
+        }
+        return;
+}
+
+macro external_replaces() {
+        Log(NOTICE, "REFER requested");
+        Log(NOTICE, ${SIPREFERTOHDR});
+        return;
+}
+
+
+macro from_pbx()
+{
+        catch _X. {
+//              Answer();
+                SET(CALLING_NUMBER=${EXTEN});
+                Log(NOTICE, "Outbound CALL to '${CALLING_NUMBER}' in macro 'from_pbx' HAS STARTED");
+                &print_rtp_ports();
+                Set(PAI=${PJSIP_HEADER(read,P-Asserted-Identity)});
+                NoOp(${PAI:5:10});
+                if (${ISNULL(${PAI})}) {
+// Test                 SET(CALLERID(num)=3462373391);
+                        SET(CALLERID(num)=8106031321);
+                } else {
+                        SET(CALLERID(num)=${PAI:5:10});
+                }
+                &dial_out_att(+${EXTEN});
+        }
+        catch _+X. {
+//              Answer();
+                SET(CALLING_NUMBER=${EXTEN});
+                Log(NOTICE, "Outbound CALL to '${CALLING_NUMBER}' in macro 'from_pbx' HAS STARTED");
+                &print_rtp_ports();
+                Set(PAI=${PJSIP_HEADER(read,P-Asserted-Identity)});
+                NoOp(${PAI:5:10});
+                if (${ISNULL(${PAI})}) {
+// Test                 SET(CALLERID(num)=3462373391);
+                        SET(CALLERID(num)=8106031321);
+                } else {
+                        SET(CALLERID(num)=${PAI:5:10});
+                }
+                &dial_out_att(${EXTEN});
+        }
+        catch asterisk {
+                Log(NOTICE, "REFER requested");
+                Log(NOTICE, ${SIPREFERTOHDR});
+        }
+        catch external_replaces {
+                Log(NOTICE, "REFER requested");
+                Log(NOTICE, ${SIPREFERTOHDR});
+        }
+        catch h {
+                &print_rtcp_stats();
+                Log(NOTICE, "Outbound CALL to '${CALLING_NUMBER}' in macro 'from_pbx' HAS ENDED");
+        }
+        return;
+}

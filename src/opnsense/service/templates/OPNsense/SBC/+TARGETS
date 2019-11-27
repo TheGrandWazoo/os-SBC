@@ -2,3 +2,4 @@ modules.conf:/usr/local/etc/asterisk/modules.conf
 pjsip.conf:/usr/local/etc/asterisk/pjsip.conf
 sorcery.conf:/usr/local/etc/asterisk/sorcery.conf
 rc.conf.d:/etc/rc.conf.d/asterisk
+extensions.ael:/usr/local/etc/asterisk/extensions.ael

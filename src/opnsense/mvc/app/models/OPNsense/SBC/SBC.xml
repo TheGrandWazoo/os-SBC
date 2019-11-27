@@ -255,31 +255,48 @@
                 </matchList>
             </identity>
         </identities>
-		<authentications>
-			<authentication type="ArrayField">
-			</authentication>
-		</authentications>
-		<registrations>
-			<registration type="ArrayField">
-			</registration>
-		</registrations>
-		<codecs>
-			<codec type="ArrayField">
-				<enabled type="BooleanField">
-					<Default>1</Default>
-					<Required>Y</Required>
-				</enabled>
-				<name type="TextField">
-					<Required>Y</Required>
-					<Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
-					<ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
-				</name>
-				<description type="TextField">
-					<Required>N</Required>
-					<Mask>/^.{1,255}$/u</Mask>
-					<ValidationMessage>Description is a string between 1 and 255 characters.</ValidationMessage>
-				</description>
-			</codec>
-		</codecs>
+        <authentications>
+            <authentication type="ArrayField">
+            </authentication>
+        </authentications>
+        <registrations>
+            <registration type="ArrayField">
+            </registration>
+        </registrations>
+        <dialplans>
+            <dialplan type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([0-9a-zA-Z_-]){1,255}$/u</Mask>
+                    <ValidationMessage>Should be an alphanumeric string including _ and - with length between 1 and 255 characters.</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Description is a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <pattern type="TextField">
+                     <Required>N</Required>
+                     <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Pattern is a string between 1 and 255 characters.</ValidationMessage>
+                </pattern>
+                <contacts type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.SBC.SBC</source>
+                            <items>identities.identity</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Identity not found</ValidationMessage>
+                    <Multiple>Y</Multiple>
+                    <Required>Y</Required>
+                </contacts>
+            </dialplan>
+        </dialplans>
     </items>
 </model>
