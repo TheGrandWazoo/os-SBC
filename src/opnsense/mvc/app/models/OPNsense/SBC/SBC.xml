@@ -279,11 +279,16 @@
                     <Mask>/^.{1,255}$/u</Mask>
                     <ValidationMessage>Description is a string between 1 and 255 characters.</ValidationMessage>
                 </description>
-                <pattern type="TextField">
+                <inboundDialPattern type="TextField">
                      <Required>N</Required>
                      <Mask>/^.{1,255}$/u</Mask>
-                    <ValidationMessage>Pattern is a string between 1 and 255 characters.</ValidationMessage>
-                </pattern>
+                     <ValidationMessage>Pattern is a string between 1 and 255 characters.</ValidationMessage>
+                </inboundDialPattern>
+                <outboundDialString type="TextField">
+                     <Required>N</Required>
+                     <Mask>/^.{1,255}$/u</Mask>
+                     <ValidationMessage>Pattern is a string between 1 and 255 characters.</ValidationMessage>
+                </outboundDialString>
                 <contacts type="ModelRelationField">
                     <Model>
                         <template>

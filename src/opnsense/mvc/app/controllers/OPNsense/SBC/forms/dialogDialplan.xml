@@ -18,8 +18,14 @@
 		<help>Description of this Codec (Not Parsed)</help>
 	</field>
 	<field>
-		<id>dialplan.pattern</id>
-		<label>Pattern</label>
+		<id>dialplan.inboundDialPattern</id>
+		<label>Inbound Dial Pattern</label>
+		<type>text</type>
+		<help>Pattern to match</help>
+	</field>
+	<field>
+		<id>dialplan.outboundDialString</id>
+		<label>Outbound Dial String</label>
 		<type>text</type>
 		<help>Pattern to match</help>
 	</field>

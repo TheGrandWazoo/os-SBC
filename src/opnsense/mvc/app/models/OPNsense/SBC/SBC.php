@@ -112,7 +112,7 @@ class SBC extends BaseModel
         return $uuid;
     }
 
-    public function newCodec($name, $description = "")
+    public function newDialplan($name, $description = "")
     {
         $codec = $this->codecs->codec->Add();
         $uuid = $codec->getAttributes()['uuid'];
