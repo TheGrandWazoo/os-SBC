@@ -1,0 +1,8 @@
+# Eclipse PDT project files
+.project
+.buildpath
+.settings/
+
+# Local build output
+/work/
+*.pkg
