@@ -1,0 +1,10 @@
+<acl>
+    <page-services-sbc>
+        <name>Services: SBC</name>
+        <description>Allow access to the SBC module</description>
+        <patterns>
+            <pattern>ui/sbc/*</pattern>
+            <pattern>api/sbc/*</pattern>
+        </patterns>
+    </page-services-sbc>
+</acl>

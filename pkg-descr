@@ -1,0 +1,4 @@
+The SBC plugin is to create a SIP Session Border Controller 
+into the OPNsense firewall. It fits between the signaling
+and/or media patchs between the calling and called parties
+of a SIP VoIP call.

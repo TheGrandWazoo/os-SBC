@@ -1,0 +1,4 @@
+# Eclipse PDT project files
+.project
+.buildpath
+.settings/

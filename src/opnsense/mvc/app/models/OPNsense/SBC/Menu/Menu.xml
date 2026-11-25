@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <SBC VisibleName="SBC" cssClass="fa fa-phone fa-fw">
+            <Peers VisibleName="Peers" url="/ui/sbc" />
+            <Rules VisibleName="Rules" url="/ui/sbc" />
+        </SBC>
+    </Services>
+</menu>

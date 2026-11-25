@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>sbc.general.Enabled</id>
+        <label>Enable SBC</label>
+        <type>checkbox</type>
+        <help>Enable or disable the SBC service.</help>
+    </field>
+</form>
