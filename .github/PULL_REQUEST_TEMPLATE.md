@@ -26,6 +26,6 @@ What was run, and what was not:
 
 - [ ] Branch is `<type>/<issue>-<slug>` and targets `next` (or `release/N.x` for a backport)
 - [ ] Issue is linked and has a milestone
-- [ ] PRD requirement IDs referenced where relevant (e.g. FR-MEDIA-1)
+- [ ] PRD requirement IDs referenced where relevant (e.g. FR-SBC-MEDIA-0001)
 - [ ] Docs updated (README, troubleshooting, ADR/PRD/ROADMAP if the shape or scope changed)
 - [ ] No secrets, keys or credentials in the diff, test output or logs

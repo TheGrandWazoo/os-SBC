@@ -1,9 +1,9 @@
-# ADR-0008: Registration pass-through: the PBX stays the registrar
+# ADR-SBC-0008: Registration pass-through: the PBX stays the registrar
 
 **Date**: 2026-11-25
 **Status**: Proposed
 **Deciders**: Kevin Adams
-**Related**: ADR-0002, PRD-0001 (FR-REG-*)
+**Related**: ADR-SBC-0002, PRD-SBC-0001 (FR-SBC-REG-*)
 
 ## Context
 

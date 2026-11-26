@@ -1,6 +1,6 @@
-# Runbook 0001: Cut a release
+# RB-SBC-0001: Cut a release
 
-Applies ADR-0004 (branches) and ADR-0005 (versions and channels). Docs and
+Applies ADR-SBC-0004 (branches) and ADR-SBC-0005 (versions and channels). Docs and
 issue closures happen **before** the tag, as in freenas-proxmox RUNBOOK-002.
 
 ## A. New major: cut `release/N.x` (first time for N.0.0)
@@ -17,7 +17,7 @@ issue closures happen **before** the tag, as in freenas-proxmox RUNBOOK-002.
    `PLUGIN_VERSION=N.0.0`.
 6. PR into `next`: bump `PLUGIN_VERSION` to the next planned version
    (e.g. `N.1.0`), keep `PLUGIN_DEVEL=yes`.
-7. Add the `vN/testing` and `vN/stable` repo tracks (ADR-0006).
+7. Add the `vN/testing` and `vN/stable` repo tracks (ADR-SBC-0006).
 
 ## B. Release candidate
 

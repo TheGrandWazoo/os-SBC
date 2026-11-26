@@ -1,10 +1,10 @@
-# Design 0001: Kamailio routing and media handling
+# DES-SBC-0001: Kamailio routing and media handling
 
 **Status**: Draft
 **Date**: 2026-11-26
 **Owner**: Kevin Adams
-**Delivers**: FR-NET-1/2/3, FR-PBX-1, FR-TRK-1/2, FR-REG-1/2, FR-MEDIA-1/2/3, FR-SEC-1/2/3
-**Related**: ADR-0002, ADR-0003, ADR-0008, [architecture.md](../architecture.md),
+**Delivers**: FR-SBC-NET-0001/0002/0003, FR-SBC-PBX-0001, FR-SBC-TRK-0001/0002, FR-SBC-REG-0001/0002, FR-SBC-MEDIA-0001/0002/0003, FR-SBC-SEC-0001/0002/0003
+**Related**: ADR-SBC-0002, ADR-SBC-0003, ADR-SBC-0008, [architecture.md](../architecture.md),
 [threat model](../security/threat-model.md)
 
 How the generated `kamailio.cfg` decides where every SIP message goes, and
@@ -20,11 +20,11 @@ in the lab before alpha.1 code is merged.
    PBX. Only the PBX can send to a trunk or a remote phone. This single rule
    is the main defence against toll fraud and open-relay abuse.
 3. **The PBX is the only registrar and the only place that authenticates**
-   (ADR-0008).
+   (ADR-SBC-0008).
 4. **Stateful, record-routed.** `tm` for transactions, `record_route()` on
    dialog-creating requests so in-dialog requests come back through the SBC,
    `dialog` for the live view and limits.
-5. **Media for every call**, in both directions (ADR-0003).
+5. **Media for every call**, in both directions (ADR-SBC-0003).
 
 ## 2. Generated files
 
@@ -53,7 +53,7 @@ alias=SBC_WAN_ADV # so uri==myself matches the advertised address
 ```
 
 `SBC_WAN_ADV` equals `SBC_WAN_IP` unless an advertised address is set
-(FR-NET-2, double NAT). `#!substdef` is used instead of `#!define` because the
+(FR-SBC-NET-0002, double NAT). `#!substdef` is used instead of `#!define` because the
 values sit inside `listen=` strings and quoted comparisons. **[verify]**
 
 ## 4. Request routing
@@ -87,8 +87,8 @@ For traffic received on the WAN only:
 
 - Drop sources in the ban table (`htable` `ipban`, auto-expiring).
 - Flood check with `pike`; a source over the limit is added to `ipban`
-  (FR-SEC-1).
-- Drop known scanner user agents silently (FR-SEC-2). Silent drop gives
+  (FR-SBC-SEC-0001).
+- Drop known scanner user agents silently (FR-SBC-SEC-0002). Silent drop gives
   scanners nothing to learn from.
 
 For all traffic: `maxfwd` check (483), `sanity_check`, and answer
@@ -101,14 +101,14 @@ For all traffic: `maxfwd` check (483), `sanity_check`, and answer
 - ACK without a route: relay only if it matches a transaction.
 - Otherwise 404 and stop.
 
-### 4.3 REGISTER (FR-REG-1)
+### 4.3 REGISTER (FR-SBC-REG-0001)
 
 - Only accepted on the WAN side. A REGISTER received on the LAN gets 403.
-- Optional allow-list of phone source networks (FR-SEC-3).
+- Optional allow-list of phone source networks (FR-SBC-SEC-0003).
 - `add_path_received()` adds `Path: <sip:SBC_LAN_IP;lr;received=sip:<src>:<port>>`.
 - `$du` = the PBX, then relay. The PBX authenticates (401/407 pass back to the
   phone unchanged).
-- The registration-failure counter from the threat model (T-3) hooks the
+- The registration-failure counter from the threat model (THR-SBC-0003) hooks the
   replies here.
 
 ### 4.4 Initial requests from the WAN
@@ -117,7 +117,7 @@ For all traffic: `maxfwd` check (483), `sanity_check`, and answer
    its inbound networks (`ipops` `is_in_subnet`). Trunks given as hostnames
    need inbound networks, because `$si` is an IP. **[verify]** whether to
    resolve hostnames at template time instead.
-2. **From a trunk:** `$du` = PBX at the trunk port (ADR-0008), so the PBX can
+2. **From a trunk:** `$du` = PBX at the trunk port (ADR-SBC-0008), so the PBX can
    tell carrier calls from phone calls.
 3. **Not a trunk** (a remote phone): allow-list check, `$du` = PBX at the
    phone port. The PBX challenges the INVITE.
@@ -140,7 +140,7 @@ For all traffic: `maxfwd` check (483), `sanity_check`, and answer
 Arms `t_on_reply("MANAGE_REPLY")` and, for INVITE, `t_on_failure("MANAGE_FAILURE")`,
 then `t_relay()`; on failure `sl_reply_error()`.
 
-## 5. Media handling (FR-MEDIA-1)
+## 5. Media handling (FR-SBC-MEDIA-0001)
 
 rtpproxy runs in bridge mode with **the LAN address first and the WAN address
 second**: `-l LAN/WAN -A LAN/WAN_ADV`. Kamailio's direction flags follow
@@ -166,7 +166,7 @@ Where it is called:
 rtpproxy's control socket is UDP on 127.0.0.1:7722 rather than a Unix socket,
 to avoid file permission problems between the `rtpproxy` and `kamailio` users.
 
-## 6. NAT handling for remote phones (FR-REG-2)
+## 6. NAT handling for remote phones (FR-SBC-REG-0002)
 
 - `force_rport()` on WAN requests.
 - `nat_uac_test("19")` (private Contact, Via received ≠ source, port
@@ -175,11 +175,11 @@ to avoid file permission problems between the `rtpproxy` and `kamailio` users.
   requests from the PBX reach the phone. `handle_ruri_alias()` undoes it on
   the way out (4.2).
 - Registered phones are reached through Path (4.5). Keepalive is the phone's
-  or the PBX's job in 1.0 (ADR-0008).
+  or the PBX's job in 1.0 (ADR-SBC-0008).
 - Trunk providers have public addresses, so the NAT test is false and nothing
   is rewritten.
 
-## 7. Dialog tracking and live data (FR-MON-1/2)
+## 7. Dialog tracking and live data (FR-SBC-MON-0001/0002)
 
 - `dlg_manage()` on initial INVITE. The dialog module counts active calls and
   exposes `dlg.list`.
@@ -189,7 +189,7 @@ to avoid file permission problems between the `rtpproxy` and `kamailio` users.
 - Dialog default timeout: 6 hours, so a call that never sees a BYE does not
   stay in the live view forever.
 
-## 8. Firewall rules (FR-MEDIA-2)
+## 8. Firewall rules (FR-SBC-MEDIA-0002)
 
 Registered through the plugin's `sbc_firewall()` hook, for each external
 interface, when automatic rules are enabled:

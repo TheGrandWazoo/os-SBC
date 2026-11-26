@@ -1,9 +1,9 @@
-# ADR-0007: CI pipeline: lint, test, build, integrate, publish
+# ADR-SBC-0007: CI pipeline: lint, test, build, integrate, publish
 
 **Date**: 2026-11-25
 **Status**: Proposed
 **Deciders**: Kevin Adams
-**Related**: ADR-0004, ADR-0005, ADR-0006
+**Related**: ADR-SBC-0004, ADR-SBC-0005, ADR-SBC-0006
 
 ## Context
 
@@ -25,7 +25,7 @@ Dependabot updates them.
 | `build` | FreeBSD 15.1 VM on a hosted runner | Check out opnsense/plugins at the matching branch, place the plugin at `net/sbc`, run `make package`, upload the `.pkg` | yes |
 | `deps` | self-hosted FreeBSD 15.1 builder (lab Proxmox VM) | poudriere with the opnsense/ports tree and OPNsense's make.conf for the target series; builds Kamailio, rtpproxy and missing libraries | no (manual, or when the version file changes) |
 | `integration` | self-hosted, OPNsense VM on lab Proxmox | Install from the devel repo; SIPp scenarios: register through, inbound and outbound call with media, BYE releases the relay ports, flood rejected | not on PRs; required before a release tag |
-| `publish` | ubuntu (hosted), `publish` environment | Sign and update the repo track for the branch or tag (ADR-0005) | n/a |
+| `publish` | ubuntu (hosted), `publish` environment | Sign and update the repo track for the branch or tag (ADR-SBC-0005) | n/a |
 
 A manual **carrier test** (`workflow_dispatch`, self-hosted runner) installs the
 testing track on the second physical OPNsense firewall and places real calls
@@ -45,4 +45,4 @@ never on PRs. Flowroute credentials live only in a protected environment.
   Packer templates (as in freenas-proxmox-packer) would make them reproducible.
 - The `test` job depends on vendoring or fetching OPNsense's template engine
   module; pin it to the OPNsense series under test.
-- Required-check names must match branch protection exactly (ADR-0004).
+- Required-check names must match branch protection exactly (ADR-SBC-0004).

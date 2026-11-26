@@ -1,9 +1,9 @@
-# ADR-0003: Anchor media on the firewall instead of opening dynamic pf pinholes
+# ADR-SBC-0003: Anchor media on the firewall instead of opening dynamic pf pinholes
 
 **Date**: 2026-11-25
 **Status**: Proposed
 **Deciders**: Kevin Adams
-**Related**: ADR-0002, PRD-0001 (FR-MEDIA-*)
+**Related**: ADR-SBC-0002, PRD-SBC-0001 (FR-SBC-MEDIA-*)
 
 ## Context
 

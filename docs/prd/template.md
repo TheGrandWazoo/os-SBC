@@ -1,4 +1,4 @@
-# PRD-NNNN: <title>
+# PRD-SBC-NNNN: <title>
 
 **Date**: YYYY-MM-DD
 **Status**: Draft | Approved | Shipped (vX.Y.Z) | Retired

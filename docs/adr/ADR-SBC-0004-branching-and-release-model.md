@@ -1,9 +1,9 @@
-# ADR-0004: Branching and release model: `next` plus `release/N.x`
+# ADR-SBC-0004: Branching and release model: `next` plus `release/N.x`
 
 **Date**: 2026-11-25
 **Status**: Proposed
 **Deciders**: Kevin Adams
-**Related**: ADR-0005, ADR-0007, `CONTRIBUTING.md`, `docs/runbooks/0001-cut-a-release.md`
+**Related**: ADR-SBC-0005, ADR-SBC-0007, `CONTRIBUTING.md`, `docs/runbooks/RB-SBC-0001-cut-a-release.md`
 
 ## Context
 
@@ -46,7 +46,7 @@ Names never change once assigned. A new major gets a new `release/N.x`;
 ### Protection
 
 On `next` and `release/*`: PR required, required status checks (the `lint`,
-`test` and `build` jobs from ADR-0007), no force pushes, no deletions, rules
+`test` and `build` jobs from ADR-SBC-0007), no force pushes, no deletions, rules
 apply to admins. `archive/*` is locked read-only.
 
 ### Cutover from today's state

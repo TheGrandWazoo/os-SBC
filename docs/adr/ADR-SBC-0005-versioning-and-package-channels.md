@@ -1,9 +1,9 @@
-# ADR-0005: Versioning and package channels
+# ADR-SBC-0005: Versioning and package channels
 
 **Date**: 2026-11-25
 **Status**: Proposed
 **Deciders**: Kevin Adams
-**Related**: ADR-0004, ADR-0006
+**Related**: ADR-SBC-0004, ADR-SBC-0006
 
 ## Context
 

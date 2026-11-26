@@ -160,10 +160,10 @@ Never save ephemeral task details to memory — use the todo list for that.
 ## This project: os-SBC
 
 OPNsense plugin (`os-sbc`) that turns the firewall into a SIP Session Border
-Controller: Kamailio for signalling, rtpproxy for media (ADR-0002).
+Controller: Kamailio for signalling, rtpproxy for media (ADR-SBC-0002).
 
 - **Repo:** `TheGrandWazoo/os-SBC`. Default and integration branch is `next`.
-  Branch, release and backport rules: ADR-0004 and `CONTRIBUTING.md`.
+  Branch, release and backport rules: ADR-SBC-0004 and `CONTRIBUTING.md`.
 - **Docs layout:** ADRs in `docs/adr/NNNN-*.md`, PRDs in `docs/prd/NNNN-*.md`,
   runbooks in `docs/runbooks/`, design docs in `docs/design/NNNN-*.md`,
   plus `docs/architecture.md`, `docs/testing/test-plan.md` and
@@ -171,7 +171,7 @@ Controller: Kamailio for signalling, rtpproxy for media (ADR-0002).
   lot in `ROADMAP.md`.
 - **Target platform:** OPNsense 26.7 (FreeBSD 15.1, PHP 8.5, Python 3.13,
   OpenSSL 3.5 from ports). OPNsense does not ship Kamailio or rtpproxy, so this
-  project builds and hosts them (ADR-0006, ADR-0007).
+  project builds and hosts them (ADR-SBC-0006, ADR-SBC-0007).
 - **Plugin layout:** standard opnsense/plugins tree. The package lives at
   `net/sbc` when dropped into an opnsense/plugins checkout.
 - **Cannot be tested from WSL:** anything that needs OPNsense, Kamailio or

@@ -1,7 +1,7 @@
-# ADR-NNNN: <short title in imperative mood>
+# ADR-SBC-NNNN: <short title in imperative mood>
 
 **Date**: YYYY-MM-DD
-**Status**: Draft | Proposed | Accepted | Rejected | Withdrawn | Superseded by ADR-NNNN | Deprecated
+**Status**: Draft | Proposed | Accepted | Rejected | Withdrawn | Superseded by ADR-SBC-NNNN | Deprecated
 **Deciders**: Kevin Adams
 **Supersedes**: none
 **Related**: issues, PRDs, other ADRs

@@ -1,9 +1,9 @@
-# ADR-0002: Kamailio and rtpproxy replace Asterisk as the SBC engine
+# ADR-SBC-0002: Kamailio and rtpproxy replace Asterisk as the SBC engine
 
 **Date**: 2026-11-25
 **Status**: Accepted
 **Deciders**: Kevin Adams
-**Related**: ADR-0003, ADR-0006, ADR-0008, PRD-0001
+**Related**: ADR-SBC-0003, ADR-SBC-0006, ADR-SBC-0008, PRD-SBC-0001
 
 ## Context
 
@@ -40,7 +40,7 @@ instead drive an **rtpengine** running on a separate Linux host.
 - Kamailio stays a proxy, not a B2BUA. The PBX keeps dialplan, users and
   authentication.
 - rtpproxy runs in bridge mode, LAN address first and WAN address second.
-- The Asterisk code on `master` is frozen, not maintained (see ADR-0004).
+- The Asterisk code on `master` is frozen, not maintained (see ADR-SBC-0004).
 
 ## Alternatives considered
 
@@ -57,7 +57,7 @@ instead drive an **rtpengine** running on a separate Linux host.
 ## Consequences
 
 - os-SBC must build and host Kamailio and rtpproxy itself, because OPNsense
-  does not ship them (ADR-0006, ADR-0007). This is the largest ongoing cost of
+  does not ship them (ADR-SBC-0006, ADR-SBC-0007). This is the largest ongoing cost of
   this decision.
 - No transcoding with rtpproxy. Transcoding or WebRTC needs the remote
   rtpengine option.

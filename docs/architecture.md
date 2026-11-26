@@ -2,8 +2,8 @@
 
 **Status**: Draft
 **Date**: 2026-11-26
-**Related**: ADR-0002, ADR-0003, ADR-0006, ADR-0008, PRD-0001,
-[design/0001-kamailio-routing.md](design/0001-kamailio-routing.md)
+**Related**: ADR-SBC-0002, ADR-SBC-0003, ADR-SBC-0006, ADR-SBC-0008, PRD-SBC-0001,
+[design/DES-SBC-0001-kamailio-routing.md](design/DES-SBC-0001-kamailio-routing.md)
 
 One page to understand how the pieces fit. Detail lives in the design docs
 and ADRs.
@@ -55,7 +55,7 @@ goes through the SBC.
 
 | Component | Runs as | Role |
 |---|---|---|
-| **Kamailio 6.1** | `kamailio` user, `/usr/local/etc/rc.d/kamailio` | Stateful SIP proxy. Classifies traffic (trunk, remote phone, PBX), forwards it, adds Path for registrations, tracks dialogs, drives the media relay. Never a registrar or B2BUA (ADR-0008). |
+| **Kamailio 6.1** | `kamailio` user, `/usr/local/etc/rc.d/kamailio` | Stateful SIP proxy. Classifies traffic (trunk, remote phone, PBX), forwards it, adds Path for registrations, tracks dialogs, drives the media relay. Never a registrar or B2BUA (ADR-SBC-0008). |
 | **rtpproxy 3.1** | `rtpproxy` user, `/usr/local/etc/rc.d/rtpproxy` | Bridge-mode media relay: one address on the LAN, one on the WAN. Allocates a port pair per call, frees it at the end. |
 | **Remote rtpengine** (optional) | separate Linux host | Replaces rtpproxy when transcoding, SRTP termination or WebRTC is needed (later). |
 | **Plugin MVC** | PHP in OPNsense's web stack | Model (`OPNsense/SBC`), settings and live-call pages, REST API under `/api/sbc/`. |
@@ -77,7 +77,7 @@ goes through the SBC.
 | `/var/run/kamailio/` | FIFO | — | Kamailio JSON-RPC for the live-call page |
 
 The plugin adds pf rules for the WAN-side SIP ports and the relay range, to
-*this firewall* only (ADR-0003). It never forwards ports to the PBX.
+*this firewall* only (ADR-SBC-0003). It never forwards ports to the PBX.
 
 ## Configuration flow
 
@@ -103,7 +103,7 @@ sequenceDiagram
 ```
 
 A config that fails `kamailio -c` is not started, and the UI shows the error
-(FR-SVC-2).
+(FR-SBC-SVC-0002).
 
 ## Live data flow
 
@@ -123,5 +123,5 @@ returns JSON. Nothing is stored; it is a live view.
 ## Packaging
 
 The plugin, Kamailio, rtpproxy and any libraries OPNsense lacks come from the
-KSA package repository (ADR-0006). The plugin package depends on `kamailio`
+KSA package repository (ADR-SBC-0006). The plugin package depends on `kamailio`
 and `rtpproxy`, so installing `os-sbc` from the plugin list pulls in both.

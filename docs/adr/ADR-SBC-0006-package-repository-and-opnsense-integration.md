@@ -1,9 +1,9 @@
-# ADR-0006: Signed package repository that OPNsense lists as plugins
+# ADR-SBC-0006: Signed package repository that OPNsense lists as plugins
 
 **Date**: 2026-11-25
 **Status**: Proposed
 **Deciders**: Kevin Adams
-**Related**: ADR-0002, ADR-0005, ADR-0007
+**Related**: ADR-SBC-0002, ADR-SBC-0005, ADR-SBC-0007
 
 ## Context
 
@@ -17,7 +17,7 @@ from every enabled repository. Community repositories already work this way.
 Two facts shape the repository:
 
 - OPNsense 26.7 does not ship Kamailio, rtpproxy, or some of their libraries,
-  so our repository must carry them too (ADR-0002).
+  so our repository must carry them too (ADR-SBC-0002).
 - Packages must match OPNsense's ABI and libraries: FreeBSD 15.1, PHP 8.5,
   Python 3.13, OpenSSL 3.5 from ports (opnsense/tools `config/26.7/build.conf`).
   Building against stock FreeBSD packages risks library mismatches.
@@ -28,7 +28,7 @@ Two facts shape the repository:
   choice as freenas-proxmox's apt repo (its ADR-003 and ADR-010).
 - **Repo layout:** `https://<pages-host>/${ABI}/<track>/`, where pkg fills in
   `${ABI}` (e.g. `FreeBSD:15:amd64`) and `<track>` is `devel`, `v1/testing` or
-  `v1/stable` (ADR-0005).
+  `v1/stable` (ADR-SBC-0005).
 - **Contents:** `os-sbc` / `os-sbc-devel`, plus Kamailio, rtpproxy and any of
   their libraries missing from OPNsense's own repository. Nothing that
   OPNsense already ships.

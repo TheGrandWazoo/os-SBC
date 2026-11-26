@@ -11,7 +11,7 @@
 
 ## Branches
 
-The full model is [ADR-0004](docs/adr/0004-branching-and-release-model.md).
+The full model is [ADR-SBC-0004](docs/adr/ADR-SBC-0004-branching-and-release-model.md).
 In short:
 
 | Branch | What it is |
@@ -52,9 +52,9 @@ never skip hooks.
 ## Checks
 
 A PR merges only when `lint`, `test` and `build` pass
-([ADR-0007](docs/adr/0007-ci-pipeline.md)). Anything that could only be tested
+([ADR-SBC-0007](docs/adr/ADR-SBC-0007-ci-pipeline.md)). Anything that could only be tested
 on a real OPNsense box must say so in the PR.
 
 ## Releases
 
-See [docs/runbooks/0001-cut-a-release.md](docs/runbooks/0001-cut-a-release.md).
+See [docs/runbooks/RB-SBC-0001-cut-a-release.md](docs/runbooks/RB-SBC-0001-cut-a-release.md).

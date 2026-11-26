@@ -12,7 +12,7 @@ What should exist that does not today, and who it is for.
 
 ## PRD requirements
 
-IDs from docs/prd (e.g. FR-MEDIA-1), or "none".
+IDs from docs/prd (e.g. FR-SBC-MEDIA-0001), or "none".
 
 ## Scope
 
