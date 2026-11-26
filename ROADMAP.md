@@ -71,3 +71,4 @@ several milestones gets an `epic` issue.
 | 2026-11-26 | Package repo: separate shared repo, GitHub Pages, freenas-proxmox style | ADR-SBC-0006 |
 | 2026-11-26 | IDs carry the project slug; docs split into human and machine-readable parts, checked by `tools/check_docs.py` | ADR-SBC-0001 |
 | 2026-11-26 | Carrier tests run on the HA backup firewall | RB-SBC-0002 |
+| 2026-11-26 | CI `lint`, `test`, `build` on every PR; first `os-sbc-devel` package built | ADR-SBC-0007, #3 |

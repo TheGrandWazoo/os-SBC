@@ -36,5 +36,5 @@ and what it costs. Copy [`template.md`](template.md) to start a new one.
 | [ADR-SBC-0004](ADR-SBC-0004-branching-and-release-model.md) | Branching and release model: `next` plus `release/N.x` | Accepted |
 | [ADR-SBC-0005](ADR-SBC-0005-versioning-and-package-channels.md) | Versioning and package channels | Accepted |
 | [ADR-SBC-0006](ADR-SBC-0006-package-repository-and-opnsense-integration.md) | Signed package repository that OPNsense lists as plugins | Accepted |
-| [ADR-SBC-0007](ADR-SBC-0007-ci-pipeline.md) | CI pipeline: lint, test, build, integrate, publish | Proposed |
+| [ADR-SBC-0007](ADR-SBC-0007-ci-pipeline.md) | CI pipeline: lint, test, build, integrate, publish | Accepted |
 | [ADR-SBC-0008](ADR-SBC-0008-registration-pass-through-with-path.md) | Registration pass-through: the PBX stays the registrar | Proposed |
