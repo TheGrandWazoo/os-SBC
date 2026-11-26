@@ -12,6 +12,9 @@ several milestones gets an `epic` issue.
 
 ### 0 — Foundation (no release)
 - Governance docs: ADRs 0001–0008, PRD-0001, this roadmap, CONTRIBUTING, templates
+- Draft and review: architecture overview, design 0001 (Kamailio routing),
+  test plan, threat model; resolve the design's [verify] items in the lab
+- Fold the threat model's proposed FR-SEC-6..10 / NFR-7..8 into PRD-0001
 - Branch cutover and protection (ADR-0004)
 - Labels and milestones on GitHub
 - CI `lint`, `test` and `build` jobs (ADR-0007)

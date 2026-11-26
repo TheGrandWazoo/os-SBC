@@ -165,7 +165,10 @@ Controller: Kamailio for signalling, rtpproxy for media (ADR-0002).
 - **Repo:** `TheGrandWazoo/os-SBC`. Default and integration branch is `next`.
   Branch, release and backport rules: ADR-0004 and `CONTRIBUTING.md`.
 - **Docs layout:** ADRs in `docs/adr/NNNN-*.md`, PRDs in `docs/prd/NNNN-*.md`,
-  runbooks in `docs/runbooks/`, plan and parking lot in `ROADMAP.md`.
+  runbooks in `docs/runbooks/`, design docs in `docs/design/NNNN-*.md`,
+  plus `docs/architecture.md`, `docs/testing/test-plan.md` and
+  `docs/security/threat-model.md`. Map: `docs/README.md`. Plan and parking
+  lot in `ROADMAP.md`.
 - **Target platform:** OPNsense 26.7 (FreeBSD 15.1, PHP 8.5, Python 3.13,
   OpenSSL 3.5 from ports). OPNsense does not ship Kamailio or rtpproxy, so this
   project builds and hosts them (ADR-0006, ADR-0007).
