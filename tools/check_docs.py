@@ -3,9 +3,10 @@
 # requires-python = ">=3.11"
 # dependencies = ["pyyaml>=6"]
 # ///
-"""Check os-SBC documentation structure and cross-references.
+"""Check KSA project documentation structure and cross-references.
 
-Rules come from ADR-SBC-0001 (ID scheme and document structure):
+Rules come from ADR-SBC-0001 here, and the claude-scaffold "documents and
+IDs" convention (ID scheme and document structure):
 
 * every document under docs/ (except README.md and template.md) has YAML
   front matter with id, title, kind, status and date;
@@ -32,6 +33,10 @@ from pathlib import Path
 
 import yaml
 
+# Project slug used in every ID (ADR-<SLUG>-0001). The only line to change
+# when copying this file to another project.
+SLUG = "SBC"
+
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 
@@ -45,10 +50,10 @@ KINDS = {
     "test-plan": ("TST", False, {"draft", "approved"}),
     "threat-model": ("TM", False, {"draft", "approved"}),
 }
-REQ_ID = re.compile(r"^(FR-SBC-[A-Z]+-\d{4}|NFR-SBC-\d{4})$")
-THR_ID = re.compile(r"^THR-SBC-\d{4}$")
+REQ_ID = re.compile(rf"^(FR-{SLUG}-[A-Z]+-\d{{4}}|NFR-{SLUG}-\d{{4}})$")
+THR_ID = re.compile(rf"^THR-{SLUG}-\d{{4}}$")
 # Any SBC ID mentioned in prose. Placeholders (NNNN, AREA) do not match.
-MENTION = re.compile(r"\b((?:ADR|PRD|DES|RB|ARC|TST|TM|THR|NFR)-SBC-\d{4}|FR-SBC-[A-Z]+-\d{4})\b")
+MENTION = re.compile(rf"\b((?:ADR|PRD|DES|RB|ARC|TST|TM|THR|NFR)-{SLUG}-\d{{4}}|FR-{SLUG}-[A-Z]+-\d{{4}})\b")
 PRIORITIES = {"must", "should", "could"}
 REQ_STATUSES = {"draft", "approved", "shipped", "dropped"}
 RESIDUAL = {"low", "medium", "high", "unknown"}
@@ -108,8 +113,8 @@ def main() -> int:
             r.error(path, f"unknown kind '{kind}'")
             continue
         prefix, numbered, statuses = KINDS[kind]
-        if not re.fullmatch(rf"{prefix}-SBC-\d{{4}}", doc_id):
-            r.error(path, f"id '{doc_id}' should look like {prefix}-SBC-NNNN")
+        if not re.fullmatch(rf"{prefix}-{SLUG}-\d{{4}}", doc_id):
+            r.error(path, f"id '{doc_id}' should look like {prefix}-{SLUG}-NNNN")
         if status not in statuses:
             r.error(path, f"status '{status}' not one of {sorted(statuses)}")
         if status == "superseded" and not fm.get("superseded_by"):
@@ -235,7 +240,7 @@ def main() -> int:
     # ADR index agrees with ADR status
     index = DOCS / "adr" / "README.md"
     if index.exists():
-        rows = dict(re.findall(r"^\| \[(ADR-SBC-\d{4})\][^|]*\|[^|]*\| ([^|]+?) \|", index.read_text(), re.M))
+        rows = dict(re.findall(rf"^\| \[(ADR-{SLUG}-\d{{4}})\][^|]*\|[^|]*\| ([^|]+?) \|", index.read_text(), re.M))
         for doc_id, d in docs.items():
             if d["kind"] != "adr":
                 continue
