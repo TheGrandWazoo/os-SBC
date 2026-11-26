@@ -5,6 +5,9 @@
 # job's VM). Output: work/pkg/*.pkg in the repository root.
 #
 #   OPNSENSE_SERIES  opnsense/core and opnsense/plugins branch suffix (default 26.7)
+#   STRICT_LINT      1 (default): any problem `make lint` prints fails the build.
+#                    0: report them as a warning only (until #11 removes the
+#                    2019 Asterisk model, which upstream's model rules reject).
 
 set -eu
 
@@ -27,7 +30,19 @@ cp -R "${SRC}/Makefile" "${SRC}/pkg-descr" "${SRC}/src" "${PLUGIN}/"
 (cd "${WORK}/plugins" && git add net/sbc)
 
 echo ">>> make lint (opnsense/plugins + core rules)"
-make -C "${PLUGIN}" lint
+# Upstream's model checks print problems but still exit 0, so judge by output.
+# `xargs -t` in lint-exec echoes "test -x <file>" lines; those are not problems.
+LINT_OUT="${WORK}/lint.txt"
+make -C "${PLUGIN}" lint > "${LINT_OUT}" 2>&1 || { cat "${LINT_OUT}"; exit 1; }
+cat "${LINT_OUT}"
+PROBLEMS=$(grep -v -e '^test -x ' -e '^[[:space:]]*$' "${LINT_OUT}" | wc -l | tr -d ' ')
+if [ "${PROBLEMS}" -gt 0 ]; then
+    if [ "${STRICT_LINT:-1}" = "1" ]; then
+        echo ">>> make lint reported ${PROBLEMS} problem(s)"
+        exit 1
+    fi
+    echo "::warning::make lint reported ${PROBLEMS} problem(s); this becomes blocking with #11"
+fi
 
 echo ">>> make package"
 make -C "${PLUGIN}" package
