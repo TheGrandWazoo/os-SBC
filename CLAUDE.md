@@ -178,3 +178,7 @@ Controller: Kamailio for signalling, rtpproxy for media (ADR-SBC-0002).
   `net/sbc` when dropped into an opnsense/plugins checkout.
 - **Cannot be tested from WSL:** anything that needs OPNsense, Kamailio or
   FreeBSD runs in CI or on a lab VM. Say so plainly in PRs and issues.
+- **File modes on /mnt/c:** the workspace is on NTFS, so every file looks
+  executable and git has `core.fileMode=false`. Set the execute bit
+  explicitly for scripts with a shebang:
+  `git update-index --chmod=+x <file>`, and check with `git ls-files -s`.

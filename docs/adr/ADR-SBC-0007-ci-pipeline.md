@@ -2,8 +2,9 @@
 id: ADR-SBC-0007
 title: "CI pipeline: lint, test, build, integrate, publish"
 kind: adr
-status: proposed
+status: accepted
 date: 2026-11-25
+decided: 2026-11-26
 deciders: [Kevin Adams]
 supersedes: []
 related: [ADR-SBC-0004, ADR-SBC-0005, ADR-SBC-0006]
