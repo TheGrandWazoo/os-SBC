@@ -167,7 +167,9 @@ Controller: Kamailio for signalling, rtpproxy for media (ADR-SBC-0002).
 - **Docs layout:** ADRs in `docs/adr/NNNN-*.md`, PRDs in `docs/prd/NNNN-*.md`,
   runbooks in `docs/runbooks/`, design docs in `docs/design/NNNN-*.md`,
   plus `docs/architecture.md`, `docs/testing/test-plan.md` and
-  `docs/security/threat-model.md`. Map: `docs/README.md`. Plan and parking
+  `docs/security/threat-model.md`. Map: `docs/README.md`. Every doc: front matter, "In short", human body,
+  optional "Machine-readable" YAML register (ADR-SBC-0001). Run
+  `uv run tools/check_docs.py` after any doc change. Plan and parking
   lot in `ROADMAP.md`.
 - **Target platform:** OPNsense 26.7 (FreeBSD 15.1, PHP 8.5, Python 3.13,
   OpenSSL 3.5 from ports). OPNsense does not ship Kamailio or rtpproxy, so this

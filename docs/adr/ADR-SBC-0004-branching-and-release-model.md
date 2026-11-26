@@ -1,9 +1,18 @@
+---
+id: ADR-SBC-0004
+title: "Branching and release model: `next` plus `release/N.x`"
+kind: adr
+status: accepted
+date: 2026-11-25
+decided: 2026-11-26
+deciders: [Kevin Adams]
+supersedes: []
+related: [ADR-SBC-0005, ADR-SBC-0007, RB-SBC-0001]
+---
+
 # ADR-SBC-0004: Branching and release model: `next` plus `release/N.x`
 
-**Date**: 2026-11-25
-**Status**: Proposed
-**Deciders**: Kevin Adams
-**Related**: ADR-SBC-0005, ADR-SBC-0007, `CONTRIBUTING.md`, `docs/runbooks/RB-SBC-0001-cut-a-release.md`
+> **In short:** All work merges into `next`. When a major version is ready, `release/N.x` is cut from it; that branch takes fixes only, and release tags live there. Old lines are frozen under `archive/`.
 
 ## Context
 

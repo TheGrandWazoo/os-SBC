@@ -1,9 +1,18 @@
+---
+id: ADR-SBC-0005
+title: "Versioning and package channels"
+kind: adr
+status: accepted
+date: 2026-11-25
+decided: 2026-11-26
+deciders: [Kevin Adams]
+supersedes: []
+related: [ADR-SBC-0004, ADR-SBC-0006]
+---
+
 # ADR-SBC-0005: Versioning and package channels
 
-**Date**: 2026-11-25
-**Status**: Proposed
-**Deciders**: Kevin Adams
-**Related**: ADR-SBC-0004, ADR-SBC-0006
+> **In short:** Versions are semantic, starting at 1.0.0. Development builds from `next` ship as `os-sbc-devel`, releases as `os-sbc`. Each major version has its own update track, so nobody is upgraded across a major version by accident.
 
 ## Context
 

@@ -1,4 +1,16 @@
+---
+id: RB-SBC-0001
+title: "Cut a release"
+kind: runbook
+status: active
+date: 2026-11-26
+owners: [Kevin Adams]
+related: [ADR-SBC-0004, ADR-SBC-0005]
+---
+
 # RB-SBC-0001: Cut a release
+
+> **In short:** Step by step: cut a release branch, ship release candidates and final releases, patch an existing line, and rebuild for a new OPNsense series.
 
 Applies ADR-SBC-0004 (branches) and ADR-SBC-0005 (versions and channels). Docs and
 issue closures happen **before** the tag, as in freenas-proxmox RUNBOOK-002.

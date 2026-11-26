@@ -1,15 +1,19 @@
+---
+id: DES-SBC-0001
+title: "Kamailio routing and media handling"
+kind: design
+status: draft
+date: 2026-11-26
+owners: [Kevin Adams]
+delivers: [FR-SBC-NET-0001, FR-SBC-NET-0002, FR-SBC-NET-0003, FR-SBC-PBX-0001, FR-SBC-TRK-0001, FR-SBC-TRK-0002, FR-SBC-REG-0001, FR-SBC-REG-0002, FR-SBC-MEDIA-0001, FR-SBC-MEDIA-0002, FR-SBC-MEDIA-0003, FR-SBC-SEC-0001, FR-SBC-SEC-0002, FR-SBC-SEC-0003]
+related: [ADR-SBC-0002, ADR-SBC-0003, ADR-SBC-0008, ARC-SBC-0001, TM-SBC-0001]
+---
+
 # DES-SBC-0001: Kamailio routing and media handling
 
-**Status**: Draft
-**Date**: 2026-11-26
-**Owner**: Kevin Adams
-**Delivers**: FR-SBC-NET-0001/0002/0003, FR-SBC-PBX-0001, FR-SBC-TRK-0001/0002, FR-SBC-REG-0001/0002, FR-SBC-MEDIA-0001/0002/0003, FR-SBC-SEC-0001/0002/0003
-**Related**: ADR-SBC-0002, ADR-SBC-0003, ADR-SBC-0008, [architecture.md](../architecture.md),
-[threat model](../security/threat-model.md)
+> **In short:** How Kamailio decides where each SIP message goes and when audio is relayed. Two rules drive everything: direction is decided by which interface a message arrived on, and anything from the internet only ever goes to the PBX. Items marked **[verify]** must be confirmed in the lab before code merges.
 
-How the generated `kamailio.cfg` decides where every SIP message goes, and
-when media is relayed. Items marked **[verify]** are assumptions to confirm
-in the lab before alpha.1 code is merged.
+Related reading: [architecture overview](../architecture.md), [threat model](../security/threat-model.md).
 
 ## 1. Principles
 

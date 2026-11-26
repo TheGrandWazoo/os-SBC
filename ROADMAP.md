@@ -20,8 +20,9 @@ several milestones gets an `epic` issue.
 - CI `lint`, `test` and `build` jobs (ADR-SBC-0007)
 - Package repository and `os-ksa-repo` bootstrap (ADR-SBC-0006)
 - Lab: FreeBSD 15.1 builder VM, OPNsense 26.7 test VM, FreePBX VM, SIPp
-- Real-world test bed: the second physical OPNsense firewall plus the Flowroute
-  test trunk and number (see PRD-SBC-0001 "Test environment")
+- Real-world test bed: the HA backup firewall plus the Flowroute test trunk
+  and number (PRD-SBC-0001 "Test environment", RB-SBC-0002)
+- Create the shared package repo `TheGrandWazoo/opnsense-repo` (ADR-SBC-0006)
 
 ### 1.0.0-alpha.1 — Calls pass through
 - Remove the Asterisk model, forms and templates from `next`
@@ -66,3 +67,7 @@ several milestones gets an `epic` issue.
 | Date | Item | Where |
 |---|---|---|
 | 2026-11-25 | Engine is Kamailio + rtpproxy, not Asterisk | ADR-SBC-0002 |
+| 2026-11-26 | Branching (`next` + `release/N.x`), versioning and channels accepted | ADR-SBC-0004, ADR-SBC-0005 |
+| 2026-11-26 | Package repo: separate shared repo, GitHub Pages, freenas-proxmox style | ADR-SBC-0006 |
+| 2026-11-26 | IDs carry the project slug; docs split into human and machine-readable parts, checked by `tools/check_docs.py` | ADR-SBC-0001 |
+| 2026-11-26 | Carrier tests run on the HA backup firewall | RB-SBC-0002 |

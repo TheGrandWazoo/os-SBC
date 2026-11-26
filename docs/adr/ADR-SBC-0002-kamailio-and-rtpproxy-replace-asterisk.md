@@ -1,9 +1,18 @@
+---
+id: ADR-SBC-0002
+title: "Kamailio and rtpproxy replace Asterisk as the SBC engine"
+kind: adr
+status: accepted
+date: 2026-11-25
+decided: 2026-11-25
+deciders: [Kevin Adams]
+supersedes: []
+related: [ADR-SBC-0003, ADR-SBC-0006, ADR-SBC-0008, PRD-SBC-0001]
+---
+
 # ADR-SBC-0002: Kamailio and rtpproxy replace Asterisk as the SBC engine
 
-**Date**: 2026-11-25
-**Status**: Accepted
-**Deciders**: Kevin Adams
-**Related**: ADR-SBC-0003, ADR-SBC-0006, ADR-SBC-0008, PRD-SBC-0001
+> **In short:** os-SBC uses Kamailio to handle SIP and rtpproxy to relay audio, both on the firewall, instead of Asterisk. Asterisk is a PBX, so using it as an SBC meant rebuilding the PBX on the firewall. The catch: OPNsense ships neither package, so this project builds and hosts them.
 
 ## Context
 

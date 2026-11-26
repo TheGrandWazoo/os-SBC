@@ -1,12 +1,18 @@
-# os-SBC architecture overview
+---
+id: ARC-SBC-0001
+title: "os-SBC architecture overview"
+kind: architecture
+status: draft
+date: 2026-11-26
+owners: [Kevin Adams]
+related: [ADR-SBC-0002, ADR-SBC-0003, ADR-SBC-0006, ADR-SBC-0008, PRD-SBC-0001, DES-SBC-0001]
+---
 
-**Status**: Draft
-**Date**: 2026-11-26
-**Related**: ADR-SBC-0002, ADR-SBC-0003, ADR-SBC-0006, ADR-SBC-0008, PRD-SBC-0001,
-[design/DES-SBC-0001-kamailio-routing.md](design/DES-SBC-0001-kamailio-routing.md)
+# ARC-SBC-0001: os-SBC architecture overview
 
-One page to understand how the pieces fit. Detail lives in the design docs
-and ADRs.
+> **In short:** Kamailio and rtpproxy run on the firewall. Trunks and remote phones talk to the firewall, and the firewall talks to the PBX, so the PBX is never exposed to the internet. This page shows the pieces, the ports and how data flows.
+
+Detail lives in [DES-SBC-0001](design/DES-SBC-0001-kamailio-routing.md) and the [ADRs](adr/README.md).
 
 ## What it is
 

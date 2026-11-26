@@ -1,26 +1,32 @@
-# os-sbc 1.0 test plan
+---
+id: TST-SBC-0001
+title: "os-sbc 1.0 test plan"
+kind: test-plan
+status: draft
+date: 2026-11-26
+owners: [Kevin Adams]
+related: [PRD-SBC-0001, ADR-SBC-0007, DES-SBC-0001, TM-SBC-0001, RB-SBC-0002]
+---
 
-**Status**: Draft
-**Date**: 2026-11-26
-**Related**: PRD-SBC-0001, ADR-SBC-0007, [design/DES-SBC-0001-kamailio-routing.md](../design/DES-SBC-0001-kamailio-routing.md),
-[threat model](../security/threat-model.md)
+# TST-SBC-0001: os-sbc 1.0 test plan
 
-Every **Must** requirement in PRD-SBC-0001 has at least one automated test
-(NFR-SBC-0006). This plan says which test proves which requirement, where it runs,
-and what has to pass before each milestone ships.
+> **In short:** Every requirement in PRD-SBC-0001 is proven by at least one
+> test. Quick checks run on every pull request; full call tests run in the
+> lab on every release candidate; and before each final release we place real
+> calls over the Flowroute test number through the HA backup firewall.
 
-## 1. Test levels
+## How testing is layered
 
-| Level | ID prefix | Where | When | Tools |
-|---|---|---|---|---|
-| Static checks | `L-` | GitHub hosted (Linux) | Every PR | php -l, phpcs, xmllint, shellcheck, ruff, actionlint, gitleaks |
-| Template and config tests | `T-` | GitHub hosted (Linux) | Every PR | OPNsense template engine with fixture configs, `kamailio -c` in a container, pytest |
-| Package build | `B-` | FreeBSD 15.1 VM (hosted runner) | Every PR | opnsense/plugins `make package` |
-| Integration | `I-` | Lab: OPNsense 26.7 VM + FreePBX VM + SIPp hosts | Nightly on `next`; every release candidate | SIPp, nmap, tcpdump, API calls |
-| Carrier | `C-` | Second physical OPNsense firewall + Flowroute test number | Manual before every final tag | Real phones, PBX, manual checklist |
-| Security | `S-` | Lab | Each beta and release candidate | SIPVicious-style scanners, SIPp floods, nmap |
+| Level | Where it runs | When | What it catches |
+|---|---|---|---|
+| **Static** (`L`) | GitHub, Linux | Every PR | Syntax and style errors, leaked secrets, broken doc IDs |
+| **Template** (`T`) | GitHub, Linux | Every PR | Settings that render a broken or unsafe Kamailio config |
+| **Build** (`B`) | GitHub, FreeBSD VM | Every PR | Packaging mistakes |
+| **Integration** (`I`) | Lab Proxmox: OPNsense VM, FreePBX VM, SIPp | Nightly on `next`, every release candidate | Calls, registrations, media, teardown, HA, capacity |
+| **Security** (`S`) | Lab | Each beta and release candidate | Floods, scanners, password guessing |
+| **Carrier** (`C`) | HA backup firewall + Flowroute | By hand before each final tag | What only a real carrier and real NAT show |
 
-## 2. Lab topology (integration)
+## The lab
 
 ```mermaid
 flowchart LR
@@ -41,85 +47,109 @@ flowchart LR
     K --- FP
 ```
 
-All VMs live on lab Proxmox. The WAN side is a private lab network, so tests
-never touch the real internet. Rebuilt from templates for each run (Packer,
+Everything lives on lab Proxmox on private networks, so automated tests never
+touch the real internet. VMs are rebuilt from templates for each run (Packer,
 as in freenas-proxmox-packer).
 
-## 3. Traceability
+**Carrier tests** use the HA backup firewall. Prepare it first with
+[RB-SBC-0002](../runbooks/RB-SBC-0002-prepare-ha-backup-for-testing.md), and
+restore it afterwards. Carrier calls cost money and touch production
+hardware, so they never run automatically.
 
-| Requirement | Test(s) | Level |
-|---|---|---|
-| FR-SBC-SVC-0001 service control | T-SVC-1 configd actions render; I-SVC-1 start/stop/restart/status from API | T, I |
-| FR-SBC-SVC-0002 config check | T-CFG-1 every fixture renders and passes `kamailio -c`; I-SVC-2 invalid config refused, old config keeps running | T, I |
-| FR-SBC-NET-0001 interfaces | T-CFG-2 listeners match fixture; I-NET-1 SIP answered on WAN and LAN addresses only | T, I |
-| FR-SBC-NET-0002 advertised address | T-CFG-3 `advertise` present when set; I-NET-2 SDP and Via carry advertised address | T, I |
-| FR-SBC-NET-0003 UDP and TCP | I-NET-3 register and call over each transport | I |
-| FR-SBC-PBX-0001 PBX target and trunk port | T-CFG-4; I-TRK-1 trunk calls arrive on the PBX trunk port | T, I |
-| FR-SBC-TRK-0001 several trunks | T-CFG-5 two trunks, one disabled; I-TRK-2 call routed by R-URI host | T, I |
-| FR-SBC-TRK-0002 inbound and outbound | I-TRK-1, I-TRK-3 outbound to default trunk; C-1, C-2 | I, C |
-| FR-SBC-REG-0001 register pass-through | I-REG-1 401 then 200 relayed, Path present at PBX | I |
-| FR-SBC-REG-0002 calls via NAT | I-REG-2 PBX → remote phone; I-REG-3 remote phone → PBX; C-3 | I, C |
-| FR-SBC-MEDIA-0001 per-call ports | I-MED-1 audio both ways; I-MED-2 ports freed after BYE, CANCEL, 486, timeout | I |
-| FR-SBC-MEDIA-0002 range and pf rule | T-FW-1 rule fields; I-MED-3 rule present and toggleable; I-MED-4 idle port scan (NFR-SBC-0001) | T, I |
-| FR-SBC-MON-0001/0002 live view and load | T-MON-1 helper parses recorded `dlg.list` / stats replies; I-MON-1 API shows N calls while N are up | T, I |
-| FR-SBC-SEC-0001 flood and bans | S-1 flood from one source is banned, others unaffected | S |
-| FR-SBC-SEC-0002 scanners | S-2 scanner UA gets no response | S |
-| FR-SBC-SEC-0003 phone allow-list | I-SEC-1 REGISTER from outside the list dropped | I |
-| FR-SBC-HA-0001/0002 sync and VIP | I-HA-1 settings appear on peer; I-HA-2 new calls work after failover | I |
-| FR-SBC-PKG-0001 plugin listing | B-1 package builds; I-PKG-1 `os-ksa-repo` bootstrap, plugin appears, install, upgrade | B, I |
-| NFR-SBC-0002 capacity | I-PERF-1 100 concurrent G.711 calls for 10 min, no loss over 0.5 % | I |
-| NFR-SBC-0003 apply time | I-PERF-2 apply under 10 s | I |
-| NFR-SBC-0005 major isolation | I-PKG-2 a v2 package in the repo is not offered to a v1 install | I |
+## What must pass, and when
 
-## 4. Key scenarios
-
-### Integration (SIPp)
-
-| ID | Scenario | Pass when |
-|---|---|---|
-| I-REG-1 | Phone registers through SBC | Phone gets 401 then 200; PBX contact shows Path with `received=` |
-| I-REG-2 | PBX calls registered phone behind NAT | Phone rings; 200 reaches PBX; RTP both ways; BYE either side |
-| I-TRK-1 | Carrier INVITE to DID | Arrives at PBX trunk port; SDP carries SBC LAN address; RTP both ways |
-| I-TRK-3 | PBX dials out | Reaches the default trunk; SDP to carrier carries SBC WAN address |
-| I-MED-2 | Teardown paths | After BYE, CANCEL, 486 and a dropped call (no BYE, media timeout), rtpproxy active sessions return to 0 |
-| I-MED-4 | Idle port scan (NFR-SBC-0001) | nmap UDP scan of the relay range from WAN at idle shows nothing open |
-| I-NEG-1 | WAN → WAN attempt | INVITE from a non-trunk WAN source with R-URI to a trunk is sent to the PBX, never to the trunk (design §1.2) |
-| I-NEG-2 | REGISTER on LAN | 403 |
-| I-NEG-3 | Pre-loaded Route from WAN | Route stripped; request goes to the PBX |
-
-### Carrier (manual, Flowroute)
-
-| ID | Scenario |
+| Gate | Must pass |
 |---|---|
-| C-1 | Call the Flowroute test number from a mobile; answer on a LAN phone; 2 minutes of two-way audio; hang up from each side |
-| C-2 | Dial a mobile from a LAN phone through Flowroute; two-way audio; hang up |
-| C-3 | Remote phone on a mobile hotspot registers and calls out through Flowroute |
-| C-4 | After C-1 to C-3, rtpproxy reports 0 active sessions; WAN scan of the relay range is clean |
-| C-5 | DTMF (RFC 2833) into the PBX's IVR works |
+| Every PR to `next` | All `L`, `T`, `B` tests |
+| 1.0.0-alpha.1 | Plus the integration tests for its requirements |
+| 1.0.0-alpha.2 | Plus monitoring tests |
+| 1.0.0-beta.1 | Plus security, HA and capacity tests |
+| Release candidate | Everything above, on the RC package from the `testing` track |
+| Final tag | RC set plus all carrier tests |
 
-Before carrier tests: if the second firewall is an HA backup, take it out of
-CARP and disable config sync. Flowroute credentials stay in the PBX and the
-protected CI environment.
+A failing test blocks the gate unless the release notes list it as a known
+issue with an issue number.
 
-## 5. Fixtures
+## Test data rules
 
-- `tests/fixtures/config/*.xml`: OPNsense config snippets (minimal, two
-  trunks, TCP enabled, advertised address, rtpengine, allow-lists).
-- `tests/fixtures/rpc/*.json`: recorded Kamailio JSON-RPC replies for the
-  live-view parser.
-- `tests/sipp/*.xml`: SIPp scenarios, one per `I-` ID where possible.
-- No real phone numbers, credentials or carrier addresses in fixtures.
+- Fixtures live in `tests/fixtures/` (OPNsense config snippets, recorded
+  Kamailio replies) and `tests/sipp/` (one scenario per test where possible).
+- No real phone numbers, credentials or carrier addresses in fixtures. Use
+  documentation ranges (192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24).
 
-## 6. Entry and exit criteria
+## Machine-readable
 
-| Milestone | Must pass |
-|---|---|
-| Every PR to `next` | L, T, B |
-| alpha.1 | I-SVC, I-NET, I-REG, I-TRK, I-MED, I-NEG, I-PKG-1 |
-| alpha.2 | alpha.1 set + I-MON |
-| beta.1 | alpha.2 set + S-1, S-2, I-SEC, I-HA, I-PERF |
-| Release candidate | Everything above, on the RC package from `vN/testing` |
-| Final tag | RC set + C-1 to C-5 |
+Authoritative test register. Test IDs are local to this plan; outside the
+repo, refer to the requirement a test proves. `tools/check_docs.py` checks
+that every `proves` entry exists and that every `must` requirement is covered.
 
-A failed test blocks the milestone unless it is written up in the release
-notes as a known issue with an issue number.
+```yaml
+tests:
+  # Static, template and build (every PR)
+  - {id: L-ALL, level: static, proves: [], title: "php -l, phpcs, xmllint, shellcheck, ruff, actionlint, gitleaks, tools/check_docs.py"}
+  - {id: T-SVC-1, level: template, proves: [FR-SBC-SVC-0001], title: "configd actions and rc.conf.d render for enabled and disabled"}
+  - {id: T-CFG-1, level: template, proves: [FR-SBC-SVC-0002], title: "every fixture renders and passes kamailio -c"}
+  - {id: T-CFG-2, level: template, proves: [FR-SBC-NET-0001], title: "listen lines match the chosen interfaces"}
+  - {id: T-CFG-3, level: template, proves: [FR-SBC-NET-0002], title: "advertise present only when an advertised address is set"}
+  - {id: T-CFG-4, level: template, proves: [FR-SBC-PBX-0001], title: "PBX phone port and trunk port rendered"}
+  - {id: T-CFG-5, level: template, proves: [FR-SBC-TRK-0001], title: "two trunks, one disabled: only the enabled one is routable"}
+  - {id: T-CFG-6, level: template, proves: [], title: "hostile values in every free-text field cannot break out of the config (threat THR-SBC-0015)"}
+  - {id: T-FW-1, level: template, proves: [FR-SBC-MEDIA-0002], title: "automatic pf rule fields for SIP and the relay range"}
+  - {id: T-MON-1, level: template, proves: [FR-SBC-MON-0001, FR-SBC-MON-0002], title: "live-view helper parses recorded dlg.list and stats replies"}
+  - {id: B-1, level: build, proves: [FR-SBC-PKG-0001], title: "os-sbc and os-sbc-devel packages build on FreeBSD 15.1"}
+
+  # Integration (lab)
+  - {id: I-SVC-1, level: integration, proves: [FR-SBC-SVC-0001], title: "start, stop, restart and status from the API",
+     pass_when: "status follows each action; both daemons running or stopped as expected"}
+  - {id: I-SVC-2, level: integration, proves: [FR-SBC-SVC-0002], title: "invalid config refused",
+     pass_when: "apply reports the kamailio -c error and the previous config keeps running"}
+  - {id: I-NET-1, level: integration, proves: [FR-SBC-NET-0001], title: "SIP answered on WAN and LAN addresses only"}
+  - {id: I-NET-2, level: integration, proves: [FR-SBC-NET-0002], title: "SDP and Via carry the advertised address"}
+  - {id: I-NET-3, level: integration, proves: [FR-SBC-NET-0003], title: "register and call over UDP and over TCP"}
+  - {id: I-REG-1, level: integration, proves: [FR-SBC-REG-0001], title: "phone registers through the SBC",
+     pass_when: "phone gets 401 then 200; the PBX contact shows Path with received="}
+  - {id: I-REG-2, level: integration, proves: [FR-SBC-REG-0002], title: "PBX calls a registered phone behind NAT",
+     pass_when: "phone rings; RTP both ways; BYE from either side works"}
+  - {id: I-REG-3, level: integration, proves: [FR-SBC-REG-0002], title: "remote phone calls a PBX extension"}
+  - {id: I-TRK-1, level: integration, proves: [FR-SBC-TRK-0002, FR-SBC-PBX-0001], title: "carrier INVITE to a DID",
+     pass_when: "arrives on the PBX trunk port; SDP carries the SBC LAN address; RTP both ways"}
+  - {id: I-TRK-2, level: integration, proves: [FR-SBC-TRK-0001], title: "outbound call routed to the trunk named in the R-URI host"}
+  - {id: I-TRK-3, level: integration, proves: [FR-SBC-TRK-0002], title: "PBX dials out through the default trunk",
+     pass_when: "reaches the default trunk; SDP to the carrier carries the SBC WAN address"}
+  - {id: I-MED-1, level: integration, proves: [FR-SBC-MEDIA-0001], title: "two-way audio through the relay"}
+  - {id: I-MED-2, level: integration, proves: [FR-SBC-MEDIA-0001], title: "teardown on BYE, CANCEL, 486 and a dropped call",
+     pass_when: "rtpproxy active sessions return to 0 every time, the dropped call after the media timeout"}
+  - {id: I-MED-3, level: integration, proves: [FR-SBC-MEDIA-0002], title: "automatic rule present, and gone when turned off"}
+  - {id: I-MED-4, level: integration, proves: [NFR-SBC-0001, FR-SBC-MEDIA-0002], title: "idle port scan of the relay range from the WAN",
+     pass_when: "nmap UDP scan shows nothing open"}
+  - {id: I-MED-5, level: integration, proves: [FR-SBC-MEDIA-0003], title: "calls work with the remote rtpengine engine selected"}
+  - {id: I-NEG-1, level: integration, proves: [], title: "WAN to WAN attempt (threat THR-SBC-0001)",
+     pass_when: "an INVITE from a non-trunk WAN source aimed at a trunk goes to the PBX, never to the trunk"}
+  - {id: I-NEG-2, level: integration, proves: [], title: "REGISTER received on the LAN gets 403"}
+  - {id: I-NEG-3, level: integration, proves: [], title: "pre-loaded Route headers from the WAN are stripped"}
+  - {id: I-MON-1, level: integration, proves: [FR-SBC-MON-0001, FR-SBC-MON-0002], title: "API shows N calls while N are up"}
+  - {id: I-MON-2, level: integration, proves: [FR-SBC-MON-0003], title: "dashboard widget shows calls and service status"}
+  - {id: I-MON-3, level: integration, proves: [FR-SBC-MON-0004], title: "SIP and media log lines appear in the log viewer"}
+  - {id: I-SEC-1, level: integration, proves: [FR-SBC-SEC-0003], title: "REGISTER from outside the allow-list is dropped"}
+  - {id: I-SEC-2, level: integration, proves: [FR-SBC-SEC-0004], title: "no LAN addresses in messages sent to the carrier"}
+  - {id: I-SEC-3, level: integration, proves: [FR-SBC-SEC-0005], title: "register and call over TLS"}
+  - {id: I-HA-1, level: integration, proves: [FR-SBC-HA-0001], title: "settings appear on the HA peer after sync"}
+  - {id: I-HA-2, level: integration, proves: [FR-SBC-HA-0002], title: "new calls work after a CARP failover"}
+  - {id: I-PKG-1, level: integration, proves: [FR-SBC-PKG-0001], title: "bootstrap os-ksa-repo, plugin appears, install, upgrade"}
+  - {id: I-PKG-2, level: integration, proves: [NFR-SBC-0005], title: "a v2 package in the repo is not offered to a v1 install"}
+  - {id: I-PERF-1, level: integration, proves: [NFR-SBC-0002], title: "100 concurrent G.711 calls for 10 minutes, loss under 0.5 %"}
+  - {id: I-PERF-2, level: integration, proves: [NFR-SBC-0003], title: "settings apply in under 10 s"}
+  - {id: I-COMPAT-1, level: integration, proves: [NFR-SBC-0004], title: "full integration suite on the current OPNsense series"}
+  - {id: I-COV-1, level: static, proves: [NFR-SBC-0006], title: "tools/check_docs.py coverage check: every must requirement has a test"}
+
+  # Security (lab)
+  - {id: S-1, level: security, proves: [FR-SBC-SEC-0001], title: "flood from one source is banned; other sources unaffected"}
+  - {id: S-2, level: security, proves: [FR-SBC-SEC-0002], title: "scanner user agents get no response"}
+
+  # Carrier (manual, HA backup firewall + Flowroute; prepare with RB-SBC-0002)
+  - {id: C-1, level: carrier, proves: [FR-SBC-TRK-0002], title: "mobile calls the Flowroute number, answered on a LAN phone, 2 minutes two-way audio, hang up from each side"}
+  - {id: C-2, level: carrier, proves: [FR-SBC-TRK-0002], title: "LAN phone dials a mobile through Flowroute, two-way audio"}
+  - {id: C-3, level: carrier, proves: [FR-SBC-REG-0002], title: "remote phone on a mobile hotspot registers and calls out through Flowroute"}
+  - {id: C-4, level: carrier, proves: [NFR-SBC-0001], title: "after C-1 to C-3: 0 active relay sessions and a clean WAN scan of the relay range"}
+  - {id: C-5, level: carrier, proves: [], title: "DTMF (RFC 2833) into the PBX IVR works"}
+```

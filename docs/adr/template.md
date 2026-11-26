@@ -1,10 +1,18 @@
-# ADR-SBC-NNNN: <short title in imperative mood>
+---
+id: ADR-SBC-NNNN
+title: "<short title in imperative mood>"
+kind: adr
+status: draft            # draft | proposed | accepted | rejected | withdrawn | superseded | deprecated
+date: YYYY-MM-DD
+deciders: [Kevin Adams]
+supersedes: []
+related: []              # other IDs, e.g. [PRD-SBC-0001, ADR-SBC-0002]
+---
 
-**Date**: YYYY-MM-DD
-**Status**: Draft | Proposed | Accepted | Rejected | Withdrawn | Superseded by ADR-SBC-NNNN | Deprecated
-**Deciders**: Kevin Adams
-**Supersedes**: none
-**Related**: issues, PRDs, other ADRs
+# ADR-SBC-NNNN: <short title>
+
+> **In short:** Two to four plain sentences: what we decided and the main
+> reason. Someone who reads only this knows the outcome.
 
 ## Context
 
@@ -26,4 +34,4 @@ Include the honest downsides.
 
 ## References
 
-Links to sources, issues and related ADRs.
+Links to sources, issues and related documents.

@@ -1,41 +1,39 @@
+---
+id: PRD-SBC-NNNN
+title: "<title>"
+kind: prd
+status: draft            # draft | approved | shipped | retired
+date: YYYY-MM-DD
+owners: [Kevin Adams]
+related: []
+---
+
 # PRD-SBC-NNNN: <title>
 
-**Date**: YYYY-MM-DD
-**Status**: Draft | Approved | Shipped (vX.Y.Z) | Retired
-**Owner**: Kevin Adams
-**Related**: ADRs, epics, milestones
+> **In short:** Two to four plain sentences: what this release does and for
+> whom.
 
-## Problem
+## The problem
 
 What hurts today, and for whom.
 
-## Users
-
-Who uses this and what they are trying to get done.
+## Who it is for
 
 ## Goals
 
 Outcomes, not features.
 
-## Non-goals
+## Not in this release
 
-What this release deliberately does not do.
+## What it does, by area
 
-## Requirements
+One row per area in plain words, pointing at the requirement IDs. The full
+list lives in the Machine-readable section; do not repeat it here.
 
-### Functional
-
-| ID | Requirement | Priority (Must/Should/Could) | Milestone |
-|---|---|---|---|
-
-### Non-functional
-
-| ID | Requirement | Target |
+| Area | In plain words | Requirements |
 |---|---|---|
 
-## Success measures
-
-How we know it worked.
+## How we know it worked
 
 ## Open questions
 
@@ -43,3 +41,17 @@ How we know it worked.
 
 | Date | Change |
 |---|---|
+
+## Machine-readable
+
+Authoritative requirement register, validated by `tools/check_docs.py`.
+Priorities: `must`, `should`, `could`. Status: `draft`, `approved`,
+`shipped`, `dropped`.
+
+```yaml
+requirements:
+  - {id: FR-SBC-AREA-0001, priority: must, milestone: X.Y.Z, status: draft,
+     title: "..."}
+  - {id: NFR-SBC-0001, priority: must, milestone: X.Y.Z, status: draft,
+     title: "...", target: "..."}
+```

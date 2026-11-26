@@ -1,8 +1,18 @@
+---
+id: ADR-SBC-0001
+title: "Record architecture and product decisions"
+kind: adr
+status: accepted
+date: 2026-11-25
+decided: 2026-11-25
+deciders: [Kevin Adams]
+supersedes: []
+related: []
+---
+
 # ADR-SBC-0001: Record architecture and product decisions
 
-**Date**: 2026-11-25
-**Status**: Accepted
-**Deciders**: Kevin Adams
+> **In short:** We write decisions down as ADRs and product scope as PRDs, in this repo, next to the code. Every ID carries the project slug (`ADR-SBC-0001`, `FR-SBC-MEDIA-0001`) so it never clashes with another KSA project's IDs.
 
 ## Context
 
@@ -43,13 +53,39 @@ Every ID that might be quoted outside this repo carries the project slug
 | Functional requirement | `FR-SBC-<AREA>-NNNN` | `FR-SBC-MEDIA-0001` |
 | Non-functional requirement | `NFR-SBC-NNNN` | `NFR-SBC-0008` |
 | Threat | `THR-SBC-NNNN` | `THR-SBC-0003` |
+| Architecture overview | `ARC-SBC-NNNN` | `ARC-SBC-0001` |
+| Test plan | `TST-SBC-NNNN` | `TST-SBC-0001` |
+| Threat model | `TM-SBC-NNNN` | `TM-SBC-0001` |
 
 - Numbers are four digits, sequential within their kind (and area, for
   FRs), and never reused.
 - Test IDs (`I-REG-1`, `C-1`, ...) stay local to the test plan; outside the
   repo, refer to the requirement a test proves instead.
-- The file name starts with the ID, so `git grep ADR-SBC-0004` finds the
-  document and every reference to it.
+- For numbered kinds (ADR, PRD, DES, RB) the file name starts with the ID,
+  so `git grep ADR-SBC-0004` finds the document and every reference to it.
+  One-of-a-kind documents keep their usual names (`architecture.md`,
+  `test-plan.md`, `threat-model.md`) and carry their ID in the front matter.
+
+### Document structure: one part for people, one for machines
+
+Every document has the same four parts, in this order, so a reader always
+knows where to look and tools never have to parse prose:
+
+1. **Front matter** (machine): a short YAML header with `id`, `title`,
+   `kind`, `status`, `date`, owners or deciders, and `related` IDs. GitHub
+   shows it as a small table.
+2. **"In short"** (people): two to four plain sentences right under the
+   title. Someone who reads nothing else still knows what the document says.
+3. **Body** (people): prose, tables and diagrams written for a reader. IDs
+   appear only where they help someone follow a link.
+4. **"Machine-readable"** (machines), only for documents that hold a list
+   someone will track: requirements (PRD), tests (test plan), threats
+   (threat model). One fenced `yaml` block, and it is the authoritative copy.
+   The body summarises it in words and never repeats it item by item.
+
+`tools/check_docs.py` checks all of it: front matter fields and statuses,
+unique IDs, file names, that every referenced ID exists, and that every
+`must` requirement has a test. It runs in the CI `lint` job.
 - **Plan**: `ROADMAP.md` holds the milestones, the ideas parking lot and a
   Resolved log. New ideas land in the parking lot first, then get an issue.
 

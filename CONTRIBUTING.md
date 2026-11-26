@@ -51,6 +51,10 @@ never skip hooks.
 
 ## Checks
 
+Before pushing doc changes, run `uv run tools/check_docs.py`. New documents
+start from the `template.md` in their folder and follow the layout in
+[docs/README.md](docs/README.md).
+
 A PR merges only when `lint`, `test` and `build` pass
 ([ADR-SBC-0007](docs/adr/ADR-SBC-0007-ci-pipeline.md)). Anything that could only be tested
 on a real OPNsense box must say so in the PR.

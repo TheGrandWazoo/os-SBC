@@ -1,9 +1,18 @@
+---
+id: ADR-SBC-0006
+title: "Signed package repository that OPNsense lists as plugins"
+kind: adr
+status: accepted
+date: 2026-11-25
+decided: 2026-11-26
+deciders: [Kevin Adams]
+supersedes: []
+related: [ADR-SBC-0002, ADR-SBC-0005, ADR-SBC-0007]
+---
+
 # ADR-SBC-0006: Signed package repository that OPNsense lists as plugins
 
-**Date**: 2026-11-25
-**Status**: Proposed
-**Deciders**: Kevin Adams
-**Related**: ADR-SBC-0002, ADR-SBC-0005, ADR-SBC-0007
+> **In short:** We publish a signed package repository on GitHub Pages, in a separate repo shared by all KSA OPNsense plugins. Add it once to a firewall and os-sbc appears in System > Firmware > Plugins, with Kamailio and rtpproxy included, and updates arrive with normal firmware updates.
 
 ## Context
 
@@ -43,12 +52,16 @@ Two facts shape the repository:
   shows `os-sbc` and `os-sbc-devel`, and updates arrive through normal firmware
   updates. The manual way (two files) is documented too.
 
-### Open question for the decision
-
-Host the repository **inside os-SBC** (`gh-pages` branch), or in a **separate
-shared repo** (e.g. `TheGrandWazoo/opnsense-repo`) that os-netmaker could also
-publish to. Recommendation: the shared repo, because the bootstrap package and
-signing key belong to "KSA's OPNsense repository", not to one plugin.
+- **Where it lives:** a **separate shared repository** (working name
+  `TheGrandWazoo/opnsense-repo`, confirmed when it is created) that any KSA
+  OPNsense plugin can publish to, starting with os-sbc and later os-netmaker.
+  The bootstrap package and signing key belong to "KSA's OPNsense repository",
+  not to one plugin.
+- **Built the freenas-proxmox way:** that repository's `gh-pages` branch is
+  the site; plugin repos publish into it from CI (on merge to `next` and on
+  tags) with a scoped token; one track per major version so nobody is moved
+  across a major silently (freenas-proxmox ADR-010); a signing-key setup
+  script like freenas-proxmox's `scripts/setup-apt-signing-key.sh`.
 
 ## Alternatives considered
 

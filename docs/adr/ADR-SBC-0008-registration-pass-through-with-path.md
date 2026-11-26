@@ -1,9 +1,17 @@
+---
+id: ADR-SBC-0008
+title: "Registration pass-through: the PBX stays the registrar"
+kind: adr
+status: proposed
+date: 2026-11-25
+deciders: [Kevin Adams]
+supersedes: []
+related: [ADR-SBC-0002, PRD-SBC-0001, FR-SBC-REG-0001, FR-SBC-REG-0002]
+---
+
 # ADR-SBC-0008: Registration pass-through: the PBX stays the registrar
 
-**Date**: 2026-11-25
-**Status**: Proposed
-**Deciders**: Kevin Adams
-**Related**: ADR-SBC-0002, PRD-SBC-0001 (FR-SBC-REG-*)
+> **In short:** Phones register through the SBC, but the PBX still checks passwords and remembers where each phone is. The SBC only adds a header so calls can find their way back to the phone through its NAT.
 
 ## Context
 

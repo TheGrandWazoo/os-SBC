@@ -1,9 +1,17 @@
+---
+id: ADR-SBC-0003
+title: "Anchor media on the firewall instead of opening dynamic pf pinholes"
+kind: adr
+status: proposed
+date: 2026-11-25
+deciders: [Kevin Adams]
+supersedes: []
+related: [ADR-SBC-0002, PRD-SBC-0001, FR-SBC-MEDIA-0001, FR-SBC-MEDIA-0002]
+---
+
 # ADR-SBC-0003: Anchor media on the firewall instead of opening dynamic pf pinholes
 
-**Date**: 2026-11-25
-**Status**: Proposed
-**Deciders**: Kevin Adams
-**Related**: ADR-SBC-0002, PRD-SBC-0001 (FR-SBC-MEDIA-*)
+> **In short:** Audio for every call goes through the firewall's own relay, which opens a port pair when the call starts and closes it when the call ends. We do not open firewall pinholes or port forwards to the PBX.
 
 ## Context
 

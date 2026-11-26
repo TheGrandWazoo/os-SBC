@@ -1,9 +1,17 @@
+---
+id: ADR-SBC-0007
+title: "CI pipeline: lint, test, build, integrate, publish"
+kind: adr
+status: proposed
+date: 2026-11-25
+deciders: [Kevin Adams]
+supersedes: []
+related: [ADR-SBC-0004, ADR-SBC-0005, ADR-SBC-0006]
+---
+
 # ADR-SBC-0007: CI pipeline: lint, test, build, integrate, publish
 
-**Date**: 2026-11-25
-**Status**: Proposed
-**Deciders**: Kevin Adams
-**Related**: ADR-SBC-0004, ADR-SBC-0005, ADR-SBC-0006
+> **In short:** Every pull request is linted, tested and built automatically. Heavy builds and real-call tests run on lab machines, and a manual call over the Flowroute test number gates each final release.
 
 ## Context
 
@@ -20,7 +28,7 @@ Dependabot updates them.
 
 | Job | Runs on | What it does | Required check |
 |---|---|---|---|
-| `lint` | ubuntu (hosted) | `php -l` (PHP 8.5), phpcs PSR-12 (OPNsense style), `xmllint` on models/forms/menus/ACLs, shellcheck, ruff, actionlint, gitleaks | yes |
+| `lint` | ubuntu (hosted) | `php -l` (PHP 8.5), phpcs PSR-12 (OPNsense style), `xmllint` on models/forms/menus/ACLs, shellcheck, ruff, actionlint, gitleaks, `tools/check_docs.py` | yes |
 | `test` | ubuntu (hosted) | Render the configd Jinja templates with fixture configs using OPNsense's template engine; check the rendered Kamailio config with `kamailio -c` (6.1 in a container); Python unit tests | yes |
 | `build` | FreeBSD 15.1 VM on a hosted runner | Check out opnsense/plugins at the matching branch, place the plugin at `net/sbc`, run `make package`, upload the `.pkg` | yes |
 | `deps` | self-hosted FreeBSD 15.1 builder (lab Proxmox VM) | poudriere with the opnsense/ports tree and OPNsense's make.conf for the target series; builds Kamailio, rtpproxy and missing libraries | no (manual, or when the version file changes) |
