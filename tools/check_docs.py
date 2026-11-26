@@ -87,7 +87,7 @@ def split_front_matter(text: str) -> tuple[dict | None, str]:
 
 
 def machine_block(body: str) -> dict | None:
-    m = re.search(r"^## Machine-readable\s*$(.*?)^```yaml\n(.*?)^```", body, re.M | re.S)
+    m = re.search(r"^## Machine-readable\s*$(.*?)^```yaml\n(.*?)^```", body, re.MULTILINE | re.DOTALL)
     return yaml.safe_load(m.group(2)) if m else None
 
 
@@ -123,7 +123,7 @@ def main() -> int:
             r.error(path, f"file name should start with '{doc_id}-'")
         if doc_id in docs:
             r.error(path, f"duplicate id {doc_id} (also {rel(docs[doc_id]['_path'])})")
-        if not re.search(rf"^# {re.escape(doc_id)}: ", body, re.M):
+        if not re.search(rf"^# {re.escape(doc_id)}: ", body, re.MULTILINE):
             r.error(path, f"H1 should start with '# {doc_id}: '")
         if "> **In short:**" not in body:
             r.error(path, "missing '> **In short:**' summary under the title")
@@ -240,7 +240,7 @@ def main() -> int:
     # ADR index agrees with ADR status
     index = DOCS / "adr" / "README.md"
     if index.exists():
-        rows = dict(re.findall(rf"^\| \[(ADR-{SLUG}-\d{{4}})\][^|]*\|[^|]*\| ([^|]+?) \|", index.read_text(), re.M))
+        rows = dict(re.findall(rf"^\| \[(ADR-{SLUG}-\d{{4}})\][^|]*\|[^|]*\| ([^|]+?) \|", index.read_text(), re.MULTILINE))
         for doc_id, d in docs.items():
             if d["kind"] != "adr":
                 continue
