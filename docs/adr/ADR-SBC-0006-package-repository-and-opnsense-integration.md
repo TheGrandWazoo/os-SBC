@@ -7,12 +7,17 @@ date: 2026-11-25
 decided: 2026-11-26
 deciders: [Kevin Adams]
 supersedes: []
-related: [ADR-SBC-0002, ADR-SBC-0005, ADR-SBC-0007]
+related: [ADR-SBC-0002, ADR-SBC-0005, ADR-SBC-0007, ADR-SBC-0009]
 ---
 
 # ADR-SBC-0006: Signed package repository that OPNsense lists as plugins
 
 > **In short:** We publish a signed package repository on GitHub Pages, in a separate repo shared by all KSA OPNsense plugins. Add it once to a firewall and os-sbc appears in System > Firmware > Plugins, with Kamailio and rtpproxy included, and updates arrive with normal firmware updates.
+
+> **Partly superseded by ADR-SBC-0009 (2026-11-27):** the repo layout now
+> includes the OPNsense series, and plugin repos publish GitHub releases that
+> the repository pulls instead of pushing with a token. The rest of this ADR
+> stands. Left as written below, per the ADR rules.
 
 ## Context
 
