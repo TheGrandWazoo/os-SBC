@@ -18,8 +18,9 @@
 
 The development package installs, but it does not do anything useful yet:
 the Kamailio integration starts with milestone 1.0.0-alpha.1. Kamailio and
-rtpproxy are not in OPNsense's own repository, and our builds of them arrive
-with #5, so until then `os-sbc-devel` cannot be installed on a firewall.
+rtpproxy are not in OPNsense's own repository, so the KSA repository carries
+our builds of them, made against OPNsense's own packages
+([ADR-SBC-0010](docs/adr/ADR-SBC-0010-build-dependencies-on-hosted-freebsd-vms.md)).
 
 ## Install
 

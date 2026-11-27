@@ -18,7 +18,7 @@ several milestones gets an `epic` issue.
 - Labels and milestones on GitHub
 - CI `lint`, `test` and `build` jobs (ADR-SBC-0007)
 - Package repository and `os-ksa-repo` bootstrap (ADR-SBC-0006)
-- Lab: FreeBSD 15.1 builder VM, OPNsense 26.7 test VM, FreePBX VM, SIPp
+- Lab: OPNsense 26.7 test VM, FreePBX VM, SIPp (no builder VM needed: ADR-SBC-0010)
 - Real-world test bed: the HA backup firewall plus the Flowroute test trunk
   and number (PRD-SBC-0001 "Test environment", RB-SBC-0002)
 - Shared package repo `TheGrandWazoo/opnsense-repo` (ADR-SBC-0006, ADR-SBC-0009) — live
@@ -76,3 +76,4 @@ several milestones gets an `epic` issue.
 | 2026-11-26 | Carrier tests run on the HA backup firewall | RB-SBC-0002 |
 | 2026-11-26 | CI `lint`, `test`, `build` on every PR; first `os-sbc-devel` package built | ADR-SBC-0007, #3 |
 | 2026-11-27 | Signed package repo live at thegrandwazoo.github.io/opnsense-repo; os-ksa-repo bootstrap; os-SBC publishes releases it pulls | ADR-SBC-0009, #4 |
+| 2026-11-27 | Kamailio 6.1.3 and rtpproxy 3.1.1 built against OPNsense 26.7.10 on hosted FreeBSD VMs; 7 packages hosted, no MySQL | ADR-SBC-0010, #5 |
