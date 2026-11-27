@@ -21,7 +21,7 @@ several milestones gets an `epic` issue.
 - Lab: FreeBSD 15.1 builder VM, OPNsense 26.7 test VM, FreePBX VM, SIPp
 - Real-world test bed: the HA backup firewall plus the Flowroute test trunk
   and number (PRD-SBC-0001 "Test environment", RB-SBC-0002)
-- Create the shared package repo `TheGrandWazoo/opnsense-repo` (ADR-SBC-0006)
+- Shared package repo `TheGrandWazoo/opnsense-repo` (ADR-SBC-0006, ADR-SBC-0009) — live
 
 ### 1.0.0-alpha.1 — Calls pass through
 - Remove the Asterisk model, forms and templates from `next`
@@ -75,3 +75,4 @@ several milestones gets an `epic` issue.
 | 2026-11-26 | IDs carry the project slug; docs split into human and machine-readable parts, checked by `tools/check_docs.py` | ADR-SBC-0001 |
 | 2026-11-26 | Carrier tests run on the HA backup firewall | RB-SBC-0002 |
 | 2026-11-26 | CI `lint`, `test`, `build` on every PR; first `os-sbc-devel` package built | ADR-SBC-0007, #3 |
+| 2026-11-27 | Signed package repo live at thegrandwazoo.github.io/opnsense-repo; os-ksa-repo bootstrap; os-SBC publishes releases it pulls | ADR-SBC-0009, #4 |

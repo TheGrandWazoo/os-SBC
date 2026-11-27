@@ -5,7 +5,7 @@ kind: runbook
 status: active
 date: 2026-11-26
 owners: [Kevin Adams]
-related: [ADR-SBC-0004, ADR-SBC-0005]
+related: [ADR-SBC-0004, ADR-SBC-0005, ADR-SBC-0009]
 ---
 
 # RB-SBC-0001: Cut a release
@@ -29,13 +29,15 @@ issue closures happen **before** the tag, as in freenas-proxmox RUNBOOK-002.
    `PLUGIN_VERSION=N.0.0`.
 6. PR into `next`: bump `PLUGIN_VERSION` to the next planned version
    (e.g. `N.1.0`), keep `PLUGIN_DEVEL=yes`.
-7. Add the `vN/testing` and `vN/stable` repo tracks (ADR-SBC-0006).
+7. Add `vN/testing` and `vN/stable` to `tracks` in opnsense-repo's `sources.toml`, and a
+   `KSA` entry for `vN/stable` to its bootstrap `KSA.conf` (ADR-SBC-0009).
 
 ## B. Release candidate
 
 1. Integration suite green on the OPNsense lab VM.
 2. Tag on `release/N.x`: `git tag -s vN.M.P-rc.K -m "os-sbc vN.M.P-rc.K"` and push.
-3. CI publishes to `vN/testing`. Install on a lab box from that track and smoke test.
+3. CI creates the GitHub release; opnsense-repo picks it up into `vN/testing`
+   within 30 minutes (or run its publish workflow by hand). Install on a lab box from that track and smoke test.
 
 ## C. Final release
 

@@ -11,7 +11,7 @@
 |---|---|---|---|
 | [PRD](prd/PRD-SBC-0001-os-sbc-1.0.md) | What 1.0 must do, for whom, and how we know it worked | PRD-SBC-0001 | Draft |
 | [Architecture overview](architecture.md) | How the pieces fit, ports, data flows | ARC-SBC-0001 | Draft |
-| [ADRs](adr/README.md) | Why we chose each approach | ADR-SBC-0001 to 0008 | 0001, 0002, 0004–0007 Accepted; rest Proposed |
+| [ADRs](adr/README.md) | Why we chose each approach | ADR-SBC-0001 to 0009 | 0001, 0002, 0004–0007, 0009 Accepted; rest Proposed |
 | [Kamailio routing design](design/DES-SBC-0001-kamailio-routing.md) | How each SIP message is routed and media relayed | DES-SBC-0001 | Draft |
 | [Test plan](testing/test-plan.md) | What is tested, where, and which requirement each test proves | TST-SBC-0001 | Draft |
 | [Threat model](security/threat-model.md) | What could go wrong and what stops it | TM-SBC-0001 | Draft |
