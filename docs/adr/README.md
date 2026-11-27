@@ -34,9 +34,10 @@ and what it costs. Copy [`template.md`](template.md) to start a new one.
 | [ADR-SBC-0002](ADR-SBC-0002-kamailio-and-rtpproxy-replace-asterisk.md) | Kamailio and rtpproxy replace Asterisk as the SBC engine | Accepted |
 | [ADR-SBC-0003](ADR-SBC-0003-media-anchoring-not-dynamic-pinholes.md) | Anchor media on the firewall instead of opening dynamic pf pinholes | Proposed |
 | [ADR-SBC-0004](ADR-SBC-0004-branching-and-release-model.md) | Branching and release model: `next` plus `release/N.x` | Accepted |
-| [ADR-SBC-0005](ADR-SBC-0005-versioning-and-package-channels.md) | Versioning and package channels | Accepted |
+| [ADR-SBC-0005](ADR-SBC-0005-versioning-and-package-channels.md) | Versioning and package channels | Accepted (`next` channel superseded by ADR-SBC-0011) |
 | [ADR-SBC-0006](ADR-SBC-0006-package-repository-and-opnsense-integration.md) | Signed package repository that OPNsense lists as plugins | Accepted (layout and publishing superseded by ADR-SBC-0009) |
 | [ADR-SBC-0007](ADR-SBC-0007-ci-pipeline.md) | CI pipeline: lint, test, build, integrate, publish | Accepted (`deps` row superseded by ADR-SBC-0010) |
 | [ADR-SBC-0008](ADR-SBC-0008-registration-pass-through-with-path.md) | Registration pass-through: the PBX stays the registrar | Proposed |
 | [ADR-SBC-0009](ADR-SBC-0009-package-repo-layout-and-pull-publishing.md) | Package repository: OPNsense series in the path, and pull-based publishing | Accepted |
 | [ADR-SBC-0010](ADR-SBC-0010-build-dependencies-on-hosted-freebsd-vms.md) | Build Kamailio and rtpproxy on hosted FreeBSD VMs, against OPNsense's own packages | Accepted |
+| [ADR-SBC-0011](ADR-SBC-0011-plain-os-sbc-on-an-opt-in-devel-track.md) | Development builds ship as plain os-sbc on an opt-in devel track | Accepted |

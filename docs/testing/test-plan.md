@@ -96,7 +96,7 @@ tests:
   - {id: T-CFG-6, level: template, proves: [NFR-SBC-0007], title: "hostile values in every free-text field cannot break out of the config (threat THR-SBC-0015)"}
   - {id: T-FW-1, level: template, proves: [FR-SBC-MEDIA-0002], title: "automatic pf rule fields for SIP and the relay range"}
   - {id: T-MON-1, level: template, proves: [FR-SBC-MON-0001, FR-SBC-MON-0002], title: "live-view helper parses recorded dlg.list and stats replies"}
-  - {id: B-1, level: build, proves: [FR-SBC-PKG-0001], title: "os-sbc and os-sbc-devel packages build on FreeBSD 15.1"}
+  - {id: B-1, level: build, proves: [FR-SBC-PKG-0001], title: "os-sbc package builds on FreeBSD 15.1"}
 
   # Integration (lab)
   - {id: I-SVC-1, level: integration, proves: [FR-SBC-SVC-0001], title: "start, stop, restart and status from the API",
@@ -139,6 +139,7 @@ tests:
   - {id: I-HA-2, level: integration, proves: [FR-SBC-HA-0002], title: "new calls work after a CARP failover"}
   - {id: I-PKG-1, level: integration, proves: [FR-SBC-PKG-0001], title: "bootstrap os-ksa-repo, plugin appears, install, upgrade"}
   - {id: I-PKG-2, level: integration, proves: [NFR-SBC-0005], title: "a v2 package in the repo is not offered to a v1 install"}
+  - {id: I-PKG-3, level: integration, proves: [NFR-SBC-0005, FR-SBC-PKG-0001], title: "fresh bootstrap leaves KSA-devel off; with the opt-in marker, os-sbc from devel appears in the plugin list and installs from the UI"}
   - {id: I-PERF-1, level: integration, proves: [NFR-SBC-0002], title: "100 concurrent G.711 calls for 10 minutes, loss under 0.5 %"}
   - {id: I-PERF-2, level: integration, proves: [NFR-SBC-0003], title: "settings apply in under 10 s"}
   - {id: I-COMPAT-1, level: integration, proves: [NFR-SBC-0004], title: "full integration suite on the current OPNsense series"}

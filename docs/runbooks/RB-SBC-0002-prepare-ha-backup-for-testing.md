@@ -41,8 +41,10 @@ Status is Draft until it has been run once for real; fix the steps as you go.
 4. On the **primary**, **System > High Availability > Settings**: write down
    the current values, then clear **Synchronize Config to IP** (or untick the
    synced services) and save. Leave state sync (pfsync) as it is.
-5. On the **backup**: add the KSA repository (`os-ksa-repo`) and install
-   `os-sbc-devel` from **System > Firmware > Plugins**.
+5. On the **backup**: add the KSA repository (`os-ksa-repo`), opt in to the
+   devel track (`touch /usr/local/etc/pkg/KSA-devel.enable`, then reinstall
+   `os-ksa-repo` from the plugin page), and install `os-sbc` from
+   **System > Firmware > Plugins**.
 6. Configure os-sbc on the backup:
    - external interface: WAN, using the **backup's own WAN address**, never a
      CARP VIP;
@@ -62,9 +64,10 @@ test, disable os-sbc on the backup, and deal with the primary first.
 
 ## After the test
 
-1. On the backup: disable os-sbc, remove `os-sbc-devel` (plus `kamailio` and
-   `rtpproxy` if nothing else needs them), and remove the KSA repository
-   unless you are keeping it for the next test.
+1. On the backup: disable os-sbc, remove `os-sbc` (plus `kamailio` and
+   `rtpproxy` if nothing else needs them), delete
+   `/usr/local/etc/pkg/KSA-devel.enable`, and remove the KSA repository unless
+   you are keeping it for the next test.
 2. Point the Flowroute test number back where it was.
 3. On the **primary**, restore the HA sync settings from step 4, then run
    **System > High Availability > Status > Synchronize** and check that it
