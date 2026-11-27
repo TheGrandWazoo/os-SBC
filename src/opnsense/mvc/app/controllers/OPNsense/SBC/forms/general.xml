@@ -1,0 +1,46 @@
+<form>
+    <field>
+        <id>sbc.general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Turn the Session Border Controller on. In this development build nothing acts on the settings yet; they are saved for the next features.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Network</label>
+    </field>
+    <field>
+        <id>sbc.general.external_interface</id>
+        <label>External interface</label>
+        <type>dropdown</type>
+        <help>Where SIP trunks and remote phones reach the SBC, usually WAN.</help>
+    </field>
+    <field>
+        <id>sbc.general.internal_interface</id>
+        <label>Internal interface</label>
+        <type>dropdown</type>
+        <help>Where the PBX sits, usually LAN. The PBX is never exposed on the external interface.</help>
+    </field>
+    <field>
+        <id>sbc.general.sip_port</id>
+        <label>SIP port</label>
+        <type>text</type>
+        <help>Port for SIP signalling on both interfaces. 5060 is the standard.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Media relay</label>
+    </field>
+    <field>
+        <id>sbc.general.rtp_port_min</id>
+        <label>First media port</label>
+        <type>text</type>
+        <help>Start of the UDP range used to relay call audio. Each call takes a pair of ports only while it is up (ADR-SBC-0003).</help>
+    </field>
+    <field>
+        <id>sbc.general.rtp_port_max</id>
+        <label>Last media port</label>
+        <type>text</type>
+        <help>End of the media range. Two ports per call: 10000 to 20000 allows about 5000 calls.</help>
+    </field>
+</form>
