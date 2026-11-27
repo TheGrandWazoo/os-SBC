@@ -60,6 +60,7 @@ several milestones gets an `epic` issue.
 - IPv6
 - WebRTC and SRTP termination (remote rtpengine)
 - Contact-rewrite fallback for PBXes without Path (ADR-SBC-0008)
+- Test and document more PBXes for registration pass-through (FreeSWITCH, 3CX, ...); 1.0 covers FreePBX/Asterisk only
 - SIP trace capture per call (HEP to Homer)
 - SBOM and build provenance for published packages
 - Submit the plugin to opnsense/plugins upstream

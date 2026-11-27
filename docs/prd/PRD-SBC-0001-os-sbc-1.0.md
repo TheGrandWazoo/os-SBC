@@ -96,8 +96,11 @@ address. Flowroute credentials stay out of the repo.
 
 ## Open questions
 
-1. Which PBXes to document and test for Path support beyond Asterisk PJSIP?
-2. Is 100 concurrent calls the right capacity target for the expected sites?
+1. ~~Which PBXes to document and test for Path support?~~ **Answered
+   2026-11-27:** FreePBX/Asterisk (PJSIP, `support_path=yes`) for 1.0;
+   others documented after 1.0 as users ask (roadmap parking lot).
+2. ~~Is 100 concurrent calls the right capacity target?~~ **Answered
+   2026-11-27:** yes, 100 concurrent G.711 calls on a 4-core box (NFR-SBC-0002).
 3. Should the PBX tell trunk traffic from phone traffic by a separate port
    (current plan) or by a header?
 4. Does the HA pair's ISP give each firewall its own public address? Carrier
@@ -110,6 +113,7 @@ address. Flowroute credentials stay out of the repo.
 | 2026-11-25 | First draft. |
 | 2026-11-26 | IDs carry the project slug. Split into human and machine-readable parts. Test environment: the second firewall is the HA backup. |
 | 2026-11-27 | Added FR-SBC-SEC-0006 to 0010 and NFR-SBC-0007, 0008 from the threat model (TM-SBC-0001), with tests (#8). |
+| 2026-11-27 | Open questions 1 and 2 answered: FreePBX/Asterisk only for 1.0; 100 concurrent calls confirmed. PRD stays Draft while ADR-SBC-0003 and 0008 wait for the lab spikes (#9, #10). |
 
 ## Machine-readable
 
@@ -182,7 +186,7 @@ requirements:
   - {id: NFR-SBC-0001, priority: must, milestone: 1.0.0-alpha.1, status: draft,
      title: "No relay port answers when no call is up", target: "verified by integration test"}
   - {id: NFR-SBC-0002, priority: must, milestone: 1.0.0-beta.1, status: draft,
-     title: "Capacity on a 4-core x86 OPNsense box", target: "100 concurrent G.711 calls without audio loss (to be measured)"}
+     title: "Capacity on a 4-core x86 OPNsense box", target: "100 concurrent G.711 calls without audio loss (confirmed 2026-11-27; measured by I-PERF-1)"}
   - {id: NFR-SBC-0003, priority: must, milestone: 1.0.0-beta.1, status: draft,
      title: "Applying settings is quick", target: "under 10 s; calls in progress survive where the engine allows"}
   - {id: NFR-SBC-0004, priority: must, milestone: 1.0.0, status: draft,
