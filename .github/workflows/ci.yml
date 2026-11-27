@@ -76,11 +76,7 @@ jobs:
           exit "$status"
 
       - name: PHP style (PSR-12)
-        # Advisory until the 2019 Asterisk code is removed (#11); #11 makes it blocking.
-        run: |
-          if ! phpcs --standard=PSR12 --extensions=php,inc --report=summary src; then
-            echo "::warning::PSR-12 violations found; this step becomes blocking with #11"
-          fi
+        run: phpcs --standard=PSR12 --extensions=php,inc src
 
       - name: XML well-formed
         run: find src -type f -name '*.xml' -print0 | xargs -0 -r xmllint --noout
@@ -119,8 +115,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
-      # 0 until #11 removes the Asterisk model that upstream's model lint rejects.
-      STRICT_LINT: "0"
+      # Any problem upstream's `make lint` prints fails the build.
+      STRICT_LINT: "1"
       # Every non-tag build gets an increasing revision (1.0.0_57), so firewalls on
       # the devel track see each new build of next as an upgrade (ADR-SBC-0005).
       PLUGIN_REVISION: ${{ !startsWith(github.ref, 'refs/tags/v') && github.run_number || '' }}

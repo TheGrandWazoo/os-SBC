@@ -1,7 +1,7 @@
 <acl>
     <page-services-sbc>
         <name>Services: SBC</name>
-        <description>Allow access to the SBC module</description>
+        <description>Allow access to the Session Border Controller settings.</description>
         <patterns>
             <pattern>ui/sbc/*</pattern>
             <pattern>api/sbc/*</pattern>

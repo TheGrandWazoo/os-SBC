@@ -28,6 +28,10 @@ git clone -q --depth 1 -b "stable/${SERIES}" https://github.com/opnsense/plugins
 echo ">>> Placing os-sbc at net/sbc"
 mkdir -p "${PLUGIN}"
 cp -R "${SRC}/Makefile" "${SRC}/pkg-descr" "${SRC}/src" "${PLUGIN}/"
+# Package script additions (+POST_INSTALL.post and friends), see plugins.mk.
+for EXTRA in "${SRC}"/+*.post; do
+    [ -e "${EXTRA}" ] && cp "${EXTRA}" "${PLUGIN}/"
+done
 # Upstream's lint uses `git grep`, which only sees files in the index.
 (cd "${WORK}/plugins" && git add net/sbc)
 

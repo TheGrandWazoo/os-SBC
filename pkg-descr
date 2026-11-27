@@ -1,4 +1,6 @@
-The SBC plugin is to create a SIP Session Border Controller 
-into the OPNsense firewall. It fits between the signaling
-and/or media patchs between the calling and called parties
-of a SIP VoIP call.
+os-sbc turns OPNsense into a SIP Session Border Controller: a PBX on the
+LAN can take carrier calls and serve remote phones without being exposed
+to the internet. Kamailio handles SIP and rtpproxy relays call audio,
+opening media ports only while a call is up.
+
+Early development: settings can be saved, but no service uses them yet.
