@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<ruleset name="os-sbc">
+  <description>OPNsense core's PSR12+ ruleset (opnsense/core ruleset.xml), plus the migration class names OPNsense requires.</description>
+  <rule ref="Squiz.WhiteSpace.SemicolonSpacing"/>
+  <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
+  <rule ref="Generic.CodeAnalysis.EmptyPHPStatement"/>
+  <rule ref="PSR12"/>
+  <!-- Model migrations must be named M<major>_<minor>_<patch> for OPNsense to find them. -->
+  <rule ref="Squiz.Classes.ValidClassName">
+    <exclude-pattern>*/Migrations/M*.php</exclude-pattern>
+  </rule>
+  <exclude-pattern>*.css</exclude-pattern>
+  <exclude-pattern>*.js</exclude-pattern>
+</ruleset>

@@ -37,11 +37,21 @@ done
 
 echo ">>> make lint (opnsense/plugins + core rules)"
 # Upstream's model checks print problems but still exit 0, so judge by output.
-# `xargs -t` in lint-exec echoes "test -x <file>" lines; those are not problems.
+# Lines that are progress or tool chatter, not problems: lint-exec's
+# `xargs -t` traces, parallel-lint's banner and summary, make's notices
+# about optional build variables.
 LINT_OUT="${WORK}/lint.txt"
 make -C "${PLUGIN}" lint > "${LINT_OUT}" 2>&1 || { cat "${LINT_OUT}"; exit 1; }
 cat "${LINT_OUT}"
-PROBLEMS=$(grep -v -e '^test -x ' -e '^[[:space:]]*$' "${LINT_OUT}" | wc -l | tr -d ' ')
+PROBLEMS=$(grep -v -E \
+    -e '^test -x ' \
+    -e '^[[:space:]]*$' \
+    -e '^PHP [0-9.]+ \| [0-9]+ parallel jobs$' \
+    -e '^[.]+ +[0-9]+/[0-9]+ \(100 %\)$' \
+    -e '^Checked [0-9]+ files? in ' \
+    -e '^No syntax error found$' \
+    -e 'warning: Cannot build without PLUGIN_(PHP|PYTHON) set' \
+    "${LINT_OUT}" | wc -l | tr -d ' ')
 if [ "${PROBLEMS}" -gt 0 ]; then
     if [ "${STRICT_LINT:-1}" = "1" ]; then
         echo ">>> make lint reported ${PROBLEMS} problem(s)"

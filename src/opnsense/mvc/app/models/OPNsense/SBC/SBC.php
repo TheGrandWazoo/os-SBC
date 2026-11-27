@@ -44,8 +44,9 @@ class SBC extends BaseModel
         $messages = parent::performValidation($validateFullModel);
         $general = $this->general;
 
+        $rangeChanged = $general->rtp_port_min->isFieldChanged() || $general->rtp_port_max->isFieldChanged();
         if (
-            ($validateFullModel || $general->rtp_port_min->isFieldChanged() || $general->rtp_port_max->isFieldChanged()) &&
+            ($validateFullModel || $rangeChanged) &&
             (int)(string)$general->rtp_port_min >= (int)(string)$general->rtp_port_max
         ) {
             $messages->appendMessage(new Message(
