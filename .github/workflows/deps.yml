@@ -1,0 +1,88 @@
+# Build Kamailio, rtpproxy and the runtime dependencies OPNsense lacks (#5),
+# against OPNsense's own packages and ports tree, and publish them as the
+# "deps" release that TheGrandWazoo/opnsense-repo puts on every track.
+#
+# Runs when the build inputs change. Pull requests build and verify only;
+# `next` (or a manual run on `next`) also publishes.
+
+name: deps
+
+on:
+  pull_request:
+    branches: [next]
+    paths: [deps/**, .github/scripts/build-deps.sh, .github/workflows/deps.yml]
+  push:
+    branches: [next]
+    paths: [deps/**, .github/scripts/build-deps.sh, .github/workflows/deps.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deps-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: deps-build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build against OPNsense in a FreeBSD VM
+        uses: vmactions/freebsd-vm@811efaaac0668df8bfb8308c3ec997b5ab50037b # v1.6.0
+        with:
+          release: "15.1"
+          cpu: 4
+          mem: 12288
+          usesh: true
+          run: sh .github/scripts/build-deps.sh
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: os-sbc-deps
+          path: |
+            work/deps/*.pkg
+            work/deps/manifest.json
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    name: deps-publish
+    needs: build
+    if: github.ref == 'refs/heads/next' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write   # the "deps" release and its tag
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: os-sbc-deps
+          path: deps
+
+      - name: Update the "deps" release
+        run: |
+          ls -l deps
+          if gh api "repos/$REPO/git/refs/tags/deps" > /dev/null 2>&1; then
+            gh api -X PATCH "repos/$REPO/git/refs/tags/deps" -f sha="$GITHUB_SHA" -F force=true > /dev/null
+          else
+            gh api -X POST "repos/$REPO/git/refs" -f ref=refs/tags/deps -f sha="$GITHUB_SHA" > /dev/null
+          fi
+          notes="Kamailio, rtpproxy and the runtime libraries OPNsense does not ship, built against OPNsense $(jq -r .opnsense_release deps/manifest.json) from ${GITHUB_SHA::7}. Published on every track of the KSA package repository; not meant for direct download."
+          if ! gh release view deps -R "$REPO" > /dev/null 2>&1; then
+            gh release create deps -R "$REPO" --prerelease --title "Dependencies (Kamailio, rtpproxy)" --notes "$notes"
+          fi
+          gh release upload deps -R "$REPO" --clobber deps/*
+          keep="$(cd deps && ls)"
+          for asset in $(gh release view deps -R "$REPO" --json assets --jq '.assets[].name'); do
+            printf '%s\n' "$keep" | grep -qxF "$asset" || gh release delete-asset deps "$asset" -R "$REPO" -y
+          done
+          gh release edit deps -R "$REPO" --notes "$notes"
