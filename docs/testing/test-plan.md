@@ -93,7 +93,7 @@ tests:
   - {id: T-CFG-3, level: template, proves: [FR-SBC-NET-0002], title: "advertise present only when an advertised address is set"}
   - {id: T-CFG-4, level: template, proves: [FR-SBC-PBX-0001], title: "PBX phone port and trunk port rendered"}
   - {id: T-CFG-5, level: template, proves: [FR-SBC-TRK-0001], title: "two trunks, one disabled: only the enabled one is routable"}
-  - {id: T-CFG-6, level: template, proves: [], title: "hostile values in every free-text field cannot break out of the config (threat THR-SBC-0015)"}
+  - {id: T-CFG-6, level: template, proves: [NFR-SBC-0007], title: "hostile values in every free-text field cannot break out of the config (threat THR-SBC-0015)"}
   - {id: T-FW-1, level: template, proves: [FR-SBC-MEDIA-0002], title: "automatic pf rule fields for SIP and the relay range"}
   - {id: T-MON-1, level: template, proves: [FR-SBC-MON-0001, FR-SBC-MON-0002], title: "live-view helper parses recorded dlg.list and stats replies"}
   - {id: B-1, level: build, proves: [FR-SBC-PKG-0001], title: "os-sbc and os-sbc-devel packages build on FreeBSD 15.1"}
@@ -133,6 +133,8 @@ tests:
   - {id: I-SEC-1, level: integration, proves: [FR-SBC-SEC-0003], title: "REGISTER from outside the allow-list is dropped"}
   - {id: I-SEC-2, level: integration, proves: [FR-SBC-SEC-0004], title: "no LAN addresses in messages sent to the carrier"}
   - {id: I-SEC-3, level: integration, proves: [FR-SBC-SEC-0005], title: "register and call over TLS"}
+  - {id: I-SEC-4, level: integration, proves: [FR-SBC-SEC-0007], title: "requests on the LAN side from any address but the PBX's are dropped"}
+  - {id: I-MON-4, level: integration, proves: [FR-SBC-SEC-0010], title: "a user with only the read-only ACL sees live calls but cannot open or change settings"}
   - {id: I-HA-1, level: integration, proves: [FR-SBC-HA-0001], title: "settings appear on the HA peer after sync"}
   - {id: I-HA-2, level: integration, proves: [FR-SBC-HA-0002], title: "new calls work after a CARP failover"}
   - {id: I-PKG-1, level: integration, proves: [FR-SBC-PKG-0001], title: "bootstrap os-ksa-repo, plugin appears, install, upgrade"}
@@ -140,11 +142,16 @@ tests:
   - {id: I-PERF-1, level: integration, proves: [NFR-SBC-0002], title: "100 concurrent G.711 calls for 10 minutes, loss under 0.5 %"}
   - {id: I-PERF-2, level: integration, proves: [NFR-SBC-0003], title: "settings apply in under 10 s"}
   - {id: I-COMPAT-1, level: integration, proves: [NFR-SBC-0004], title: "full integration suite on the current OPNsense series"}
+  - {id: L-DOC-1, level: static, proves: [NFR-SBC-0008], title: "signing key rotation procedure present in opnsense-repo README (checked at each release candidate)"}
   - {id: I-COV-1, level: static, proves: [NFR-SBC-0006], title: "tools/check_docs.py coverage check: every must requirement has a test"}
 
   # Security (lab)
   - {id: S-1, level: security, proves: [FR-SBC-SEC-0001], title: "flood from one source is banned; other sources unaffected"}
   - {id: S-2, level: security, proves: [FR-SBC-SEC-0002], title: "scanner user agents get no response"}
+  - {id: S-3, level: security, proves: [FR-SBC-SEC-0006], title: "repeated wrong passwords from one WAN source get it banned; the PBX sees no further attempts",
+     pass_when: "after N 401/403 replies within M minutes the source gets no response; other sources unaffected; ban expires"}
+  - {id: S-4, level: security, proves: [FR-SBC-SEC-0008], title: "one WAN source cannot hold more than the configured number of concurrent calls"}
+  - {id: S-5, level: security, proves: [FR-SBC-SEC-0009], title: "RTP injected at a live relay port from a third host is neither forwarded nor latched (RTP bleed)"}
 
   # Carrier (manual, HA backup firewall + Flowroute; prepare with RB-SBC-0002)
   - {id: C-1, level: carrier, proves: [FR-SBC-TRK-0002], title: "mobile calls the Flowroute number, answered on a LAN phone, 2 minutes two-way audio, hang up from each side"}

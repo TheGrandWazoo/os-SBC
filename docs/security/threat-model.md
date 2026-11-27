@@ -71,9 +71,9 @@ Testing on the production HA backup carries its own risk (THR-SBC-0022,
 THR-SBC-0024); [RB-SBC-0002](../runbooks/RB-SBC-0002-prepare-ha-backup-for-testing.md)
 is the procedure that keeps it safe.
 
-Proposed new requirements from this model are in the machine-readable section
-under `proposed_requirements`. They join PRD-SBC-0001 when this model leaves
-Draft.
+The requirements this model asked for (FR-SBC-SEC-0006 to 0010, NFR-SBC-0007
+and 0008) are in PRD-SBC-0001. New ones go under `proposed_requirements` in
+the machine-readable section until the PRD takes them.
 
 Revisit this document when a trust boundary changes (TLS, rtpengine, call
 state replication, CDRs) and before every major release.
@@ -111,9 +111,9 @@ threats:
     title: "Password guessing via REGISTER/INVITE, invisible to the PBX's own bans"
     mitigation: "SBC counts 401/403 replies from the PBX per WAN source and bans repeat offenders."
     requirements: [FR-SBC-SEC-0006]
-    tests: []
+    tests: [S-3]
     residual: high
-    note: "High until FR-SBC-SEC-0006 ships; low after."
+    note: "High until FR-SBC-SEC-0006 ships (alpha.1); low after."
   - id: THR-SBC-0004
     boundary: B1
     stride: [D]
@@ -173,7 +173,7 @@ threats:
     title: "RTP injection or RTP bleed: the relay learns an attacker's address"
     mitigation: "Ports exist only during calls (ADR-SBC-0003); lock latching to the negotiated peer if the engine supports it."
     requirements: [FR-SBC-SEC-0009]
-    tests: []
+    tests: [S-5]
     residual: unknown
     note: "Known class of SBC bug; needs a lab test before beta.1."
   - id: THR-SBC-0011
@@ -182,7 +182,7 @@ threats:
     title: "Port exhaustion: many fake calls hold relay ports"
     mitigation: "Calls start only after the PBX accepts them; per-source dialog limit; media timeout."
     requirements: [FR-SBC-SEC-0008]
-    tests: []
+    tests: [S-4]
     residual: medium
   - id: THR-SBC-0012
     boundary: B2
@@ -209,7 +209,7 @@ threats:
     title: "A LAN host pretends to be the PBX"
     mitigation: "REGISTER refused from the LAN; LAN-side requests accepted only from the configured PBX address."
     requirements: [FR-SBC-SEC-0007]
-    tests: [I-NEG-2]
+    tests: [I-NEG-2, I-SEC-4]
     residual: low
 
   # B4/B5: admin UI, API, configd, templates
@@ -228,7 +228,7 @@ threats:
     title: "Unprivileged OPNsense user changes SBC settings"
     mitigation: "ACL page-services-sbc; separate read-only ACL for the live-call page."
     requirements: [FR-SBC-SEC-0010]
-    tests: []
+    tests: [I-MON-4]
     residual: low
   - id: THR-SBC-0017
     boundary: B4
@@ -236,7 +236,7 @@ threats:
     title: "Live-call page shows phone numbers to users who should not see them"
     mitigation: "Read-only ACL; no call history stored in 1.0."
     requirements: [FR-SBC-SEC-0010]
-    tests: []
+    tests: [I-MON-4]
     residual: low
 
   # B6: Kamailio and rtpproxy control
@@ -256,7 +256,7 @@ threats:
     title: "Stolen signing key pushes malicious packages"
     mitigation: "Key only in a protected GitHub environment with required approval; rotation runbook."
     requirements: [NFR-SBC-0008]
-    tests: []
+    tests: [L-DOC-1]
     residual: medium
     note: "GitHub account compromise remains a single point; consider hardware-backed signing later."
   - id: THR-SBC-0020
@@ -305,19 +305,5 @@ threats:
     tests: [L-ALL]
     residual: low
 
-proposed_requirements:
-  - {id: FR-SBC-SEC-0006, priority: must, milestone: 1.0.0-alpha.1, threats: [THR-SBC-0003],
-     title: "Ban a WAN source after N authentication failures returned by the PBX within M minutes"}
-  - {id: FR-SBC-SEC-0007, priority: must, milestone: 1.0.0-alpha.1, threats: [THR-SBC-0014],
-     title: "Accept LAN-side requests only from the configured PBX address"}
-  - {id: FR-SBC-SEC-0008, priority: should, milestone: 1.0.0-beta.1, threats: [THR-SBC-0011],
-     title: "Limit concurrent dialogs per WAN source"}
-  - {id: FR-SBC-SEC-0009, priority: must, milestone: 1.0.0-beta.1, threats: [THR-SBC-0010],
-     title: "Media latching locked to the negotiated peer where the engine supports it; documented otherwise"}
-  - {id: FR-SBC-SEC-0010, priority: should, milestone: 1.0.0-alpha.2, threats: [THR-SBC-0016, THR-SBC-0017],
-     title: "Read-only ACL for the live-call page"}
-  - {id: NFR-SBC-0007, priority: must, milestone: 1.0.0-alpha.1, threats: [THR-SBC-0015],
-     title: "Template tests include hostile input for every free-text field", target: "100 % of text fields"}
-  - {id: NFR-SBC-0008, priority: must, milestone: 1.0.0, threats: [THR-SBC-0019],
-     title: "Signing key rotation runbook exists before the first stable release"}
+proposed_requirements: []   # all moved into PRD-SBC-0001 on 2026-11-27 (#8)
 ```

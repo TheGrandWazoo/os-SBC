@@ -61,13 +61,13 @@ The full, authoritative list with priorities and milestones is in the
 | Remote phones (`REG`) | Phones on the internet register through the SBC to the PBX and make and take calls through NAT. | REG-0001, 0002 |
 | Media (`MEDIA`) | Audio is relayed per call and the ports close when the call ends. Firewall rules are added automatically. Optionally use a remote rtpengine instead. | MEDIA-0001 to 0003 |
 | Monitoring (`MON`) | A live calls page, load figures, a dashboard widget, and logs in the OPNsense log viewer. | MON-0001 to 0004 |
-| Security (`SEC`) | Flood protection with temporary bans, scanners dropped, optional allow-lists, internal addresses hidden, optional TLS. | SEC-0001 to 0005 |
+| Security (`SEC`) | Flood protection with temporary bans, scanners dropped, optional allow-lists, internal addresses hidden, optional TLS. Bans for password guessing the PBX cannot see, only the PBX may talk to the SBC from the LAN, per-source call limits, audio locked to the negotiated peer, and a read-only live view. | SEC-0001 to 0010 |
 | HA (`HA`) | Settings sync to the backup firewall, and the SBC listens on the shared CARP addresses. | HA-0001, 0002 |
 | Packaging (`PKG`) | Appears in System > Firmware > Plugins once the KSA repository is added. | PKG-0001 |
 
 Quality targets (non-functional) cover idle port exposure, capacity, apply
-time, supported OPNsense versions, safe upgrades and test coverage:
-NFR-SBC-0001 to 0006.
+time, supported OPNsense versions, safe upgrades, test coverage, hostile-input
+tests for settings, and a signing-key rotation procedure: NFR-SBC-0001 to 0008.
 
 ## How we know it worked
 
@@ -109,6 +109,7 @@ address. Flowroute credentials stay out of the repo.
 |---|---|
 | 2026-11-25 | First draft. |
 | 2026-11-26 | IDs carry the project slug. Split into human and machine-readable parts. Test environment: the second firewall is the HA backup. |
+| 2026-11-27 | Added FR-SBC-SEC-0006 to 0010 and NFR-SBC-0007, 0008 from the threat model (TM-SBC-0001), with tests (#8). |
 
 ## Machine-readable
 
@@ -162,6 +163,16 @@ requirements:
      title: "Hide internal addresses and headers from the WAN side (topology hiding)"}
   - {id: FR-SBC-SEC-0005, priority: could, milestone: 1.0.0-beta.1, status: draft,
      title: "SIP over TLS on the WAN side, certificate from the OPNsense trust store"}
+  - {id: FR-SBC-SEC-0006, priority: must, milestone: 1.0.0-alpha.1, status: draft, threats: [THR-SBC-0003],
+     title: "Ban a WAN source after N authentication failures returned by the PBX within M minutes"}
+  - {id: FR-SBC-SEC-0007, priority: must, milestone: 1.0.0-alpha.1, status: draft, threats: [THR-SBC-0014],
+     title: "Accept LAN-side requests only from the configured PBX address"}
+  - {id: FR-SBC-SEC-0008, priority: should, milestone: 1.0.0-beta.1, status: draft, threats: [THR-SBC-0011],
+     title: "Limit concurrent dialogs per WAN source"}
+  - {id: FR-SBC-SEC-0009, priority: must, milestone: 1.0.0-beta.1, status: draft, threats: [THR-SBC-0010],
+     title: "Media latching locked to the negotiated peer where the engine supports it; documented otherwise"}
+  - {id: FR-SBC-SEC-0010, priority: should, milestone: 1.0.0-alpha.2, status: draft, threats: [THR-SBC-0016, THR-SBC-0017],
+     title: "Read-only ACL for the live-call page"}
   - {id: FR-SBC-HA-0001, priority: must, milestone: 1.0.0-beta.1, status: draft,
      title: "Config sync to the HA peer (OPNsense XMLRPC sync)"}
   - {id: FR-SBC-HA-0002, priority: must, milestone: 1.0.0-beta.1, status: draft,
@@ -180,4 +191,8 @@ requirements:
      title: "Upgrades never cross a major version without the admin choosing to"}
   - {id: NFR-SBC-0006, priority: must, milestone: 1.0.0, status: draft,
      title: "Every must requirement has an automated test", target: "100 %"}
+  - {id: NFR-SBC-0007, priority: must, milestone: 1.0.0-alpha.1, status: draft, threats: [THR-SBC-0015],
+     title: "Template tests include hostile input for every free-text field", target: "100 % of text fields"}
+  - {id: NFR-SBC-0008, priority: must, milestone: 1.0.0, status: draft, threats: [THR-SBC-0019],
+     title: "Signing key rotation runbook exists before the first stable release"}
 ```
