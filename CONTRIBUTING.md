@@ -16,7 +16,7 @@ In short:
 
 | Branch | What it is |
 |---|---|
-| `next` | Default branch. All work merges here. Builds `os-sbc-devel`. |
+| `next` | Default branch. All work merges here. Builds `os-sbc` for the opt-in devel track. |
 | `release/N.x` | One per major line. Fixes only, via backport PRs. Tags `vN.M.P` live here. |
 | `archive/*` | Frozen history. |
 

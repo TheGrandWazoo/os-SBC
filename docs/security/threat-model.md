@@ -295,6 +295,16 @@ threats:
     residual: medium
     note: "While sync is off, a failover runs on the last synced config, so production changes are frozen for the test window."
 
+  - id: THR-SBC-0025
+    boundary: B7
+    stride: [T, D]
+    title: "Orphaned FreeBSD ports: rtpproxy, bcg729 and gsm have no ports maintainer"
+    mitigation: "We build from opnsense/ports at a pinned release (ADR-SBC-0010) and can carry a port ourselves if FreeBSD drops it; rtpproxy itself is maintained upstream (Sippy)."
+    requirements: []
+    tests: []
+    residual: medium
+    note: "Watch the ports at each OPNsense release bump; security fixes may arrive late or not at all without a maintainer."
+
   # Secrets in development
   - id: THR-SBC-0023
     boundary: B7

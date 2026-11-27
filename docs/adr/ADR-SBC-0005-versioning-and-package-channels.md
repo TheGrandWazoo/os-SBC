@@ -7,12 +7,17 @@ date: 2026-11-25
 decided: 2026-11-26
 deciders: [Kevin Adams]
 supersedes: []
-related: [ADR-SBC-0004, ADR-SBC-0006]
+related: [ADR-SBC-0004, ADR-SBC-0006, ADR-SBC-0011]
 ---
 
 # ADR-SBC-0005: Versioning and package channels
 
 > **In short:** Versions are semantic, starting at 1.0.0. Development builds from `next` ship as `os-sbc-devel`, releases as `os-sbc`. Each major version has its own update track, so nobody is upgraded across a major version by accident.
+
+> **Partly superseded by ADR-SBC-0011 (2026-11-27):** `next` now builds plain
+> `os-sbc` (no `PLUGIN_DEVEL`) on an opt-in devel track, because OPNsense hides
+> `-devel` plugins. The channel row for `next` and the `PLUGIN_DEVEL`
+> consequence below are historical. The rest of this ADR stands.
 
 ## Context
 

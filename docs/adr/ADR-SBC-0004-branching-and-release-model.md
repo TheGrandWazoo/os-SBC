@@ -7,12 +7,15 @@ date: 2026-11-25
 decided: 2026-11-26
 deciders: [Kevin Adams]
 supersedes: []
-related: [ADR-SBC-0005, ADR-SBC-0007, RB-SBC-0001]
+related: [ADR-SBC-0005, ADR-SBC-0007, RB-SBC-0001, ADR-SBC-0011]
 ---
 
 # ADR-SBC-0004: Branching and release model: `next` plus `release/N.x`
 
 > **In short:** All work merges into `next`. When a major version is ready, `release/N.x` is cut from it; that branch takes fixes only, and release tags live there. Old lines are frozen under `archive/`.
+
+> **Note (2026-11-27):** `next` builds `os-sbc`, not `os-sbc-devel`
+> (ADR-SBC-0011). The branch model itself is unchanged.
 
 ## Context
 

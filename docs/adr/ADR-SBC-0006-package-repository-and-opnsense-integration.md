@@ -7,7 +7,7 @@ date: 2026-11-25
 decided: 2026-11-26
 deciders: [Kevin Adams]
 supersedes: []
-related: [ADR-SBC-0002, ADR-SBC-0005, ADR-SBC-0007, ADR-SBC-0009]
+related: [ADR-SBC-0002, ADR-SBC-0005, ADR-SBC-0007, ADR-SBC-0009, ADR-SBC-0011]
 ---
 
 # ADR-SBC-0006: Signed package repository that OPNsense lists as plugins
@@ -18,6 +18,9 @@ related: [ADR-SBC-0002, ADR-SBC-0005, ADR-SBC-0007, ADR-SBC-0009]
 > includes the OPNsense series, and plugin repos publish GitHub releases that
 > the repository pulls instead of pushing with a token. The rest of this ADR
 > stands. Left as written below, per the ADR rules.
+>
+> **Also:** development builds are plain `os-sbc` on an opt-in devel track
+> (ADR-SBC-0011), so the `os-sbc-devel` mentions below are historical.
 
 ## Context
 

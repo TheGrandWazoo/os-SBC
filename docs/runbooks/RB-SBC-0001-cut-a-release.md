@@ -5,7 +5,7 @@ kind: runbook
 status: active
 date: 2026-11-26
 owners: [Kevin Adams]
-related: [ADR-SBC-0004, ADR-SBC-0005, ADR-SBC-0009]
+related: [ADR-SBC-0004, ADR-SBC-0005, ADR-SBC-0009, ADR-SBC-0011]
 ---
 
 # RB-SBC-0001: Cut a release
@@ -25,10 +25,10 @@ issue closures happen **before** the tag, as in freenas-proxmox RUNBOOK-002.
    git push origin origin/next:refs/heads/release/N.x
    ```
 4. Apply branch protection to `release/N.x` (same rules as `next`).
-5. PR into `release/N.x`: remove `PLUGIN_DEVEL=yes` from `Makefile`, set
-   `PLUGIN_VERSION=N.0.0`.
+5. PR into `release/N.x`: set `PLUGIN_VERSION=N.0.0` in `Makefile`. (No
+   `PLUGIN_DEVEL` to remove: every build is named `os-sbc`, ADR-SBC-0011.)
 6. PR into `next`: bump `PLUGIN_VERSION` to the next planned version
-   (e.g. `N.1.0`), keep `PLUGIN_DEVEL=yes`.
+   (e.g. `N.1.0`).
 7. Add `vN/testing` and `vN/stable` to `tracks` in opnsense-repo's `sources.toml`, and a
    `KSA` entry for `vN/stable` to its bootstrap `KSA.conf` (ADR-SBC-0009).
 

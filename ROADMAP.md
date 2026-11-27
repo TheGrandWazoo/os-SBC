@@ -64,6 +64,7 @@ several milestones gets an `epic` issue.
 - SIP trace capture per call (HEP to Homer)
 - SBOM and build provenance for published packages
 - Submit the plugin to opnsense/plugins upstream
+- Adopt the orphaned FreeBSD ports (net/rtpproxy, audio/bcg729, audio/gsm) as maintainer, or carry them in our build (THR-SBC-0025)
 
 ## Resolved
 
@@ -77,3 +78,5 @@ several milestones gets an `epic` issue.
 | 2026-11-26 | CI `lint`, `test`, `build` on every PR; first `os-sbc-devel` package built | ADR-SBC-0007, #3 |
 | 2026-11-27 | Signed package repo live at thegrandwazoo.github.io/opnsense-repo; os-ksa-repo bootstrap; os-SBC publishes releases it pulls | ADR-SBC-0009, #4 |
 | 2026-11-27 | Kamailio 6.1.3 and rtpproxy 3.1.1 built against OPNsense 26.7.10 on hosted FreeBSD VMs; 7 packages hosted, no MySQL | ADR-SBC-0010, #5 |
+| 2026-11-27 | First real install on OPNsense 26.7.10: bootstrap, repo and os-sbc-devel install cleanly, nothing replaced | #4 |
+| 2026-11-27 | Development builds ship as plain os-sbc on an opt-in devel track | ADR-SBC-0011, #19 |

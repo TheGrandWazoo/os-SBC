@@ -16,7 +16,7 @@ assignees: TheGrandWazoo
 
 ## Environment
 
-- os-sbc version (`pkg info os-sbc` or `os-sbc-devel`):
+- os-sbc version (`pkg info os-sbc`), and whether the KSA-devel track is enabled:
 - OPNsense version:
 - Kamailio / rtpproxy versions:
 - PBX and trunk provider:
