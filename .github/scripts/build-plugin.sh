@@ -5,6 +5,8 @@
 # job's VM). Output: work/pkg/*.pkg in the repository root.
 #
 #   OPNSENSE_SERIES  opnsense/core and opnsense/plugins branch suffix (default 26.7)
+#   PLUGIN_REVISION  appended as _N to the package version when set (CI sets the
+#                    run number for non-tag builds, so each devel build upgrades)
 #   STRICT_LINT      1 (default): any problem `make lint` prints fails the build.
 #                    0: report them as a warning only (until #11 removes the
 #                    2019 Asterisk model, which upstream's model rules reject).
@@ -45,10 +47,28 @@ if [ "${PROBLEMS}" -gt 0 ]; then
 fi
 
 echo ">>> make package"
-make -C "${PLUGIN}" package
+if [ -n "${PLUGIN_REVISION:-}" ]; then
+    make -C "${PLUGIN}" package PLUGIN_REVISION="${PLUGIN_REVISION}"
+else
+    make -C "${PLUGIN}" package
+fi
 
 find "${PLUGIN}" -name '*.pkg' -exec cp {} "${WORK}/pkg/" \;
 ls -l "${WORK}/pkg"
 for p in "${WORK}"/pkg/*.pkg; do
     pkg info -F "${p}"
 done
+
+# manifest.json tells the KSA package repository (TheGrandWazoo/opnsense-repo)
+# which OPNsense series and ABI these packages were built for.
+ABI="$(pkg query -F "$(ls "${WORK}"/pkg/*.pkg | head -n 1)" '%q')"
+{
+    printf '{"series": "%s", "abi": "%s", "packages": [' "${SERIES}" "${ABI}"
+    SEP=""
+    for p in "${WORK}"/pkg/*.pkg; do
+        printf '%s"%s"' "${SEP}" "$(basename "${p}")"
+        SEP=", "
+    done
+    printf ']}\n'
+} > "${WORK}/pkg/manifest.json"
+cat "${WORK}/pkg/manifest.json"
