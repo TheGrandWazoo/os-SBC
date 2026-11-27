@@ -1,0 +1,11 @@
+# Appended to OPNsense's own make.conf for the series (opnsense/tools
+# config/<series>/make.conf) when building our dependencies.
+
+# Kamailio: no database drivers (os-sbc keeps no state in a database, and
+# MySQL is Oracle-owned), no RADIUS, no presence server. TLS stays on for
+# SIP over TLS (FR-SBC-SEC-0005).
+net_kamailio_UNSET=	MYSQL SQLITE RADIUS PRESENCE
+
+# libsndfile: rtpproxy only writes WAV recordings, so skip the external codec
+# libraries (FLAC, Ogg, Vorbis, Opus, MP3) that we would otherwise have to host.
+audio_libsndfile_UNSET=	EXTERNAL
