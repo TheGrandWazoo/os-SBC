@@ -7,12 +7,16 @@ date: 2026-11-25
 decided: 2026-11-26
 deciders: [Kevin Adams]
 supersedes: []
-related: [ADR-SBC-0004, ADR-SBC-0005, ADR-SBC-0006]
+related: [ADR-SBC-0004, ADR-SBC-0005, ADR-SBC-0006, ADR-SBC-0010]
 ---
 
 # ADR-SBC-0007: CI pipeline: lint, test, build, integrate, publish
 
 > **In short:** Every pull request is linted, tested and built automatically. Heavy builds and real-call tests run on lab machines, and a manual call over the Flowroute test number gates each final release.
+
+> **Partly superseded by ADR-SBC-0010 (2026-11-27):** the `deps` row. Kamailio
+> and rtpproxy build on a GitHub-hosted FreeBSD VM against OPNsense's own
+> packages; no self-hosted builder is needed. The rest of this ADR stands.
 
 ## Context
 

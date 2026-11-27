@@ -89,6 +89,18 @@ for PORT in ${PORTS}; do
     make -C "/usr/ports/${PORT}" install clean
 done
 
+echo ">>> Checking the build has what os-sbc needs (DES-SBC-0001)"
+kamailio -v | head -n 2
+rtpproxy -v || true
+MODS=/usr/local/lib/kamailio/modules
+for MOD in ${KAMAILIO_MODULES}; do
+    [ -f "${MODS}/${MOD}.so" ] || { echo "FAILED: Kamailio module ${MOD} was not built"; exit 1; }
+done
+echo "Kamailio modules present: ${KAMAILIO_MODULES}"
+for MOD in db_mysql db_sqlite auth_radius presence; do
+    [ ! -f "${MODS}/${MOD}.so" ] || { echo "FAILED: ${MOD} was built although its option is off"; exit 1; }
+done
+
 echo ">>> Packaging the ports and their runtime dependencies OPNsense lacks"
 : > "${TMP}/host"
 QUEUE=""
